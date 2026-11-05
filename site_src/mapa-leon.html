@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>León crece desde las orillas · Cifra Pública</title>
+<meta name="description" content="Comparé dos fotos del directorio de negocios del INEGI, 2019 y 2024: el centro de León perdió negocios y las orillas ganaron. Mapa por zona y giro.">
+<meta name="author" content="__AUTOR__">
+<meta property="og:title" content="León crece desde las orillas">
+<meta property="og:description" content="Dónde ganó y dónde perdió negocios León entre 2019 y 2024, por zona y giro.">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="../assets/cifra-publica-avatar-tinta.svg">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>/*__LEAFLET_CSS__*/</style>
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-ext-standard-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-wght-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-ext-wght-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+
+  :root {
+    --surface: #ffffff; --surface-alt: #f7f6f8; --surface-sunken: #edecef;
+    --ink: #17151b; --ink-muted: #5c5962; --rule: #e2e0e5;
+    --rosa: #b61066; --rosa-suave: #ffe7ef;
+    --menos-3: #6c3c9a; --menos-2: #926abe; --menos-1: #b59dd2; --igual: #d4d4d6;
+    --mas-1: #e3945c; --mas-2: #c26300; --mas-3: #8c3f00;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: Figtree, system-ui, sans-serif;
+    --s1: 8px; --s2: 14px; --s3: 22px; --s4: 40px; --r: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--surface); color: var(--ink); font: 16px/1.5 var(--body); }
+  a { color: var(--rosa); text-underline-offset: 2px; }
+  .dsp { font-family: var(--display); font-stretch: 92%; font-weight: 700; letter-spacing: -0.02em; }
+  .num { font-variant-numeric: tabular-nums; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 var(--s3); }
+  .wide { max-width: 1080px; margin: 0 auto; padding: 0 var(--s3); }
+  section { margin-top: var(--s4); }
+
+  /* Encabezado */
+  .top { padding-top: 18px; }
+  .brand { display: flex; justify-content: space-between; align-items: center; }
+  .brand img { height: 26px; width: auto; display: block; }
+  .folio { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .dbl { height: 4px; border-top: 1.5px solid var(--ink); border-bottom: 0.75px solid var(--ink); margin-top: 10px; }
+  .label { margin-top: 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rosa); }
+  h1 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: clamp(42px, 8vw, 56px); line-height: 1.02; letter-spacing: -0.03em; margin: 10px 0 var(--s2); }
+  .dek { font-size: 16px; margin: 0 0 var(--s2); }
+  @media (min-width: 720px) { .dek { font-size: 17px; } }
+  .byline { font-size: 12px; color: var(--ink-muted); margin: 0; }
+
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: var(--s2); }
+  .findings { display: grid; gap: var(--s1); margin-top: var(--s3); }
+  @media (min-width: 720px) { .findings { grid-template-columns: repeat(3, 1fr); } }
+  .findings .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .findings .big small { font-size: 16px; letter-spacing: -0.01em; }
+  .findings p { margin: 8px 0 0; font-size: 15px; }
+
+  h2 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; }
+  .sub { font-size: 15px; color: var(--ink-muted); margin: 0 0 var(--s2); }
+  .prose p { font-size: 16px; margin: 0 0 var(--s2); }
+
+  /* Gráfica por distancia */
+  .ring-row { display: grid; grid-template-columns: 124px 1fr; align-items: center; gap: 10px; height: 34px; }
+  .ring-label { font-size: 14px; color: var(--ink-muted); }
+  .ring-track { position: relative; height: 100%; margin: 0 58px; }
+  .ring-zero { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--ink-muted); opacity: .5; }
+  .ring-bar { position: absolute; top: 9px; height: 16px; }
+  .ring-bar.pos { background: var(--mas-2); border-radius: 0 4px 4px 0; }
+  .ring-bar.neg { background: var(--menos-2); border-radius: 4px 0 0 4px; }
+  .ring-val { position: absolute; top: 7px; font-size: 13px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .note { font-size: 12px; color: var(--ink-muted); margin: 10px 0 0; }
+  details.more summary { font-size: 13px; color: var(--ink-muted); cursor: pointer; margin-top: 8px; min-height: 24px; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  table.t th { text-align: right; font-size: 12px; color: var(--ink-muted); font-weight: 600; padding: 6px; border-bottom: 1px solid var(--ink); }
+  table.t td { text-align: right; padding: 7px 6px; border-bottom: 1px solid var(--rule); }
+  table.t th:first-child, table.t td:first-child { text-align: left; }
+
+  .curios { display: grid; gap: var(--s1); }
+  @media (min-width: 560px) { .curios { grid-template-columns: 1fr 1fr; } }
+  .curios .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .curios p { margin: 8px 0 0; font-size: 15px; }
+
+  /* Controles */
+  .controls { display: flex; flex-direction: column; gap: var(--s1); margin-bottom: var(--s2); }
+  .chips { display: flex; gap: var(--s1); overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: thin; }
+  .chip { flex: 0 0 auto; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); font: 600 14px var(--body); cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .search { display: flex; gap: var(--s1); }
+  .search input { flex: 1; min-width: 0; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); font: 15px var(--body); }
+  .search button { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--ink); background: var(--surface); color: var(--ink); font: 600 14px var(--body); cursor: pointer; }
+  .chip:focus-visible, .search input:focus-visible, .search button:focus-visible, .tops button:focus-visible, .btn:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .search-msg { font-size: 13px; color: var(--ink-muted); min-height: 1em; margin: 0; }
+
+  /* Mapa */
+  .map-shell { display: grid; gap: var(--s2); }
+  @media (min-width: 900px) { .map-shell { grid-template-columns: 1fr 320px; align-items: start; } }
+  #map { height: 62vh; min-height: 380px; max-height: 640px; border-radius: var(--r); border: 1px solid var(--rule); background: var(--surface-alt); }
+  .leaflet-container { font-family: var(--body); }
+  .leaflet-bar { border: 1px solid var(--rule) !important; box-shadow: none !important; border-radius: var(--r) !important; overflow: hidden; }
+  .leaflet-bar a { color: var(--ink); }
+  .leaflet-tooltip.hex-tip { font: 13px/1.4 var(--body); color: var(--ink); background: var(--surface); border-radius: 8px; border: 1px solid var(--rule); box-shadow: none; padding: 6px 9px; }
+  .leaflet-tooltip.hex-tip::before { display: none; }
+  .map-hint { font-size: 12px; color: var(--ink-muted); margin: 6px 2px 0; }
+  .side { display: grid; gap: var(--s2); }
+  .legend-title { font-size: 13px; font-weight: 600; margin: 0 0 10px; }
+  .ramp { display: flex; gap: 2px; }
+  .ramp span { flex: 1; height: 12px; border-radius: 999px; }
+  .ticks { position: relative; height: 18px; font-size: 12px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+  .ticks span { position: absolute; top: 3px; transform: translateX(-50%); white-space: nowrap; }
+  .ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+  .legend-extra { display: grid; gap: 6px; margin-top: 12px; font-size: 12px; color: var(--ink-muted); }
+  .legend-extra div { display: flex; gap: 8px; align-items: center; }
+  .sw { width: 18px; height: 14px; border-radius: 4px; flex: 0 0 auto; }
+  .sw.new { border: 1.5px dashed var(--ink-muted); background: var(--mas-1); }
+  .sw.empty { border: 1px solid var(--rule); background: transparent; }
+
+  .ficha { background: var(--surface-alt); border-radius: var(--r); overflow: hidden; padding: 0 18px 16px; display: flex; flex-direction: column; gap: var(--s2); }
+  .ficha .dbl { margin: 0 -18px; }
+  .ficha-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .ficha-head h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; line-height: 1.2; margin: 0; }
+  .ficha-head span { font-size: 12px; color: var(--ink-muted); white-space: nowrap; }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .kpis div { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--ink-muted); }
+  .kpis b { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 24px; letter-spacing: -0.02em; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .ficha p { margin: 0; font-size: 15px; }
+  .ficha .muted { color: var(--ink-muted); font-size: 13px; }
+  .flag { font-size: 13px; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; }
+
+  /* Rankings */
+  .tops { display: grid; gap: var(--s3); margin-top: var(--s3); }
+  @media (min-width: 720px) { .tops { grid-template-columns: 1fr 1fr; } }
+  .tops h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 17px; letter-spacing: -0.02em; margin: 0 0 8px; }
+  .tops button { all: unset; cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+  .tops .empty { color: var(--ink-muted); font-size: 13px; }
+
+  /* Nota de uso y cierre */
+  .uso { background: var(--rosa-suave); border-radius: var(--r); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .uso p { margin: 0; font-size: 15px; }
+  details.metodo { margin-top: var(--s3); }
+  details.metodo summary { font-weight: 600; cursor: pointer; min-height: 24px; }
+  details.metodo li { margin: 8px 0; font-size: 15px; }
+  .cierre { display: flex; flex-direction: column; gap: var(--s2); padding-top: 18px; border-top: 1px solid var(--rule); }
+  .cierre p { margin: 0; font-size: 16px; }
+  .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 999px; background: var(--rosa); color: #fff; font: 700 15px var(--body); text-decoration: none; }
+  @media (min-width: 720px) { .btn { max-width: 320px; } }
+  .correo { font-size: 13px; color: var(--ink-muted); }
+  footer { padding: var(--s3) 0 48px; }
+  footer p { font-size: 12px; color: var(--ink-muted); margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand"><img src="../assets/cifra-publica-logotipo.svg" alt="Cifra Pública" width="139" height="26"><span class="folio">Folio 001</span></div>
+  <div class="dbl"></div>
+  <div class="label">Negocios · León, Gto.</div>
+  <h1>León crece desde las orillas</h1>
+  <p class="dek" id="dek"></p>
+  <p class="byline">Por __AUTOR__ · __FECHA__</p>
+</header>
+
+<main>
+  <div class="wrap"><div class="findings" id="findings"></div></div>
+
+  <section class="wrap">
+    <h2>Entre más lejos del centro, más creció</h2>
+    <p class="sub" id="rings-sub"></p>
+    <figure class="card" id="rings" style="margin:0" aria-label="Gráfica de barras: cambio porcentual de negocios por distancia a la Plaza Principal"></figure>
+  </section>
+
+  <section class="wrap" id="calzado" hidden></section>
+
+  <section class="wrap" id="reciente" hidden></section>
+
+  <section class="wide">
+    <h2>Explora tu zona</h2>
+    <p class="sub">Cada hexágono mide unos 0.7 km². Elige un giro, toca un hexágono o busca tu colonia.</p>
+    <div class="controls">
+      <div class="chips" id="chips" role="group" aria-label="Giro"></div>
+      <form class="search" id="search" autocomplete="off">
+        <input id="q" list="colonias" placeholder="Busca tu colonia" aria-label="Buscar colonia">
+        <datalist id="colonias"></datalist>
+        <button type="submit">Buscar</button>
+      </form>
+      <p class="search-msg" id="search-msg" aria-live="polite"></p>
+    </div>
+    <div class="map-shell">
+      <div><div id="map" role="region" aria-label="Mapa de León por hexágonos"></div><p class="map-hint" id="map-hint"></p></div>
+      <aside class="side">
+        <div class="card" id="legend"></div>
+        <div class="ficha" id="ficha" aria-live="polite"></div>
+      </aside>
+    </div>
+    <div class="tops">
+      <div id="top-gana"></div>
+      <div id="top-pierde"></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="curiosidades" hidden></section>
+
+  <section class="wrap">
+    <div class="uso">
+      <h2>Para qué sirve, y para qué no</h2>
+      <p>Sirve para ver hacia dónde se está moviendo el comercio de León, y para saber dónde buscar.</p>
+      <p>No sirve para escoger un local: el directorio del INEGI no cuenta lo informal ni cuánto vende cada negocio. Para eso hay que ir a ver la calle.</p>
+      <p>Qué tumbaría esta lectura: que la siguiente foto completa del INEGI muestre que las orillas dejaron de crecer, o que las zonas nuevas resulten ser solo zonas que el INEGI empezó a contar.</p>
+    </div>
+    <details class="metodo card">
+      <summary>Cómo lo hice</summary>
+      <ul id="notas"></ul>
+    </details>
+  </section>
+
+  <section class="wrap">
+    <div class="cierre">
+      <p>¿Lo quieres para tu giro, para otra ciudad o con tus sucursales encima? Platiquemos.</p>
+      <a class="btn" href="mailto:__EMAIL__?subject=Mapa%20de%20negocios%20de%20Le%C3%B3n">Escríbeme</a>
+      <span class="correo">__EMAIL__</span>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p id="fuentes"></p>
+  <p>Hecho por __AUTOR__ en León · Cifra Pública</p>
+</footer>
+
+<script id="geo" type="application/json">__GEO__</script>
+<script id="meta" type="application/json">__META__</script>
+<script>/*__LEAFLET_JS__*/</script>
+<script>
+(() => {
+  const GEO = JSON.parse(document.getElementById("geo").textContent);
+  const META = JSON.parse(document.getElementById("meta").textContent);
+  const FEATS = GEO.features, REC = META.reciente || null;
+  const GIROS = [
+    ["total", "Todos los negocios"], ["rest", "Restaurantes"], ["abar", "Abarrotes y minisúpers"],
+    ["este", "Estéticas y peluquerías"], ["cafe", "Cafeterías y neverías"],
+    ["farm", "Farmacias"], ["gym", "Gimnasios"],
+  ];
+  const NOMBRE = Object.fromEntries(GIROS);
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const RAMP = ["--menos-3", "--menos-2", "--menos-1", "--igual", "--mas-1", "--mas-2", "--mas-3"].map(css);
+
+  // ---------- formato ----------
+  const nf = new Intl.NumberFormat("es-MX");
+  const pf = new Intl.NumberFormat("es-MX", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const MINUS = "−";
+  const signed = (n) => (n > 0 ? "+" : n < 0 ? MINUS : "") + nf.format(Math.abs(n));
+  const pct = (p) => (p > 0 ? "+" : p < 0 ? MINUS : "") + pf.format(Math.abs(p)) + "%";
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const MESES = { "05": "mayo", "11": "noviembre" };
+  const edicion = (v) => `${MESES[v.slice(5)] || v.slice(5)} de ${v.slice(0, 4)}`;
+  const VA = META.version_a.slice(0, 4), VB = META.version_b.slice(0, 4);
+  const R = META.resumen, T = R.total, AN = META.anillos;
+  const centro = AN[0], borde = AN[AN.length - 1];
+  const porDiez = (x) => pf.format(Math.round(x * 10) / 10);
+
+  // ---------- entradilla y hallazgos ----------
+  document.getElementById("dek").textContent =
+    `Comparé dos fotos del directorio de negocios del INEGI: la de ${VA}, antes de la pandemia, y la de ${VB}, cuatro años después. ` +
+    `León sumó ${nf.format(T.b - T.a)} negocios, pero no los repartió parejo: el centro perdió y las orillas ganaron. Toca un hexágono y te cuento qué pasó ahí.`;
+  document.getElementById("findings").innerHTML = `
+    <div class="card"><div class="big">${pct(borde.pct)}</div>
+      <p>negocios a más de 8 km de la Plaza Principal. En los primeros 2 km hay ${pf.format(Math.abs(centro.pct))}% ${centro.pct < 0 ? "menos" : "más"} que en ${VA}.</p></div>
+    <div class="card"><div class="big">${porDiez(10 * T.ya_no / T.a)} <small>de cada 10</small></div>
+      <p>negocios de ${VA} ya no aparecen en ${VB}. En su lugar aparecieron ${porDiez(10 * T.nuevos / T.a)} nuevos por cada 10.</p></div>
+    <div class="card"><div class="big">${pct(R.este.pct)}</div>
+      <p>estéticas y peluquerías; gimnasios, ${pct(R.gym.pct)}. Los dos crecieron más del doble que el total de negocios (${pct(T.pct)}).</p></div>`;
+
+  // ---------- barras de cambio (anillos y calzado) ----------
+  function barras(el, rows, cab) {
+    const lo = Math.min(-5, ...rows.map((r) => r.pct)) * 1.05, hi = Math.max(5, ...rows.map((r) => r.pct)) * 1.05;
+    const x = (v) => ((v - lo) / (hi - lo)) * 100, z = x(0);
+    el.innerHTML = rows.map((r) => {
+      const left = Math.min(x(r.pct), z), w = Math.abs(x(r.pct) - z);
+      const val = r.pct >= 0 ? `left:calc(${x(r.pct)}% + 6px)` : `right:calc(${100 - x(r.pct)}% + 6px)`;
+      return `<div class="ring-row" title="${esc(`${r.label}: ${nf.format(r.a)} en ${VA}, ${nf.format(r.b)} en ${VB}`)}">
+        <div class="ring-label">${esc(r.label)}</div>
+        <div class="ring-track"><div class="ring-zero" style="left:${z}%"></div>
+        <div class="ring-bar ${r.pct >= 0 ? "pos" : "neg"}" style="left:${left}%;width:${w}%"></div>
+        <div class="ring-val" style="${val}">${pct(r.pct)}</div></div></div>`;
+    }).join("") + `
+      <details class="more"><summary>Ver los totales</summary><table class="t">
+        <thead><tr><th>${cab}</th><th>${VA}</th><th>${VB}</th><th>Cambio</th></tr></thead>
+        <tbody>${rows.map((r) => `<tr><td>${esc(r.label)}</td><td>${nf.format(r.a)}</td><td>${nf.format(r.b)}</td><td>${pct(r.pct)}</td></tr>`).join("")}</tbody>
+      </table></details>`;
+  }
+  document.getElementById("rings-sub").textContent = `Cambio en el número de negocios entre ${VA} y ${VB}, en anillos de 2 km alrededor de la Plaza Principal.`;
+  barras(document.getElementById("rings"), AN.map((r) => ({ ...r, label: r.anillo })), "Distancia");
+
+  // ---------- calzado ----------
+  const EX = META.extras || null;
+  if (EX) {
+    const c = EX.calzado, co = c.coecillo, z = c.tamanos;
+    const sec = document.getElementById("calzado"); sec.hidden = false;
+    const zapPct = 100 * (c.zapaterias_b - c.zapaterias_a) / c.zapaterias_a;
+    sec.innerHTML = `
+      <h2>El Coecillo perdió casi un tercio de sus talleres de calzado</h2>
+      <div class="prose">
+        <p>Busqué qué había detrás de lo que perdió el centro, y una parte está en el calzado. En los ${["", "un", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"][co.hexagonos] || co.hexagonos} hexágonos que llevan el nombre del Coecillo, los talleres y fábricas de calzado pasaron de ${nf.format(co.calzado_a)} a ${nf.format(co.calzado_b)}: son ${nf.format(co.calzado_a - co.calzado_b)} de los ${nf.format(co.total_a - co.total_b)} negocios que perdió esa zona.</p>
+        <p>En toda la ciudad, la fabricación de calzado bajó ${pf.format(Math.abs(100 * (c.b - c.a) / c.a))}%, de ${nf.format(c.a)} a ${nf.format(c.b)} establecimientos, y se movió mucho: de los talleres de ${VA}, solo ${Math.round(c.siguen_pct)} de cada 100 siguen en ${VB} (en el total de negocios son ${Math.round(c.siguen_pct_todos)}). Lo que más cambió fue el tamaño.</p>
+      </div>
+      <h2 style="font-size:17px;margin-top:4px">Menos talleres medianos, más fábricas grandes</h2>
+      <p class="sub">Talleres y fábricas de calzado en León según cuántas personas trabajan ahí, cambio entre ${VA} y ${VB}.</p>
+      <figure class="card" id="calzado-chart" style="margin:0" aria-label="Gráfica de barras: cambio en talleres de calzado por tamaño"></figure>
+      <p class="note">Las zapaterías, en cambio, crecieron ${pf.format(zapPct)}%: de ${nf.format(c.zapaterias_a)} a ${nf.format(c.zapaterias_b)}. El tamaño es el rango de personas que reporta el INEGI; un taller puede cambiar de rango entre ediciones.</p>`;
+    barras(document.getElementById("calzado-chart"), z.map((r) => ({ ...r, label: r.tamano })), "Tamaño");
+  }
+
+  // ---------- edición reciente (parcial) ----------
+  if (REC) {
+    const rr = REC.resumen, ra = REC.anillos, mins = Math.min(...ra.map((r) => r.pct)), maxs = Math.max(...ra.map((r) => r.pct));
+    const sec = document.getElementById("reciente");
+    sec.hidden = false;
+    sec.innerHTML = `
+      <h2>¿Y en ${REC.version.slice(0, 4)}? El INEGI solo volvió a revisar a los grandes</h2>
+      <div class="prose">
+        <p>En ${edicion(REC.version)} salió otra edición del directorio, cinco años después de 2020. Ahí León tiene ${nf.format(rr.b)} negocios, ${nf.format(rr.b - rr.a)} más que en ${edicion(META.version_b)} (${pct(rr.pct)}), y el aumento es parejo: entre ${pct(mins)} y ${pct(maxs)} en cada anillo.</p>
+        <p>Pero esa edición se actualizó «fundamentalmente en el segmento de los establecimientos grandes», según el propio INEGI. Se nota: de los negocios que dejaron de aparecer, ${pf.format(REC.grandes_pct_ya_no)} de cada 100 tenían más de 50 trabajadores; en toda la ciudad son ${pf.format(REC.grandes_pct_todos)} de cada 100. Por eso no la uso para decir si lo de las orillas sigue o se frenó. Para eso hace falta la siguiente foto completa, la de los próximos Censos Económicos.</p>
+      </div>
+      <div class="card"><table class="t">
+        <thead><tr><th>Distancia</th><th>${VA} → ${VB}<br><span style="font-weight:400">foto completa</span></th><th>${edicion(META.version_b).replace(" de ", " ")} → ${edicion(REC.version).replace(" de ", " ")}<br><span style="font-weight:400">edición parcial</span></th></tr></thead>
+        <tbody>${AN.map((r, i) => `<tr><td>${esc(r.anillo)}</td><td>${pct(r.pct)}</td><td>${pct(ra[i].pct)}</td></tr>`).join("")}</tbody>
+      </table><p class="note">Las dos columnas no son comparables entre sí: una abarca cinco años y la otra seis meses, y se actualizaron de forma distinta.</p></div>`;
+  }
+
+  // ---------- curiosidades ----------
+  if (EX) {
+    const k = EX.curiosidades, sec = document.getElementById("curiosidades"); sec.hidden = false;
+    const tile = (num, txt) => `<div class="card"><div class="big">${num}</div><p>${txt}</p></div>`;
+    sec.innerHTML = `
+      <h2>Cuatro cosas que encontré de paso</h2>
+      <p class="sub">Establecimientos registrados en León, ${VA} y ${VB}.</p>
+      <div class="curios">
+        ${tile(pct(k.ciber.pct), `Cibercafés: de ${nf.format(k.ciber.a)} a ${nf.format(k.ciber.b)}. Si todavía conoces uno abierto, cuídalo.`)}
+        ${tile(pct(k.limpieza.pct), `Tiendas de artículos de limpieza: de ${nf.format(k.limpieza.a)} a ${nf.format(k.limpieza.b)}.${EX.limpieza_es_el_que_mas_crecio_500 ? ` Ningún giro con más de 500 negocios en ${VA} creció tanto.` : ""}`)}
+        ${tile(pct(k.consultorios.pct), `Consultorios de psicología, nutrición y quiropráctica: de ${nf.format(k.consultorios.a)} a ${nf.format(k.consultorios.b)}. Los de quiropráctica más que se duplicaron: de ${nf.format(k.quiro.a)} a ${nf.format(k.quiro.b)}.`)}
+        ${tile(pct(k.mascotas.pct), `Tiendas de mascotas y veterinarias: de ${nf.format(k.mascotas.a)} a ${nf.format(k.mascotas.b)}.`)}
+      </div>
+      <p class="note">Cuentan establecimientos, no lo que venden.</p>`;
+  }
+
+  // ---------- escala por giro ----------
+  const niceUp = (v) => [1, 2, 3, 5, 10, 15, 20, 25, 30, 50, 75, 100, 150, 200, 250, 300, 500].find((n) => n >= v) || Math.ceil(v / 100) * 100;
+  const q = (arr, p) => { const a = [...arr].sort((m, n) => m - n); if (!a.length) return 0; const i = (a.length - 1) * p, f = Math.floor(i); return a[f] + (a[Math.min(f + 1, a.length - 1)] - a[f]) * (i - f); };
+  const scales = {};
+  for (const [s] of GIROS) {
+    const vals = FEATS.filter((f) => !f.properties.nueva && (f.properties[s + "_a"] || f.properties[s + "_b"]))
+                      .map((f) => Math.abs(f.properties[s + "_d"])).filter((v) => v > 0);
+    const t1 = niceUp(Math.max(2, q(vals, 0.5)));
+    scales[s] = { t1, t2: niceUp(Math.max(t1 + 1, q(vals, 0.85))) };
+  }
+  const classOf = (d, { t1, t2 }) => d <= -t2 ? 0 : d <= -t1 ? 1 : d < 0 ? 2 : d === 0 ? 3 : d < t1 ? 4 : d < t2 ? 5 : 6;
+
+  // ---------- estado y mapa ----------
+  let giro = "total", selected = null;
+  const P = (f, k) => f.properties[`${giro}_${k}`];
+  const touch = matchMedia("(hover: none)").matches;
+  const map = L.map("map", { zoomSnap: 0.5, zoomControl: true, scrollWheelZoom: false, dragging: !touch, tap: true });
+  map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
+  document.getElementById("map-hint").textContent = touch ? "Usa dos dedos para acercar y mover el mapa." : "Usa + y − o doble clic para acercar; arrastra para moverte.";
+  map.createPane("labels"); map.getPane("labels").style.zIndex = 450; map.getPane("labels").style.pointerEvents = "none";
+  const attr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", { attribution: attr, subdomains: "abcd", maxZoom: 18 }).addTo(map);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png", { pane: "labels", subdomains: "abcd", maxZoom: 18 }).addTo(map);
+
+  const style = (f) => {
+    const a = P(f, "a"), b = P(f, "b"), empty = !a && !b;
+    const isSel = selected && f.properties.hex === selected.feature.properties.hex;
+    const st = { fillColor: empty ? "transparent" : RAMP[classOf(P(f, "d"), scales[giro])], fillOpacity: empty ? 0 : 0.82,
+                 color: "#ffffff", weight: 1, opacity: 1, dashArray: null };
+    if (f.properties.nueva) Object.assign(st, { color: css("--ink-muted"), weight: 1.4, dashArray: "3 3" });
+    if (empty) Object.assign(st, { color: css("--rule"), weight: 0.8 });
+    if (isSel) Object.assign(st, { color: css("--ink"), weight: 2.6, dashArray: null });
+    return st;
+  };
+  const layer = L.geoJSON(GEO, {
+    style,
+    onEachFeature: (f, lyr) => {
+      lyr.on("click", () => select(lyr));
+      if (!touch) lyr.bindTooltip(() =>
+        `<b>${esc(f.properties.colonia || "Zona sin nombre")}</b><br>${esc(NOMBRE[giro])}: ${signed(P(f, "d"))} (${nf.format(P(f, "a"))} en ${VA}, ${nf.format(P(f, "b"))} en ${VB})`,
+        { sticky: true, className: "hex-tip", direction: "top", offset: [0, -8] });
+    },
+  }).addTo(map);
+  map.fitBounds(L.featureGroup(layer.getLayers().filter((l) => l.feature.properties.total_b >= 60)).getBounds(), { padding: [8, 8] });
+  const byHex = Object.fromEntries(layer.getLayers().map((l) => [l.feature.properties.hex, l]));
+
+  function select(lyr, opts = {}) {
+    const prev = selected; selected = lyr;
+    if (prev) prev.setStyle(style(prev.feature));
+    lyr.setStyle(style(lyr.feature)); lyr.bringToFront();
+    if (opts.fly) map.flyToBounds(lyr.getBounds(), { maxZoom: 13, duration: 0.6 });
+    renderFicha();
+  }
+
+  // ---------- ficha ----------
+  function renderFicha() {
+    const el = document.getElementById("ficha");
+    if (!selected) { el.innerHTML = `<div class="dbl"></div><p class="muted">Toca un hexágono para ver qué pasó en esa zona.</p>`; return; }
+    const f = selected.feature, a = P(f, "a"), b = P(f, "b"), d = P(f, "d"), p = P(f, "pct");
+    let extra = "";
+    if (giro === "total") {
+      const g = GIROS.slice(1).map(([s, n]) => [n, f.properties[s + "_d"]]);
+      const up = g.filter(([, v]) => v > 0).sort((m, n) => n[1] - m[1])[0], down = g.filter(([, v]) => v < 0).sort((m, n) => m[1] - n[1])[0];
+      const parts = [];
+      if (up) parts.push(`Lo que más creció aquí: <b>${esc(up[0].toLowerCase())}</b> (${signed(up[1])}).`);
+      if (down) parts.push(`Lo que más bajó: <b>${esc(down[0].toLowerCase())}</b> (${signed(down[1])}).`);
+      if (parts.length) extra = `<p>${parts.join(" ")}</p>`;
+    }
+    const c = REC ? f.properties[`${giro}_c`] : null;
+    el.innerHTML = `<div class="dbl"></div>
+      <div class="ficha-head"><h3>${esc(f.properties.colonia || "Zona sin nombre")}</h3><span>${esc(NOMBRE[giro])}</span></div>
+      <div class="kpis"><div>Negocios ${VA}<b>${nf.format(a)}</b></div><div>Negocios ${VB}<b>${nf.format(b)}</b></div>
+        <div>Cambio<b>${signed(d)}</b>${p !== null && p !== undefined ? pct(p) : ""}</div></div>
+      <p>Aparecieron <b>${nf.format(P(f, "ape"))}</b> y ya no aparecen <b>${nf.format(P(f, "cie"))}</b>.</p>
+      ${extra}
+      ${REC ? `<p class="muted">En ${edicion(REC.version)} el directorio registra ${nf.format(c)} aquí (edición parcial, ver arriba).</p>` : ""}
+      ${f.properties.nueva ? `<div class="flag">Zona casi vacía en el directorio de ${VA}: puede ser un fraccionamiento nuevo o una zona que el INEGI empezó a contar en ${VB}.</div>` : ""}`;
+  }
+
+  // ---------- leyenda ----------
+  function renderLegend() {
+    const { t1, t2 } = scales[giro], pos = (i) => `${(i / 7) * 100}%`;
+    document.getElementById("legend").innerHTML = `
+      <p class="legend-title">Cambio en ${giro === "total" ? "negocios" : esc(NOMBRE[giro].toLowerCase())}, ${VA}–${VB}</p>
+      <div class="ramp">${RAMP.map((c) => `<span style="background:${c}"></span>`).join("")}</div>
+      <div class="ticks"><span style="left:${pos(1)}">${MINUS}${t2}</span><span style="left:${pos(2)}">${MINUS}${t1}</span>
+        <span style="left:${pos(3.5)}">0</span><span style="left:${pos(5)}">+${t1}</span><span style="left:${pos(6)}">+${t2}</span></div>
+      <div class="ends"><span>Menos que en ${VA}</span><span>Igual</span><span>Más</span></div>
+      <div class="legend-extra">
+        <div><span class="sw new"></span>Zona nueva en el directorio (casi sin negocios en ${VA})</div>
+        <div><span class="sw empty"></span>Sin negocios de este giro</div></div>`;
+  }
+
+  // ---------- rankings ----------
+  function renderTops() {
+    const pool = FEATS.filter((f) => !f.properties.nueva && (giro === "total" ? P(f, "a") >= META.min_base_pct : P(f, "a") + P(f, "b") > 0));
+    const gana = pool.filter((f) => P(f, "d") > 0).sort((m, n) => P(n, "d") - P(m, "d") || P(n, "b") - P(m, "b")).slice(0, 8);
+    const pierde = pool.filter((f) => P(f, "d") < 0).sort((m, n) => P(m, "d") - P(n, "d") || P(n, "a") - P(m, "a")).slice(0, 8);
+    const quien = giro === "total" ? "negocios" : NOMBRE[giro].toLowerCase();
+    const table = (rows, titulo, id) => {
+      const body = rows.length ? rows.map((f) => `<tr><td><button data-hex="${f.properties.hex}">${esc(f.properties.colonia || "Zona sin nombre")}</button></td>
+        <td>${nf.format(P(f, "a"))}</td><td>${nf.format(P(f, "b"))}</td><td><b>${signed(P(f, "d"))}</b></td></tr>`).join("")
+        : `<tr><td colspan="4" class="empty">Ninguna zona en esta categoría.</td></tr>`;
+      document.getElementById(id).innerHTML = `<h3>${titulo}</h3><table class="t"><thead><tr><th>Zona</th><th>${VA}</th><th>${VB}</th><th>Cambio</th></tr></thead><tbody>${body}</tbody></table>`;
+    };
+    table(gana, `Las zonas que más ${quien} ganaron`, "top-gana");
+    table(pierde, `Las zonas que más ${quien} perdieron`, "top-pierde");
+  }
+  document.querySelector(".tops").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-hex]"); if (!btn) return;
+    select(byHex[btn.dataset.hex], { fly: true });
+    document.getElementById("map").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  // ---------- giro ----------
+  const chips = document.getElementById("chips");
+  chips.innerHTML = GIROS.map(([s, n]) => `<button class="chip" data-giro="${s}" aria-pressed="${s === giro}">${n}</button>`).join("");
+  chips.addEventListener("click", (e) => {
+    const btn = e.target.closest(".chip"); if (!btn) return;
+    giro = btn.dataset.giro;
+    chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c === btn));
+    layer.setStyle(style); if (selected) selected.bringToFront();
+    renderLegend(); renderTops(); renderFicha();
+  });
+
+  // ---------- búsqueda ----------
+  const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+  const nombres = [...new Set(FEATS.flatMap((f) => (f.properties.colonia || "").split(" / ")).filter(Boolean))].sort((m, n) => m.localeCompare(n, "es"));
+  document.getElementById("colonias").innerHTML = nombres.map((n) => `<option value="${esc(n)}">`).join("");
+  document.getElementById("search").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const qv = norm(document.getElementById("q").value), msg = document.getElementById("search-msg");
+    if (!qv) { msg.textContent = ""; return; }
+    const hits = layer.getLayers().filter((l) => norm(l.feature.properties.colonia || "").includes(qv));
+    if (!hits.length) { msg.textContent = "No encontré esa colonia. Prueba con otra parte del nombre."; return; }
+    hits.sort((m, n) => n.feature.properties.total_b - m.feature.properties.total_b);
+    msg.textContent = hits.length > 1 ? `Hay ${hits.length} hexágonos con ese nombre; te muestro el que tiene más negocios.` : "";
+    select(hits[0]);
+    map.flyToBounds(L.featureGroup(hits).getBounds(), { maxZoom: 13, duration: 0.6 });
+  });
+
+  // ---------- método y fuentes ----------
+  const eds = [META.version_a, META.version_b].concat(REC ? [REC.version] : []).map(edicion);
+  document.getElementById("notas").innerHTML = [
+    `Usé el Directorio Estadístico Nacional de Unidades Económicas (DENUE) del INEGI. La comparación principal es entre ${edicion(META.version_a)} y ${edicion(META.version_b)} porque son las dos ediciones que el INEGI actualizó por completo con los Censos Económicos; las de en medio revisan sobre todo a los negocios grandes.`,
+    `Cuento establecimientos fijos y semifijos registrados en el directorio. No incluye comercio ambulante ni dice cuánto vende o cuánta gente emplea cada negocio.`,
+    `Partí la ciudad en hexágonos de unos 0.7 km². El nombre de cada uno es la colonia que más se repite en sus registros; un hexágono puede abarcar varias.`,
+    `El INEGI conserva la clave de cada negocio entre ediciones; así sé cuáles aparecieron y cuáles ya no aparecen. Uno que ya no aparece pudo cerrar o cambiar de registro.`,
+    `Marco aparte las zonas nuevas: menos de 5 negocios en ${VA} y 20 o más en ${VB}. Pueden ser fraccionamientos nuevos o zonas que el INEGI empezó a contar en ${VB}, así que no entran en los rankings. Sin ellas, el anillo de más de 8 km crece ${pct(META.anillo_ext_sin_nuevas_pct)} en lugar de ${pct(borde.pct)}.`,
+    `Junté abarrotes y minisúpers porque el INEGI movió cientos de negocios de León entre esas dos categorías de una edición a otra. Cafeterías incluye neverías y refresquerías.`,
+    `En los rankings de todos los negocios solo entran zonas con al menos ${META.min_base_pct} negocios en ${VA}.`,
+    `Calzado: los códigos de fabricación de calzado del INEGI. «El Coecillo» son los hexágonos cuyo nombre lo incluye. Las curiosidades usan los códigos de cada actividad tal cual.`,
+  ].map((t) => `<li>${t}</li>`).join("");
+  document.getElementById("fuentes").innerHTML =
+    `Fuente: INEGI, Directorio Estadístico Nacional de Unidades Económicas (DENUE), ediciones de ${eds.slice(0, -1).join(", ")} y ${eds[eds.length - 1]}. ` +
+    `Consulta: ${esc(META.fecha)}. Cada hexágono mide unos 0.7 km². Mapa base: © OpenStreetMap y © CARTO. ` +
+    `Código y datos: <a href="https://github.com/cifrapublicamx">github.com/cifrapublicamx</a>.`;
+
+  renderLegend(); renderTops(); renderFicha();
+})();
+</script>
+</body>
+</html>

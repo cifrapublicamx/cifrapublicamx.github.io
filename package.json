@@ -1,0 +1,6 @@
+{
+  "name": "cifrapublicamx-site",
+  "private": true,
+  "description": "Cifra Pública: páginas de datos de León y Guanajuato",
+  "dependencies": { "leaflet": "1.9.4" }
+}

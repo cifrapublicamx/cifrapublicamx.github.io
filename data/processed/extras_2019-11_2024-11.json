@@ -1,0 +1,88 @@
+{
+ "calzado": {
+  "a": 3416,
+  "b": 3231,
+  "siguen_pct": 54.2,
+  "siguen_pct_todos": 64.9,
+  "tamanos": [
+   {
+    "tamano": "Hasta 5 personas",
+    "a": 1950,
+    "b": 1939,
+    "pct": -0.6
+   },
+   {
+    "tamano": "De 6 a 50",
+    "a": 1270,
+    "b": 1051,
+    "pct": -17.2
+   },
+   {
+    "tamano": "Más de 50",
+    "a": 196,
+    "b": 241,
+    "pct": 23.0
+   }
+  ],
+  "coecillo": {
+   "hexagonos": 5,
+   "calzado_a": 507,
+   "calzado_b": 351,
+   "total_a": 7246,
+   "total_b": 6733
+  },
+  "zapaterias_a": 3281,
+  "zapaterias_b": 3768
+ },
+ "curiosidades": {
+  "ciber": {
+   "nombre": "Cibercafés",
+   "a": 554,
+   "b": 288,
+   "pct": -48.0
+  },
+  "mascotas": {
+   "nombre": "Tiendas de mascotas y veterinarias",
+   "a": 340,
+   "b": 472,
+   "pct": 38.8
+  },
+  "consultorios": {
+   "nombre": "Consultorios de psicología, nutrición y quiropráctica",
+   "a": 304,
+   "b": 431,
+   "pct": 41.8
+  },
+  "quiro": {
+   "nombre": "Consultorios de quiropráctica",
+   "a": 36,
+   "b": 78,
+   "pct": 116.7
+  },
+  "limpieza": {
+   "nombre": "Tiendas de artículos de limpieza",
+   "a": 665,
+   "b": 1197,
+   "pct": 80.0
+  }
+ },
+ "limpieza_es_el_que_mas_crecio_500": true,
+ "giros_500_que_mas_crecieron": [
+  [
+   "467115",
+   80.0
+  ],
+  [
+   "722511",
+   44.2
+  ],
+  [
+   "461190",
+   41.9
+  ],
+  [
+   "466410",
+   36.0
+  ]
+ ]
+}
