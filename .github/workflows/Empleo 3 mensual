@@ -1,0 +1,90 @@
+# Cifra Pública | Folio 003 | Paso 3: actualización mensual.
+# El IMSS sube el archivo del mes unos diez días después del cierre. Este workflow revisa los días
+# 12, 16, 21 y 26 a las 10:23 (hora del centro de México); si hay un mes nuevo, abre un PR con los
+# números y el control. Mientras haya un PR de actualización sin aprobar, no hace nada.
+name: "Empleo IMSS | 3. actualización mensual"
+
+on:
+  schedule:
+    - cron: "23 16 12,16,21,26 * *"
+  workflow_dispatch:
+    inputs:
+      max_meses:
+        description: "Tope de meses en esta corrida"
+        required: false
+        default: "3"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: empleo-imss
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ¿Hay serie y no hay PR pendiente?
+        id: revisa
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! ls data/processed/empleo/mensual/*/meta.json >/dev/null 2>&1; then
+            echo "Todavía no corre el llenado inicial: nada que hacer." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "seguir=0" >> "$GITHUB_OUTPUT"
+          elif [ "$(gh pr view empleo/actualizacion --json state -q .state 2>/dev/null || true)" = "OPEN" ]; then
+            echo "Hay un PR de actualización esperando tu aprobación: nada que hacer." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "seguir=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "seguir=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.revisa.outputs.seguir == '1'
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scripts/empleo/requirements.txt
+
+      - name: Instalar dependencias
+        if: steps.revisa.outputs.seguir == '1'
+        run: pip install -r scripts/empleo/requirements.txt
+
+      - name: Extraer meses nuevos
+        id: extraer
+        if: steps.revisa.outputs.seguir == '1'
+        continue-on-error: true
+        env:
+          MAX: ${{ inputs.max_meses || '3' }}
+        run: |
+          ultimo=$(ls data/processed/empleo/mensual | sort | tail -1)
+          python scripts/empleo/extraer.py --faltantes --desde "$ultimo" --max "$MAX" --borrar-crudo
+
+      - name: Consolidar
+        if: steps.revisa.outputs.seguir == '1' && fromJSON(steps.extraer.outputs.nuevos || '0') > 0
+        run: python scripts/empleo/consolidar.py
+
+      - name: Rehacer la página (cuando exista)
+        if: steps.revisa.outputs.seguir == '1' && fromJSON(steps.extraer.outputs.nuevos || '0') > 0 && hashFiles('scripts/empleo/build_page.py') != ''
+        run: python scripts/empleo/build_page.py
+
+      - name: Abrir el PR del mes
+        if: steps.revisa.outputs.seguir == '1' && fromJSON(steps.extraer.outputs.nuevos || '0') > 0
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_REF: ${{ github.event.repository.default_branch }}
+        run: |
+          ultimo=$(ls data/processed/empleo/mensual | sort | tail -1)
+          bash scripts/empleo/abrir_pr.sh "empleo/actualizacion" "Empleo IMSS: datos al $ultimo" \
+            data/processed/empleo/control.md data/processed/empleo empleo
+
+      - name: Marcar la corrida como fallida si un mes falló
+        if: steps.extraer.outcome == 'failure'
+        run: |
+          echo "Algún mes no se pudo extraer: revisa el resumen de esta corrida."
+          exit 1
