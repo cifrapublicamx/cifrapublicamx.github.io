@@ -1,0 +1,40 @@
+cd_a,ciudad,entidad,papel
+01,Ciudad de México,Ciudad de México,
+02,Guadalajara,Jalisco,
+03,Monterrey,Nuevo León,
+04,Puebla,Puebla,comparable
+05,León,Guanajuato,foco
+06,Torreón,Coahuila,
+07,San Luis Potosí,San Luis Potosí,comparable
+08,Mérida,Yucatán,
+09,Chihuahua,Chihuahua,
+10,Tampico,Tamaulipas,
+12,Veracruz,Veracruz,
+13,Acapulco,Guerrero,
+14,Aguascalientes,Aguascalientes,comparable
+15,Morelia,Michoacán,
+16,Toluca,México,
+17,Saltillo,Coahuila,
+18,Villahermosa,Tabasco,
+19,Tuxtla Gutiérrez,Chiapas,
+20,Ciudad Juárez,Chihuahua,
+21,Tijuana,Baja California,comparable
+24,Culiacán,Sinaloa,
+25,Hermosillo,Sonora,
+26,Durango,Durango,
+27,Tepic,Nayarit,
+28,Campeche,Campeche,
+29,Cuernavaca,Morelos,
+30,Coatzacoalcos,Veracruz,
+31,Oaxaca,Oaxaca,
+32,Zacatecas,Zacatecas,
+33,Colima,Colima,
+36,Querétaro,Querétaro,comparable
+39,Tlaxcala,Tlaxcala,
+40,La Paz,Baja California Sur,
+41,Cancún,Quintana Roo,
+42,Ciudad del Carmen,Campeche,
+43,Pachuca,Hidalgo,
+44,Mexicali,Baja California,
+46,Reynosa,Tamaulipas,
+52,Tapachula,Chiapas,
