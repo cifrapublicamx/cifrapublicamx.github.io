@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Cifra Pública · Datos públicos para decidir</title>
+<title>Cifra Pública | Datos públicos para decidir</title>
 <meta name="description" content="Cifra Pública: análisis de datos públicos sociales, económicos, comerciales y de política pública, convertidos en mapas, tableros y piezas para decidir.">
 <meta name="author" content="Rodrigo Méndez Hernández">
 <meta property="og:title" content="Cifra Pública">
@@ -51,6 +51,7 @@
   h2 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 var(--s2); }
 
   /* Pieza */
+  .piezas { display: grid; gap: var(--s2); }
   .pieza { display: grid; gap: var(--s2); text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); overflow: hidden; }
   .pieza:hover { border-color: var(--ink-muted); }
   .pieza:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
@@ -109,6 +110,34 @@
 <main>
   <section class="wrap">
     <h2>Lo más reciente</h2>
+    <div class="piezas">
+    <a class="pieza" href="gasto-leon/">
+      <div class="viz" aria-hidden="true">
+        <!-- Gráfica de la pieza: gasto municipal por habitante, pesos de 2025, 2016–2025 -->
+        <svg viewBox="0 0 200 120" role="presentation">
+          <line x1="8" y1="102" x2="194" y2="102" stroke="#5c5962" stroke-opacity=".5" stroke-width="1"/>
+          <rect x="12.0" y="44.7" width="11" height="57.3" rx="2" fill="#c06100"/>
+          <rect x="30.4" y="32.8" width="11" height="69.2" rx="2" fill="#c06100"/>
+          <rect x="48.8" y="31.6" width="11" height="70.4" rx="2" fill="#c06100"/>
+          <rect x="67.2" y="32.7" width="11" height="69.3" rx="2" fill="#c06100"/>
+          <rect x="85.6" y="34.3" width="11" height="67.7" rx="2" fill="#c06100"/>
+          <rect x="104.0" y="36.5" width="11" height="65.5" rx="2" fill="#c06100"/>
+          <rect x="122.4" y="37.7" width="11" height="64.3" rx="2" fill="#c06100"/>
+          <rect x="140.8" y="30.3" width="11" height="71.7" rx="2" fill="#c06100"/>
+          <rect x="159.2" y="20.5" width="11" height="81.5" rx="2" fill="#c06100"/>
+          <rect x="177.6" y="27.0" width="11" height="75.0" rx="2" fill="#c06100"/>
+          <text x="183.1" y="21" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-size="10" font-weight="700" fill="#17151b">5,355</text>
+          <text x="12" y="115" font-family="Figtree, system-ui, sans-serif" font-size="8" fill="#5c5962">2016</text>
+          <text x="189" y="115" text-anchor="end" font-family="Figtree, system-ui, sans-serif" font-size="8" fill="#5c5962">2025</text>
+        </svg>
+      </div>
+      <div class="txt">
+        <div class="meta">Folio 002 | Gasto público | León</div>
+        <h3>León gasta más por habitante desde 2023</h3>
+        <p>Diez años de la cuenta pública del municipio, en pesos de 2025: cuánto se gastó por habitante, para qué, en qué y de dónde salió el dinero, con Querétaro, Puebla y Tijuana como referencia. Y tres maneras de contar el gasto en seguridad.</p>
+        <span class="ir">Ver la pieza</span>
+      </div>
+    </a>
     <a class="pieza" href="mapa-leon/">
       <div class="viz" aria-hidden="true">
         <!-- Gráfica de la pieza: cambio de negocios por distancia a la Plaza Principal, 2019–2024 -->
@@ -125,12 +154,13 @@
         </svg>
       </div>
       <div class="txt">
-        <div class="meta">Folio 001 · Negocios · León</div>
+        <div class="meta">Folio 001 | Negocios | León</div>
         <h3>León crece desde las orillas</h3>
         <p>Comparé el directorio de negocios del INEGI de 2019 y 2024: el centro perdió negocios y las orillas ganaron hasta 47.5%. Mapa por zona y por giro, con el Coecillo y el calzado de por medio.</p>
         <span class="ir">Ver el mapa</span>
       </div>
     </a>
+    </div>
   </section>
 
   <section class="wrap">
@@ -180,7 +210,7 @@
 
 <footer class="wrap">
   <p>Código y datos de cada pieza: <a href="https://github.com/cifrapublicamx">github.com/cifrapublicamx</a>.</p>
-  <p>Hecho por Rodrigo Méndez Hernández en León · Cifra Pública</p>
+  <p>Hecho por Rodrigo Méndez Hernández en León | Cifra Pública</p>
 </footer>
 </body>
 </html>
