@@ -100,21 +100,36 @@ def sesion() -> requests.Session:
 
 
 def consulta(s, url: str) -> dict:
-    """HEAD: ¿existe y cuánto pesa? (sin bajar el archivo)."""
+    """¿Existe el zip? El INEGI responde 200 también a archivos que no existen (con una página
+    HTML) y su HEAD no trae tamaño. Así que se piden los primeros bytes: un zip empieza con «PK».
+    Devuelve estado HTTP, si es zip, tamaño (si el servidor lo dice) y tipo."""
     try:
-        r = s.head(url, timeout=(15, 45), allow_redirects=True)
-        return {"estado": r.status_code, "bytes": int(r.headers.get("Content-Length") or 0),
-                "tipo": r.headers.get("Content-Type", ""), "url_final": r.url}
+        with s.get(url, headers={"Range": "bytes=0-3"}, stream=True, timeout=(15, 45),
+                   allow_redirects=True) as r:
+            inicio = next(r.iter_content(4), b"")
+            total = None
+            rango = r.headers.get("Content-Range", "")           # «bytes 0-3/35123456»
+            if "/" in rango and rango.rsplit("/", 1)[1].isdigit():
+                total = int(rango.rsplit("/", 1)[1])
+            elif r.status_code == 200 and r.headers.get("Content-Length", "").isdigit():
+                total = int(r.headers["Content-Length"])
+            return {"estado": r.status_code, "zip": inicio[:2] == b"PK", "bytes": total,
+                    "tipo": r.headers.get("Content-Type", ""), "url_final": r.url}
     except requests.RequestException as e:
-        return {"estado": None, "error": f"{type(e).__name__}: {' '.join(str(e).split())[:200]}"}
+        return {"estado": None, "zip": False,
+                "error": f"{type(e).__name__}: {' '.join(str(e).split())[:200]}"}
+
+
+def disponible(c: dict) -> bool:
+    return c.get("estado") in (200, 206) and c.get("zip", False)
 
 
 def ultimo_disponible(s, hasta=None, atras=6) -> tuple[int, int] | None:
     """El trimestre más reciente que ya está publicado (prueba hacia atrás desde hoy)."""
     for a, t in reversed(trimestres((2019, 1), hasta)[-atras:]):
         c = consulta(s, url_trimestre(a, t))
-        log(f"¿{etiqueta(a, t)}? HTTP {c.get('estado')} {c.get('bytes', 0):,} bytes")
-        if c.get("estado") == 200 and c.get("bytes", 1) > 1_000_000:
+        log(f"¿{etiqueta(a, t)}? HTTP {c.get('estado')} | zip: {c.get('zip')} | {c.get('bytes')} bytes")
+        if disponible(c):
             return a, t
     return None
 

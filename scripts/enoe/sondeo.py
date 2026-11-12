@@ -91,15 +91,15 @@ def main() -> int:
         filas, disponibles = [], []
         for an, tr in inegi.trimestres((2019, 1)):
             c = inegi.consulta(s, inegi.url_trimestre(an, tr))
-            ok = c.get("estado") == 200 and c.get("bytes", 1) > 1_000_000
-            if ok:
+            if inegi.disponible(c):
                 disponibles.append((an, tr))
             filas.append([inegi.etiqueta(an, tr), inegi.archivo_trimestre(an, tr),
                           c.get("estado") or c.get("error", "—"),
-                          f"{c.get('bytes', 0) / 1e6:,.1f}" if c.get("bytes") else "—"])
-        rep.tabla(["Trimestre", "Archivo", "HTTP", "MB"], filas)
+                          "sí" if c.get("zip") else "**no**", c.get("tipo") or "—",
+                          f"{c['bytes'] / 1e6:,.1f}" if c.get("bytes") else "—"])
+        rep.tabla(["Trimestre", "Archivo", "HTTP", "¿Es zip?", "Tipo", "MB"], filas)
         if not disponibles:
-            raise RuntimeError("Ningún trimestre respondió 200. Revisa la tabla: puede ser bloqueo o cambio de direcciones.")
+            raise RuntimeError("Ningún trimestre trae un zip. Revisa la tabla: puede ser bloqueo o cambio de direcciones.")
         rep(f"Disponibles: {len(disponibles)} trimestres, de {inegi.etiqueta(*disponibles[0])} "
             f"a {inegi.etiqueta(*disponibles[-1])}. (2020-T2 no existe: fue la ETOE.)")
         rep()
