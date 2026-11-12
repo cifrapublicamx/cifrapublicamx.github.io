@@ -1,0 +1,4 @@
+{
+  "claves_municipio": "pendiente",
+  "nota": "Cambiar a «inegi» si el sondeo confirma que cve_entidad y cve_municipio son las claves del INEGI (Guanajuato = 11, León = 20). Cambiar a «imss» si son propias del IMSS; entonces hay que llenar cve_entidad_imss y cve_municipio_imss en municipios.csv. Mientras diga «pendiente», la extracción no corre."
+}
