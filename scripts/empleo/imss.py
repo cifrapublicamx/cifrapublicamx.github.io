@@ -62,15 +62,30 @@ REQUERIDAS = ["cve_entidad", "cve_municipio", "sector_economico_1", "sector_econ
 
 # ---------------------------------------------------------------- red
 
-def sesion() -> requests.Session:
+def sesion(reintentos: int = 5, espera: float = 3) -> requests.Session:
+    """Sesión para descargas grandes: aguanta cortes con varios reintentos."""
     s = requests.Session()
     s.headers.update({"User-Agent": USER_AGENT, "Accept-Language": "es-MX,es;q=0.9"})
-    reintentos = Retry(total=5, connect=5, read=5, backoff_factor=3,
-                       status_forcelist=(429, 500, 502, 503, 504),
-                       allowed_methods=("GET", "HEAD"), raise_on_status=False)
-    s.mount("http://", HTTPAdapter(max_retries=reintentos))
-    s.mount("https://", HTTPAdapter(max_retries=reintentos))
+    r = Retry(total=reintentos, connect=reintentos, read=reintentos, backoff_factor=espera,
+              status_forcelist=(429, 500, 502, 503, 504),
+              allowed_methods=("GET", "HEAD"), raise_on_status=False)
+    s.mount("http://", HTTPAdapter(max_retries=r))
+    s.mount("https://", HTTPAdapter(max_retries=r))
     return s
+
+
+def sesion_ligera() -> requests.Session:
+    """Sesión para buscar y para páginas chicas: un reintento y a lo que sigue."""
+    return sesion(reintentos=1, espera=2)
+
+
+TIEMPO_PAGINA = (15, 45)          # (conexión, lectura) en segundos para páginas y API
+PRESUPUESTO_BUSQUEDA = float(os.environ.get("IMSS_PRESUPUESTO_S", "900"))
+
+
+def log(msg: str) -> None:
+    """Imprime al momento (se ve en vivo en el log de GitHub Actions)."""
+    print(f"[{time.strftime('%H:%M:%S', time.gmtime())}] {msg}", flush=True)
 
 
 def a_http(url: str) -> str:
@@ -85,8 +100,15 @@ class RespuestaRara(RuntimeError):
     """El portal respondió algo que no es lo que pedimos (p. ej. una página de bloqueo)."""
 
 
+class NoExiste(Exception):
+    """404/400/410: la dirección no existe. No cuenta como falla del servidor."""
+
+
 def _get(s: requests.Session, url: str, **kw) -> requests.Response:
-    r = s.get(a_http(url), timeout=(30, 120), **kw)
+    """GET de página o API. Lanza NoExiste en 404/400/410; cualquier otra falla se propaga."""
+    r = s.get(a_http(url), timeout=TIEMPO_PAGINA, **kw)
+    if r.status_code in (400, 404, 410):
+        raise NoExiste(f"HTTP {r.status_code}")
     r.raise_for_status()
     return r
 
@@ -144,11 +166,15 @@ def _recurso_de(url: str, nombre: str, origen: str, tamano=None) -> Recurso | No
 
 
 def _paquete_api(s, base: str, pid: str) -> dict | None:
+    """package_show de DKAN. None si el conjunto no existe o la respuesta no es JSON."""
     try:
         r = _get(s, f"{base}/api/3/action/package_show", params={"id": pid})
-        datos = r.json()
-    except (requests.RequestException, ValueError):
+    except NoExiste:
         return None
+    try:
+        datos = r.json()
+    except ValueError:
+        return None                                  # p. ej. una página de bloqueo con HTTP 200
     res = datos.get("result") if isinstance(datos, dict) else None
     if isinstance(res, list):                       # DKAN devuelve una lista
         res = res[0] if res else None
@@ -172,7 +198,7 @@ def recursos_api(s, base: str, pid: str) -> list[Recurso]:
 def recursos_html(s, base: str, pid: str) -> list[Recurso]:
     try:
         pagina = _get(s, f"{base}/dataset/{pid}")
-    except requests.RequestException:
+    except NoExiste:
         return []
     out, vistos = [], set()
     candidatos = enlaces(pagina.text, pagina.url)
@@ -186,7 +212,7 @@ def recursos_html(s, base: str, pid: str) -> list[Recurso]:
         if "/resource/" in url and PATRON_ARCHIVO.search(url + " " + texto):
             try:
                 sub = _get(s, url)
-            except requests.RequestException:
+            except NoExiste:
                 continue
             for u2, t2 in enlaces(sub.text, sub.url):
                 if u2.lower().split("?")[0].endswith(".csv"):
@@ -199,7 +225,8 @@ def recursos_html(s, base: str, pid: str) -> list[Recurso]:
 def diagnostico(s, url: str) -> str:
     """Una línea con lo que contesta el portal: estado, tipo, redirección y el inicio del cuerpo."""
     try:
-        r = s.get(a_http(url), timeout=(20, 60), allow_redirects=True)
+        r = requests.get(a_http(url), timeout=TIEMPO_PAGINA, allow_redirects=True,
+                         headers={"User-Agent": USER_AGENT})
     except requests.RequestException as e:
         return f"sin respuesta: {type(e).__name__}: {' '.join(str(e).split())[:200]}"
     cuerpo = " ".join(r.text[:400].split())
@@ -215,14 +242,21 @@ def ids_anio(anio: int) -> list[str]:
 
 def vivo(base: str) -> tuple[bool, str]:
     """Prueba rápida, sin reintentos: si el servidor ni contesta, no tiene caso buscar ahí."""
+    t0 = time.time()
     try:
-        r = requests.get(base + "/", timeout=(15, 30), headers={"User-Agent": USER_AGENT})
-        return True, f"HTTP {r.status_code}"
+        r = requests.get(base + "/", timeout=TIEMPO_PAGINA, headers={"User-Agent": USER_AGENT})
+        return True, f"HTTP {r.status_code}, {time.time() - t0:.1f} s"
     except requests.RequestException as e:
         return False, f"{type(e).__name__}: {' '.join(str(e).split())[:200]}"
 
 
 _VIVAS: list[str] | None = None
+
+
+def _anota(bitacora, msg):
+    log(msg)
+    if bitacora is not None:
+        bitacora.append(msg)
 
 
 def bases_vivas(bitacora: list | None = None) -> list[str]:
@@ -231,40 +265,63 @@ def bases_vivas(bitacora: list | None = None) -> list[str]:
         _VIVAS = []
         for base in BASES:
             ok, detalle = vivo(base)
-            if bitacora is not None:
-                bitacora.append(f"{base}: {'contesta' if ok else 'NO CONTESTA'} ({detalle})")
+            _anota(bitacora, f"{base}: {'contesta' if ok else 'NO CONTESTA'} ({detalle})")
             if ok:
                 _VIVAS.append(base)
     return _VIVAS
 
 
 def descubrir(anios, s=None, bitacora: list | None = None) -> dict[str, Recurso]:
-    """Devuelve {AAAA-MM: Recurso} para los años pedidos. Prueba API y página en cada espejo."""
-    s = s or sesion()
+    """Devuelve {AAAA-MM: Recurso} para los años pedidos.
+
+    Prueba API y página en cada espejo, aprende qué combinación funciona y la usa primero en los
+    años siguientes. Un espejo con 3 fallas seguidas (no 404: errores, 403, 5xx, tiempo agotado)
+    se deja de usar. Toda la búsqueda tiene un presupuesto de IMSS_PRESUPUESTO_S segundos (900).
+    """
+    s = s or sesion_ligera()
     hallados: dict[str, Recurso] = {}
-    bases = bases_vivas(bitacora)
+    bases = list(bases_vivas(bitacora))
+    fallas = {b: 0 for b in bases}
+    preferido: dict[str, tuple[int, object]] = {}
+    t_inicio = time.time()
     for anio in anios:
-        for base in bases:
+        for base in [b for b in bases if fallas[b] < 3]:
+            if time.time() - t_inicio > PRESUPUESTO_BUSQUEDA:
+                _anota(bitacora, f"Se acabó el presupuesto de búsqueda ({PRESUPUESTO_BUSQUEDA:.0f} s): "
+                                 f"se reporta lo encontrado hasta {anio - 1}.")
+                return dict(sorted(hallados.items()))
+            combos = [(i, m) for i in (0, 1) for m in (recursos_api, recursos_html)]
+            if base in preferido:
+                combos.remove(preferido[base]); combos.insert(0, preferido[base])
             encontrados = []
-            for pid in ids_anio(anio):
-                for metodo in (recursos_api, recursos_html):
-                    try:
-                        rs = metodo(s, base, pid)
-                    except Exception as e:                   # noqa: BLE001
-                        rs = []
-                        if bitacora is not None:
-                            bitacora.append(f"{anio} | {base} | {pid} | {metodo.__name__}: error {e!r}")
-                    if bitacora is not None:
-                        bitacora.append(f"{anio} | {base} | {pid} | {metodo.__name__}: {len(rs)} archivos")
-                    encontrados += [r for r in rs if r.mes.startswith(str(anio))]
-                    if rs:
+            for i, metodo in combos:
+                pid = ids_anio(anio)[i]
+                t0 = time.time()
+                try:
+                    rs = metodo(s, base, pid)
+                    fallas[base] = 0
+                    _anota(bitacora, f"{anio} | {base} | {pid} | {metodo.__name__}: {len(rs)} archivos "
+                                     f"({time.time() - t0:.1f} s)")
+                except Exception as e:                       # noqa: BLE001
+                    rs = []
+                    fallas[base] += 1
+                    _anota(bitacora, f"{anio} | {base} | {pid} | {metodo.__name__}: FALLA {type(e).__name__}: "
+                                     f"{' '.join(str(e).split())[:160]} ({time.time() - t0:.1f} s)")
+                    if fallas[base] >= 3:
+                        _anota(bitacora, f"{base}: 3 fallas seguidas, se deja de usar. "
+                                         f"Diagnóstico: {diagnostico(s, base + '/dataset/' + pid)}")
                         break
+                encontrados += [r for r in rs if r.mes.startswith(str(anio))]
+                if rs:
+                    preferido[base] = (i, metodo)
+                    break
             for r in encontrados:
                 hallados.setdefault(r.mes, r)
             if any(m.startswith(str(anio)) for m in hallados):
                 break                                       # ya no hace falta el otro espejo
-            if bitacora is not None:                        # ¿qué respondió el portal? (bloqueo, 404, https…)
-                bitacora.append(f"{anio} | {base} | diagnóstico: {diagnostico(s, base + '/dataset/' + ids_anio(anio)[0])}")
+            if fallas[base] < 3:
+                _anota(bitacora, f"{anio} | {base} | sin archivos | diagnóstico: "
+                                 f"{diagnostico(s, base + '/dataset/' + ids_anio(anio)[0])}")
     return dict(sorted(hallados.items()))
 
 

@@ -216,7 +216,7 @@ def main() -> int:
         return 2
 
     if a.plan:
-        pend = pendientes(a.desde, a.hasta or None, s=s)
+        pend = pendientes(a.desde, a.hasta or None)
         anios = sorted({m[:4] for m in pend})
         print(json.dumps({"anios": anios, "meses": sorted(pend)}))
         salida = os.environ.get("GITHUB_OUTPUT")
@@ -234,9 +234,9 @@ def main() -> int:
         return 0
 
     if a.faltantes:
-        trabajo = pendientes(a.desde, a.hasta or None, s=s)
+        trabajo = pendientes(a.desde, a.hasta or None)
     else:
-        disponibles = imss.descubrir(sorted({int(m[:4]) for m in a.mes}), s=s)
+        disponibles = imss.descubrir(sorted({int(m[:4]) for m in a.mes}))
         trabajo = {m: disponibles[m] for m in a.mes if m in disponibles}
         for m in a.mes:
             if m not in disponibles:

@@ -83,7 +83,10 @@ def fmt(n) -> str:
 def recursos_de_paquete(s, base, slug) -> list[tuple[str, str]]:
     """[(url, nombre)] de los archivos de un conjunto, por API o por página."""
     out = []
-    paquete = imss._paquete_api(s, base, slug)
+    try:
+        paquete = imss._paquete_api(s, base, slug)
+    except Exception:                                      # noqa: BLE001
+        paquete = None
     if paquete:
         for rec in paquete.get("resources") or []:
             url = rec.get("url") or ""
@@ -125,6 +128,7 @@ def baja_catalogos(s, rep: Reporte) -> list[Path]:
     guardados: list[Path] = []
     for base in imss.bases_vivas():
         slugs = list(dict.fromkeys(PAQUETES_APOYO + paquetes_del_grupo(s, base)))
+        imss.log(f"Catálogos: {len(slugs)} conjuntos por revisar en {base}")
         for slug in slugs:
             for url, nombre in recursos_de_paquete(s, base, slug):
                 nombre_archivo = re.sub(r"[^\w.\-]+", "_", Path(url.split("?")[0]).name)[:120]
@@ -253,7 +257,8 @@ def main() -> int:
     rep()
     rep(f"Espejos probados: {', '.join(imss.BASES)}")
     rep()
-    s = imss.sesion()
+    s = imss.sesion()                 # descargas grandes
+    s_ligera = imss.sesion_ligera()   # búsqueda, API y catálogos
     codigo = 0
     ruta = None
     try:
@@ -261,7 +266,7 @@ def main() -> int:
         bit: list[str] = []
         anios = list(range(a.desde, imss.anio_actual() + 1))
         t0 = time.time()
-        recursos = imss.descubrir(anios, s=s, bitacora=bit)
+        recursos = imss.descubrir(anios, s=s_ligera, bitacora=bit)
         rep("## 1. Qué hay en el portal")
         rep()
         por_anio = defaultdict(list)
@@ -299,7 +304,7 @@ def main() -> int:
         # 2. Catálogos
         rep("## 2. Catálogos y diccionario del IMSS")
         rep()
-        catalogos = baja_catalogos(s, rep)
+        catalogos = baja_catalogos(s_ligera, rep)
         if catalogos:
             rep(f"Guardados en `data/fuentes/empleo/sondeo/catalogos/`: "
                 + ", ".join(f"`{p.name}`" for p in catalogos))
