@@ -223,52 +223,88 @@ def poblacion_15(df):
 
 # ---------------------------------------------------------------- indicadores
 
-def _var_razon(df, y, x, w, estrato, upm, dominio):
-    """Varianza de R = sum(w*y*d)/sum(w*x*d) por linealización, con UPM dentro de estrato
-    (aproximación con reemplazo, como en los diseños bietápicos del INEGI)."""
+# Ciudades que entraron a la ENOE en 2020 T1 (Coatzacoalcos, Ciudad del Carmen, Tapachula). Para comparar
+# contra 2019 se usa el agregado de las 36 ciudades que están en toda la serie.
+NUEVAS_2020 = {30, 42, 52}
+TASAS = {  # nombre: (numerador, denominador)
+    "participacion": ("pea", "uno"),
+    "desocupacion": ("desoc", "pea"),
+    "informalidad": ("inf", "ocup"),
+    "sector_informal": ("si", "ocup"),
+}
+
+
+def prepara(df, info):
+    """Población de 15+ con las variables 0/1 que usan las tasas y la clave de UPM dentro de estrato."""
+    import pandas as pd
+    p = poblacion_15(df)
+    p["pea"] = (p["clase1"] == 1).astype("int8")
+    p["ocup"] = (p["clase2"] == 1).astype("int8")
+    p["desoc"] = (p["clase2"] == 2).astype("int8")
+    p["inf"] = ((p["clase2"] == 1) & (p["emp_ppal"] == 1)).astype("int8")
+    p["si"] = ((p["clase2"] == 1) & (p["tue_ppal"] == 1)).astype("int8")
+    p["uno"] = 1
+    p["_w"] = p[info["peso"]].astype(float)
+    if info["estrato"] and info["upm"]:
+        est, upm = p[info["estrato"]].fillna(-1), p[info["upm"]].fillna(-1)
+        p["_h"] = p.groupby(est, sort=False).ngroup().to_numpy()
+        p["_u"] = p.groupby([est, upm], sort=False).ngroup().to_numpy()
+    return p.reset_index(drop=True)
+
+
+def _razon(p, y, x, dom):
+    """R = sum(w*y*d)/sum(w*x*d) y su error estándar por linealización (UPM dentro de estrato,
+    aproximación con reemplazo, como en los diseños bietápicos del INEGI)."""
     import numpy as np
-    d = dominio.astype(float)
-    Y = (df[w] * df[y] * d).sum()
-    X = (df[w] * df[x] * d).sum()
+    d = dom.to_numpy(dtype=float)
+    w = p["_w"].to_numpy()
+    yv = p[y].to_numpy(dtype=float)
+    xv = p[x].to_numpy(dtype=float)
+    Y, X = (w * yv * d).sum(), (w * xv * d).sum()
     if X == 0:
         return float("nan"), float("nan")
     R = Y / X
-    z = df[w] * d * (df[y] - R * df[x]) / X
-    tot = z.groupby([df[estrato], df[upm]]).sum()
-    g = tot.groupby(level=0)
-    n_h = g.size()
-    centrado = tot - g.transform("mean")
-    v_h = (centrado ** 2).groupby(level=0).sum() * n_h / (n_h - 1).replace(0, np.nan)
-    return R, float(np.sqrt(v_h.fillna(0).sum()))
+    if "_u" not in p:
+        return R, float("nan")
+    z = w * d * (yv - R * xv) / X
+    zu = np.bincount(p["_u"].to_numpy(), weights=z)                     # total por UPM
+    h_de_u = np.zeros(len(zu), dtype=int)
+    h_de_u[p["_u"].to_numpy()] = p["_h"].to_numpy()                    # estrato de cada UPM
+    n_h = np.bincount(h_de_u)
+    media_h = np.bincount(h_de_u, weights=zu) / np.maximum(n_h, 1)
+    dev2 = np.bincount(h_de_u, weights=(zu - media_h[h_de_u]) ** 2)
+    factor = np.where(n_h > 1, n_h / np.maximum(n_h - 1, 1), 0.0)
+    return R, float(np.sqrt((factor * dev2).sum()))
+
+
+def tasas(p, dom, cuales=TASAS) -> dict:
+    """Tasas en % con su intervalo de 90% (± puntos), muestra y totales del dominio."""
+    w = p["_w"]
+    fila = {"muestra": int(dom.sum()), "pob15": float((w * dom).sum()),
+            "pea": float((w * p["pea"] * dom).sum()), "ocupados": float((w * p["ocup"] * dom).sum()),
+            "desocupados": float((w * p["desoc"] * dom).sum()),
+            "informales": float((w * p["inf"] * dom).sum())}
+    for nombre, (y, x) in cuales.items():
+        r, se = _razon(p, y, x, dom)
+        fila[nombre] = round(100 * r, 2) if r == r else None
+        fila[nombre + "_ic90"] = round(100 * 1.645 * se, 2) if se == se else None
+    return fila
+
+
+def dominios_ciudades(p, solo=None):
+    """[(etiqueta, máscara)]: agregado de 39 ciudades, agregado comparable de 36 y cada ciudad."""
+    codigos = sorted(int(c) for c in p["cd_a"].dropna().unique() if 1 <= c <= 52)
+    out = [("39 ciudades", p["cd_a"].between(1, 52)),
+           ("36 ciudades", p["cd_a"].between(1, 52) & ~p["cd_a"].isin(NUEVAS_2020))]
+    out += [(c, p["cd_a"] == c) for c in codigos if solo is None or c in solo]
+    return out
 
 
 def indicadores(df, info, ciudades=None):
-    """Tasas por ciudad (cd_a) más el agregado de las 39 ciudades."""
+    """Tasas por ciudad (cd_a) más los agregados. Lo usa el sondeo."""
     import pandas as pd
-    w, est, upm = info["peso"], info["estrato"], info["upm"]
-    p = poblacion_15(df)
-    p["pea"] = (p["clase1"] == 1).astype(int)
-    p["ocup"] = (p["clase2"] == 1).astype(int)
-    p["desoc"] = (p["clase2"] == 2).astype(int)
-    p["inf"] = ((p["clase2"] == 1) & (p["emp_ppal"] == 1)).astype(int)
-    p["si"] = ((p["clase2"] == 1) & (p["tue_ppal"] == 1)).astype(int)
-    p["uno"] = 1
-    codigos = sorted(c for c in p["cd_a"].dropna().unique() if 1 <= c <= 52)
-    filas = []
-    for nombre, dom in [("39 ciudades", p["cd_a"].between(1, 52))] + \
-                       [(int(c), p["cd_a"] == c) for c in codigos if ciudades is None or int(c) in ciudades]:
-        fila = {"cd_a": nombre, "muestra": int(dom.sum()),
-                "pob15": float((p[w] * dom).sum()), "ocupados": float((p[w] * p["ocup"] * dom).sum())}
-        for clave, (y, x) in {"participacion": ("pea", "uno"), "desocupacion": ("desoc", "pea"),
-                              "informalidad": ("inf", "ocup"), "sector_informal": ("si", "ocup")}.items():
-            if est and upm:
-                r, se = _var_razon(p, y, x, w, est, upm, dom)
-            else:
-                r, se = (p[w] * p[y] * dom).sum() / max((p[w] * p[x] * dom).sum(), 1e-9), float("nan")
-            fila[clave] = round(100 * r, 2)
-            fila[clave + "_ic90"] = round(100 * 1.645 * se, 2) if se == se else None
-        filas.append(fila)
-    return pd.DataFrame(filas)
+    p = prepara(df, info)
+    return pd.DataFrame([{"cd_a": et, **tasas(p, dom)} for et, dom in dominios_ciudades(p, ciudades)])
 
 
 def escribe_json(ruta: Path, obj) -> None:
