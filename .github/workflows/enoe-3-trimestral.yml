@@ -1,0 +1,85 @@
+# Cifra Pública | Folio 003 | ENOE, paso 3: actualización trimestral.
+# El INEGI publica la ENOE trimestral hacia el día 25 de febrero, mayo, agosto y noviembre. Este
+# workflow revisa los días 26 y 28 de esos meses y el día 3 del mes siguiente, a las 9:17 (hora del
+# centro de México). Si hay un trimestre nuevo, abre un PR con los números y el control. Mientras
+# haya un PR de actualización sin aprobar, no hace nada.
+name: "ENOE | 3. actualización trimestral"
+
+on:
+  schedule:
+    - cron: "17 15 26,28 2,5,8,11 *"
+    - cron: "17 15 3 3,6,9,12 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: enoe
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ¿Hay serie y no hay PR pendiente?
+        id: revisa
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! ls data/processed/enoe/trimestral/*/meta.json >/dev/null 2>&1; then
+            echo "Todavía no corre el llenado: nada que hacer." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "seguir=0" >> "$GITHUB_OUTPUT"
+          elif [ "$(gh pr view enoe/actualizacion --json state -q .state 2>/dev/null || true)" = "OPEN" ]; then
+            echo "Hay un PR de actualización esperando tu aprobación: nada que hacer." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "seguir=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "seguir=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.revisa.outputs.seguir == '1'
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scripts/enoe/requirements.txt
+
+      - name: Instalar dependencias
+        if: steps.revisa.outputs.seguir == '1'
+        run: pip install -r scripts/enoe/requirements.txt
+
+      - name: Extraer trimestres nuevos
+        id: extraer
+        if: steps.revisa.outputs.seguir == '1'
+        continue-on-error: true
+        run: |
+          ultimo=$(ls data/processed/enoe/trimestral | sort | tail -1 | sed 's/-T/-/')
+          python scripts/enoe/extraer.py --faltantes --desde "$ultimo" --max 4 --borrar-crudo
+
+      - name: Consolidar
+        if: steps.revisa.outputs.seguir == '1' && fromJSON(steps.extraer.outputs.nuevos || '0') > 0
+        run: python scripts/enoe/consolidar.py
+
+      - name: Rehacer la página (cuando exista)
+        if: steps.revisa.outputs.seguir == '1' && fromJSON(steps.extraer.outputs.nuevos || '0') > 0 && hashFiles('scripts/enoe/build_page.py') != ''
+        run: python scripts/enoe/build_page.py
+
+      - name: Abrir el PR del trimestre
+        if: steps.revisa.outputs.seguir == '1' && fromJSON(steps.extraer.outputs.nuevos || '0') > 0
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_REF: ${{ github.event.repository.default_branch }}
+        run: |
+          ultimo=$(ls data/processed/enoe/trimestral | sort | tail -1)
+          bash scripts/enoe/abrir_pr.sh "enoe/actualizacion" "ENOE: datos al $ultimo" \
+            data/processed/enoe/control.md data/processed/enoe informalidad
+
+      - name: Marcar la corrida como fallida si un trimestre falló
+        if: steps.extraer.outcome == 'failure'
+        run: |
+          echo "Algún trimestre no se pudo extraer: revisa el resumen de esta corrida."
+          exit 1
