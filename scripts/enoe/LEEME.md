@@ -22,6 +22,13 @@ Título del folio (17 nov 2026): «Menos desempleo, la misma informalidad: así 
 
 Cada tasa trae `_ic90`: el intervalo de 90% en puntos. Cambios contra 2019: promedio de los últimos cuatro trimestres contra el promedio de 2019; margen conservador (promedio de los `_ic90` de cada lado y raíz de la suma de cuadrados). Un cambio solo cuenta si es mayor que ese margen.
 
+## La página
+
+- `scripts/enoe/build_page.py` arma `informalidad/index.html` desde la plantilla `site_src/informalidad.html` y los CSV de `data/processed/enoe/`. Corre sin argumentos; la actualización trimestral lo llama después de consolidar.
+- Los textos se corrigen en la plantilla (`site_src/informalidad.html`), no en `informalidad/index.html`: ese archivo se reescribe cada vez que se arma la página.
+- El título está en `consolidar.py` (`TITULO`) y lo revisa `titular()`. Si los datos dejan de sostenerlo, `build_page.py` no escribe nada y termina con error.
+- Los títulos de sección se calculan con los datos. La imagen para redes (`assets/og/informalidad.png`) y la tarjeta de la portada son fijas: muestran el mapa del 2.º trimestre de 2026.
+
 ## Método
 
 - Universo: entrevista completa (`R_DEF` = 00), residentes (`C_RES` 1 o 3), 15 a 98 años.

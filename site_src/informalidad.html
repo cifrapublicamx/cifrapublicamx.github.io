@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>__TITULO__ | Cifra Pública</title>
+<meta name="description" content="Desempleo e informalidad laboral en México desde 2019: en el país, en los 32 estados, por tamaño de localidad y en 39 ciudades, con el margen de error de la encuesta del INEGI.">
+<meta name="author" content="__AUTOR__">
+<meta property="og:title" content="__TITULO__">
+<meta property="og:description" content="El desempleo bajó en casi todo el país desde 2019; la informalidad apenas se movió. Estados, ciudades y localidades, con datos del INEGI.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cifrapublicamx.github.io/informalidad/">
+<meta property="og:site_name" content="Cifra Pública">
+<meta property="og:locale" content="es_MX">
+<meta property="og:image" content="https://cifrapublicamx.github.io/assets/og/informalidad.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Menos desempleo, casi la misma informalidad: mapas de México con el cambio en desempleo e informalidad por estado desde 2019.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../assets/cifra-publica-avatar-tinta.svg">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-ext-standard-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-wght-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-ext-wght-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+
+  :root {
+    --surface: #ffffff; --surface-alt: #f7f6f8; --surface-sunken: #edecef;
+    --ink: #17151b; --ink-muted: #5c5962; --rule: #e2e0e5;
+    --rosa: #b61066; --rosa-suave: #ffe7ef;
+    --cant: #c06100; --gris: #9a9aa3;
+    --baja: #926abe; --igual: #d4d4d6; --sube: #c26300;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: Figtree, system-ui, sans-serif;
+    --s1: 8px; --s2: 14px; --s3: 22px; --s4: 40px; --r: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--surface); color: var(--ink); font: 16px/1.5 var(--body); }
+  a { color: var(--rosa); text-underline-offset: 2px; }
+  .wrap { max-width: 720px; margin-inline: auto; padding: 0 var(--s3); }
+  section { margin-top: 56px; }
+
+  /* Encabezado */
+  .top { padding-top: 18px; }
+  .brand { display: flex; justify-content: space-between; align-items: center; }
+  .brand img { height: 26px; width: auto; display: block; }
+  .folio { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .dbl { height: 4px; border-top: 1.5px solid var(--ink); border-bottom: 0.75px solid var(--ink); margin-top: 10px; }
+  .label { margin-top: 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rosa); }
+  h1 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: clamp(36px, 7vw, 52px); line-height: 1.04; letter-spacing: -0.03em; margin: 10px 0 var(--s2); }
+  .dek { font-size: 16px; margin: 0 0 var(--s2); }
+  @media (min-width: 720px) { .dek { font-size: 17px; } }
+  .byline { font-size: 12px; color: var(--ink-muted); margin: 0; }
+
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: var(--s2); }
+  .findings { display: grid; gap: var(--s1); margin-top: var(--s3); }
+  @media (min-width: 560px) { .findings { grid-template-columns: repeat(2, 1fr); } }
+  .findings .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; }
+  .findings .big small { font-size: 16px; letter-spacing: -0.01em; }
+  .findings p { margin: 8px 0 0; font-size: 15px; }
+
+  h2 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; }
+  h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .sub { font-size: 15px; color: var(--ink-muted); margin: 0 0 var(--s2); }
+  .prose p { font-size: 16px; margin: 0 0 var(--s2); }
+  .note { font-size: 12px; color: var(--ink-muted); margin: 10px 0 0; }
+  figure { margin: 0; }
+
+  /* Leyenda */
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .legend i.ring { background: var(--surface); border: 2px solid var(--gris); border-radius: 50%; }
+  .legend i.dot { border-radius: 50%; }
+
+  /* Mapas de hexágonos */
+  .mapas { display: grid; gap: var(--s3); }
+  .mapa svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .mapa h3 { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .mapa h3 span { font-family: var(--body); font-size: 13px; font-weight: 600; color: var(--ink-muted); letter-spacing: 0; }
+  .hex { cursor: default; outline: none; }
+  .hex:focus-visible path, .hex:hover path { stroke: var(--ink); stroke-width: 2; }
+
+  /* Series */
+  .series { display: grid; gap: var(--s3); }
+  @media (min-width: 640px) { .series { grid-template-columns: 1fr 1fr; gap: var(--s2); } }
+  .linea svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .linea text, .mapa text, .spark text { font-family: var(--body); }
+
+  /* Mancuernas (antes → ahora) */
+  .dumb { display: grid; gap: 2px; }
+  .drow { display: grid; grid-template-columns: minmax(120px, 34%) 1fr; align-items: center; gap: 10px; min-height: 44px; border-radius: 6px; padding: 2px 4px; }
+  .drow:hover { background: var(--surface-alt); }
+  .drow:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .dlabel { font-size: 14px; line-height: 1.2; }
+  .dlabel b { font-weight: 700; }
+  .dlabel small { display: block; font-size: 12px; color: var(--ink-muted); }
+  .dtrack { position: relative; height: 34px; }
+  .dline { position: absolute; top: 12px; height: 2px; background: var(--gris); }
+  .dpt { position: absolute; top: 7px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; }
+  .dpt.antes { background: var(--surface); border: 2px solid var(--gris); }
+  .dval { position: absolute; top: 20px; font-size: 12px; color: var(--ink-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .dval b { color: var(--ink); }
+  @media (max-width: 559px) { .drow { grid-template-columns: 1fr; gap: 0; padding: 6px 4px 2px; } }
+  .eje { position: relative; height: 18px; margin-left: calc(min(34%, 999px) + 14px); font-size: 11px; color: var(--ink-muted); }
+
+  /* Ciudades: punto y margen */
+  .cgrid { display: grid; grid-template-columns: minmax(96px, 26%) 1fr 1fr; gap: 0 12px; align-items: center; }
+  .cgrid .chead { font-size: 12px; font-weight: 700; color: var(--ink); padding-bottom: 2px; }
+  .cgrid .ctick { position: relative; height: 16px; font-size: 11px; color: var(--ink-muted); border-bottom: 1px solid var(--rule); margin-bottom: 4px; }
+  .cgrid .ctick span { position: absolute; transform: translateX(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .cname { font-size: 13px; line-height: 1.15; min-height: 26px; display: flex; align-items: center; }
+  .cname.hl { font-weight: 700; }
+  .ccell { position: relative; height: 26px; outline: none; border-radius: 4px; }
+  .ccell:hover, .ccell:focus-visible { background: var(--surface-alt); }
+  .ccell:focus-visible { outline: 2px solid var(--rosa); outline-offset: 1px; }
+  .czero { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--ink-muted); opacity: .45; }
+  .cci { position: absolute; top: 12px; height: 2px; border-radius: 1px; }
+  .cpt { position: absolute; top: 8px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; box-shadow: 0 0 0 2px var(--surface); }
+
+  /* Casos */
+  .casos { display: grid; gap: var(--s1); }
+  @media (min-width: 640px) { .casos { grid-template-columns: 1fr 1fr; } }
+  .casos .card p { margin: 0 0 10px; font-size: 15px; }
+  .casos .card p:last-child { margin-bottom: 0; }
+  .kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 4px; }
+
+  /* Buscador */
+  .busca select { width: 100%; min-height: 48px; border: 1px solid var(--rule); border-radius: 10px; padding: 0 12px; font: 600 16px var(--body); color: var(--ink); background: var(--surface); }
+  .busca select:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .panel { margin-top: var(--s2); }
+  .tiles { display: grid; gap: var(--s1); grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 479px) { .tiles { grid-template-columns: 1fr; } }
+  .tile { border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; }
+  .tile .k { font-size: 12px; color: var(--ink-muted); font-weight: 600; }
+  .tile .v { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tile .v small { font-family: var(--body); font-size: 12px; font-weight: 600; color: var(--ink-muted); letter-spacing: 0; }
+  .tile .c { font-size: 13px; margin-top: 4px; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; border-radius: 999px; padding: 1px 8px; margin-left: 4px; vertical-align: 1px; }
+  .tag.baja { background: #efe8f6; color: #5c3a86; }
+  .tag.igual { background: var(--surface-sunken); color: var(--ink-muted); }
+  .tag.sube { background: #fbeadb; color: #8c3f00; }
+  .sparks { display: grid; gap: var(--s2); margin-top: var(--s2); }
+  @media (min-width: 560px) { .sparks { grid-template-columns: 1fr 1fr; } }
+  .spark svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  details.more summary { font-size: 13px; color: var(--ink-muted); cursor: pointer; margin-top: 10px; min-height: 24px; }
+  .tscroll { overflow-x: auto; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  table.t th { text-align: right; font-size: 12px; color: var(--ink-muted); font-weight: 600; padding: 6px; border-bottom: 1px solid var(--ink); vertical-align: bottom; }
+  table.t td { text-align: right; padding: 7px 6px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.t th:first-child, table.t td:first-child { text-align: left; }
+
+  /* Tooltip */
+  .tip { position: fixed; z-index: 10; pointer-events: none; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font-size: 13px; line-height: 1.35; max-width: 270px; opacity: 0; transition: opacity .08s; }
+  .tip.on { opacity: 1; }
+  .tip b { display: block; font-size: 15px; }
+  .tip span { display: block; color: var(--ink-muted); }
+
+  /* Este trimestre, uso y cierre */
+  .trim { background: var(--surface-alt); border-radius: var(--r); padding: 16px 18px; }
+  .trim p { margin: 0 0 10px; font-size: 15px; }
+  .trim p:last-child { margin: 0; }
+  .uso { background: var(--rosa-suave); border-radius: var(--r); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .uso p { margin: 0; font-size: 15px; }
+  details.metodo { margin-top: var(--s3); }
+  details.metodo summary { font-weight: 600; cursor: pointer; min-height: 24px; }
+  details.metodo li { margin: 8px 0; font-size: 15px; }
+  .cierre { display: flex; flex-direction: column; gap: var(--s2); padding-top: 18px; border-top: 1px solid var(--rule); }
+  .cierre p { margin: 0; font-size: 16px; }
+  .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 999px; background: var(--rosa); color: #fff; font: 700 15px var(--body); text-decoration: none; }
+  .btn:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  @media (min-width: 720px) { .btn { max-width: 320px; } }
+  .correo { font-size: 13px; color: var(--ink-muted); }
+  footer { padding: var(--s3) 0 48px; }
+  footer p { font-size: 12px; color: var(--ink-muted); margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand"><a href="../" aria-label="Cifra Pública, inicio"><img src="../assets/cifra-publica-logotipo.svg" alt="Cifra Pública" width="139" height="26"></a><span class="folio">Folio 003</span></div>
+  <div class="dbl"></div>
+  <div class="label">Trabajo | México</div>
+  <h1>__TITULO__</h1>
+  <p class="dek" id="dek"></p>
+  <p class="byline">Por __AUTOR__ | __FECHA__ | __DATOS__</p>
+</header>
+
+<main>
+  <div class="wrap"><div class="findings" id="findings"></div></div>
+
+  <section class="wrap">
+    <h2 id="map-title"></h2>
+    <p class="sub" id="map-sub"></p>
+    <figure class="card"><div class="mapas" id="mapas"></div></figure>
+    <p class="note">Cada hexágono es un estado, acomodado más o menos donde está; no son de su tamaño. Toca o pasa el cursor por uno para ver sus cifras.</p>
+    <details class="more"><summary>Ver los 32 estados</summary><div class="tscroll" id="map-table"></div></details>
+  </section>
+
+  <section class="wrap">
+    <h2>Así se movieron las dos tasas en el país</h2>
+    <p class="sub" id="ser-sub"></p>
+    <div class="series" id="series"></div>
+    <p class="note" id="ser-note"></p>
+  </section>
+
+  <section class="wrap">
+    <h2 id="loc-title"></h2>
+    <p class="sub" id="loc-sub"></p>
+    <figure class="card"><div class="legend" id="loc-legend" style="margin-bottom:10px"></div><div class="dumb" id="loc"></div></figure>
+    <div class="prose" id="loc-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <h2 id="ciu-title"></h2>
+    <p class="sub" id="ciu-sub"></p>
+    <figure class="card"><div class="legend" id="ciu-legend" style="margin-bottom:12px"></div><div class="cgrid" id="ciu"></div></figure>
+    <p class="note" id="ciu-note"></p>
+    <details class="more"><summary>Ver los datos de las ciudades</summary><div class="tscroll" id="ciu-table"></div></details>
+  </section>
+
+  <section class="wrap">
+    <h2 id="cdmx-title"></h2>
+    <p class="sub" id="cdmx-sub"></p>
+    <figure class="card"><div class="dumb" id="cdmx"></div></figure>
+    <div class="prose" id="cdmx-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <h2>Dos casos</h2>
+    <p class="sub">Uno porque sale primero en una lista, otro porque va en contra de la tendencia.</p>
+    <div class="casos" id="casos"></div>
+  </section>
+
+  <section class="wrap busca">
+    <h2>Busca tu estado o tu ciudad</h2>
+    <p class="sub" id="bus-sub"></p>
+    <label for="sel" class="note" style="display:block;margin:0 0 6px">Estado, ciudad o tamaño de localidad</label>
+    <select id="sel"></select>
+    <div class="panel card" id="panel" aria-live="polite"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="trim">
+      <h2 id="trim-title"></h2>
+      <div id="trim-body"></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="uso">
+      <h2>Para qué sirve, y para qué no</h2>
+      <p>Sirve para ver cómo cambiaron el desempleo y la informalidad laboral desde antes de la pandemia en el país, en cada estado, por tamaño de localidad y en 39 ciudades, y para separar los cambios que son más grandes que el margen de error de la encuesta de los que no.</p>
+      <p>No sirve para medir municipios: la encuesta no alcanza para eso. Tampoco explica por qué cambió algo; cuenta, no explica. Y es una encuesta: con 32 estados y 36 ciudades, uno o dos pueden aparecer como cambio solo por azar.</p>
+      <p>Qué tumbaría esta lectura: que en los próximos trimestres la informalidad baje en la mayoría de los estados. La página se actualiza sola cada trimestre, y el proceso se detiene si los datos dejan de sostener el título, para que lo reescriba.</p>
+    </div>
+    <details class="metodo card">
+      <summary>Cómo lo hice</summary>
+      <ul id="notas"></ul>
+    </details>
+  </section>
+
+  <section class="wrap">
+    <div class="cierre">
+      <p>¿Quieres este análisis para tu estado, tu sector o tu empresa? Platiquemos.</p>
+      <a class="btn" href="mailto:__EMAIL__?subject=Empleo%20e%20informalidad">Escríbeme</a>
+      <span class="correo">__EMAIL__</span>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p id="fuentes"></p>
+  <p>Hecho por __AUTOR__ en León | Cifra Pública</p>
+</footer>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script id="meta" type="application/json">__META__</script>
+<script>
+(() => {
+  const M = JSON.parse(document.getElementById("meta").textContent);
+  const T = M.trims, N = M.nacional, CN = M.conteos;
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const COLOR = { baja: "var(--baja)", igual: "var(--igual)", sube: "var(--sube)" };
+  const VERB = { baja: "Bajó", igual: "Sin cambio que se distinga", sube: "Subió" };
+
+  // ---------- formato ----------
+  const nf = new Intl.NumberFormat("es-MX");
+  const pf = new Intl.NumberFormat("es-MX", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const MINUS = "−";
+  const p1 = (v) => (v < 0 ? MINUS : "") + pf.format(Math.abs(v));
+  const sg = (v) => (v > 0 ? "+" : v < 0 ? MINUS : "±") + pf.format(Math.abs(v));
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const lista = (a) => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " y " + a[a.length - 1];
+  const cuenta = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+  const TRIM = (t) => { const [a, q] = t.split("-T"); return `${["primer", "segundo", "tercer", "cuarto"][q - 1]} trimestre de ${a}`; };
+  const TCORTO = (t) => { const [a, q] = t.split("-T"); return `T${q} ${a}`; };
+  const cam = (c) => `${p1(c.antes)}% → ${p1(c.ahora)}% (${sg(c.dif)} ± ${pf.format(c.margen)})`;
+  const tag = (v) => `<span class="tag ${v}">${v === "igual" ? "sin cambio" : v === "baja" ? "bajó" : "subió"}</span>`;
+
+  // ---------- tooltip ----------
+  const tip = document.getElementById("tip");
+  function showTip(e, lines) {
+    tip.replaceChildren(...lines.map((t, i) => { const n = document.createElement(i ? "span" : "b"); n.textContent = t; return n; }));
+    tip.classList.add("on");
+    const r = e.target.getBoundingClientRect();
+    const x = e.clientX ?? (r.left + r.width / 2), y = e.clientY ?? r.top;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, x - w / 2)) + "px";
+    tip.style.top = (y - h - 14 < 8 ? y + 18 : y - h - 14) + "px";
+  }
+  const hideTip = () => tip.classList.remove("on");
+  function bindTip(el, lines) {
+    const f = typeof lines === "function" ? lines : () => lines;
+    el.addEventListener("pointermove", (e) => showTip(e, f(e)));
+    el.addEventListener("pointerleave", hideTip);
+    el.addEventListener("focus", (e) => showTip({ target: e.target }, f(e)));
+    el.addEventListener("blur", hideTip);
+  }
+  const svgEl = (tag, attrs = {}) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+
+  // ---------- entradilla y hallazgos ----------
+  const ni = N.cambio.informalidad, nd = N.cambio.desocupacion;
+  const E = CN.entidades, C = CN.ciudades, nE = CN.n_entidades, nC = CN.n_ciudades;
+  const loc = M.localidades, L1 = loc.find((l) => l.clave === 1), L4 = loc.find((l) => l.clave === 4);
+  document.getElementById("dek").textContent =
+    `Comparé el último año de la Encuesta Nacional de Ocupación y Empleo del INEGI (${M.ventana}) con 2019, antes de la pandemia. ` +
+    `El desempleo bajó en el país y en ${E.desocupacion.baja.length} de ${nE} estados, y no subió en ninguno. ` +
+    `La informalidad laboral apenas se movió: bajó ${pf.format(Math.abs(ni.dif))} puntos en el país y en ${E.informalidad.igual.length} de ${nE} estados no cambió más allá del margen de error. ` +
+    (M.solo_grandes ? "Lo poco que bajó, bajó en las ciudades grandes." : "");
+  const subeE = E.informalidad.sube;
+  document.getElementById("findings").innerHTML = `
+    <div class="card"><div class="big">${p1(nd.antes)}% → ${p1(nd.ahora)}%</div>
+      <p>es el desempleo (la tasa de desocupación) del país, de 2019 al último año. Bajó en ${E.desocupacion.baja.length} de ${nE} estados y no subió en ninguno.</p></div>
+    <div class="card"><div class="big">${Math.round(ni.ahora)} <small>de cada 100</small></div>
+      <p>personas que trabajan lo hacen en la informalidad: sin la seguridad social de un empleo formal, o en un negocio o actividad sin registro. En 2019 eran ${Math.round(ni.antes)}.</p></div>
+    <div class="card"><div class="big">${E.informalidad.baja.length} <small>de ${nE} estados</small></div>
+      <p>bajaron su informalidad desde 2019. En ${E.informalidad.igual.length} no cambió más allá del margen de error${subeE.length ? ` y en ${lista(subeE)} subió` : ""}.</p></div>
+    <div class="card"><div class="big">${Math.round(L4.cambio.informalidad.ahora)} <small>de cada 100</small></div>
+      <p>personas que trabajan en localidades de menos de 2,500 habitantes son informales, como en 2019. En las de 100 mil o más pasó de ${p1(L1.cambio.informalidad.antes)}% a ${p1(L1.cambio.informalidad.ahora)}%.</p></div>`;
+
+  // ---------- mapas de hexágonos ----------
+  const ENT = M.entidades;
+  function hexmap(box, ind, titulo) {
+    const wrap = document.createElement("div"); wrap.className = "mapa";
+    const c = E[ind];
+    const h = document.createElement("h3");
+    h.innerHTML = `${titulo} <span>bajó en ${c.baja.length} | sin cambio en ${c.igual.length} | subió en ${c.sube.length}</span>`;
+    const W = Math.max(300, box.clientWidth), cols = 10.5;
+    const w = Math.min(64, W / cols), r = w / Math.sqrt(3), H = r * 2 + 4 * 1.5 * r + 4;
+    const svg = svgEl("svg", { viewBox: `0 0 ${w * cols} ${H}`, width: w * cols, height: H, role: "img",
+      "aria-label": `Mapa de los ${nE} estados: ${titulo.toLowerCase()} bajó en ${c.baja.length}, sin cambio en ${c.igual.length}, subió en ${c.sube.length}` });
+    const fs = Math.max(9, Math.min(12, w / 4.4));
+    ENT.forEach((e) => {
+      const cx = (e.col + (e.fila % 2 ? 0.5 : 0) + 0.5) * w, cy = r + 2 + e.fila * 1.5 * r, rr = r * 0.93;
+      const pts = [...Array(6)].map((_, k) => { const a = Math.PI / 180 * (60 * k - 30); return `${(cx + rr * Math.cos(a)).toFixed(1)},${(cy + rr * Math.sin(a)).toFixed(1)}`; });
+      const ch = e.cambio[ind];
+      const g = svgEl("g", { class: "hex", tabindex: 0, "aria-label": `${e.nombre}: ${titulo.toLowerCase()} ${cam(ch)}, ${VERB[ch.v].toLowerCase()}` });
+      g.append(svgEl("path", { d: "M" + pts.join("L") + "Z", fill: COLOR[ch.v], stroke: "var(--surface)", "stroke-width": 1 }));
+      const t = svgEl("text", { x: cx, y: cy + fs * 0.36, "text-anchor": "middle", "font-size": fs, "font-weight": 700, fill: "var(--ink)", "pointer-events": "none" });
+      t.textContent = e.abrev; g.append(t);
+      bindTip(g, [e.nombre, `${titulo}: ${cam(ch)}`, VERB[ch.v]]);
+      svg.append(g);
+    });
+    wrap.append(h, svg);
+    return wrap;
+  }
+  function drawMaps() {
+    const box = document.getElementById("mapas");
+    box.replaceChildren();
+    const leg = document.createElement("div"); leg.className = "legend";
+    leg.innerHTML = `<span><i style="background:var(--baja)"></i>Bajó</span><span><i style="background:var(--igual)"></i>Sin cambio que se distinga</span><span><i style="background:var(--sube)"></i>Subió</span>`;
+    box.append(leg, hexmap(box, "desocupacion", "Desempleo"), hexmap(box, "informalidad", "Informalidad laboral"));
+  }
+  document.getElementById("map-title").textContent =
+    `El desempleo bajó en ${E.desocupacion.baja.length} de ${nE} estados; la informalidad, en ${E.informalidad.baja.length}`;
+  document.getElementById("map-sub").textContent =
+    `Cambio entre 2019 y el último año (${M.ventana}), con promedios de cuatro trimestres. «Sin cambio» quiere decir que la diferencia no supera el margen de error de la encuesta.`;
+  document.getElementById("map-table").innerHTML = `<table class="t"><thead><tr><th>Estado</th><th>Desempleo 2019</th><th>Último año</th><th>Cambio</th><th>Informalidad 2019</th><th>Último año</th><th>Cambio</th></tr></thead><tbody>${
+    ENT.map((e) => { const d = e.cambio.desocupacion, i = e.cambio.informalidad;
+      return `<tr><td>${esc(e.nombre)}</td><td>${p1(d.antes)}</td><td>${p1(d.ahora)}</td><td>${sg(d.dif)} ± ${pf.format(d.margen)} ${tag(d.v)}</td><td>${p1(i.antes)}</td><td>${p1(i.ahora)}</td><td>${sg(i.dif)} ± ${pf.format(i.margen)} ${tag(i.v)}</td></tr>`; }).join("")
+  }</tbody></table><p class="note">Porcentajes. Desempleo: desocupados entre la población económicamente activa. Informalidad: ocupados en la informalidad entre los ocupados. Promedios de 2019 y de ${M.ventana}.</p>`;
+
+  // ---------- series nacionales ----------
+  const idx = (t) => { const [a, q] = t.split("-T").map(Number); return (a - 2019) * 4 + q - 1; };
+  const nT = idx(M.U) + 1;
+  function linea(box, col, nombre, color) {
+    const fig = document.createElement("figure"); fig.className = "card linea";
+    const h = document.createElement("h3"); h.textContent = nombre; fig.append(h);
+    box.append(fig);
+    const W = Math.max(280, fig.clientWidth - 28), H = 210, m = { t: 14, r: 34, b: 24, l: 34 };
+    const vals = N.serie.map((s) => s[col]), ics = N.serie.map((s) => s[col + 1]);
+    const lo = Math.floor(Math.min(...vals.map((v, i) => v - ics[i])) - 0.5), hi = Math.ceil(Math.max(...vals.map((v, i) => v + ics[i])) + 0.5);
+    const x = (i) => m.l + (W - m.l - m.r) * i / (nT - 1), y = (v) => m.t + (H - m.t - m.b) * (1 - (v - lo) / (hi - lo));
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
+      "aria-label": `${nombre} en el país por trimestre, de ${TRIM(T[0])} a ${TRIM(M.U)}: de ${p1(vals[0])}% a ${p1(vals[vals.length - 1])}%` });
+    // franja ENOE N
+    const enN = T.map((t, i) => M.encuesta[i] === "ENOE N" ? idx(t) : null).filter((v) => v !== null);
+    if (enN.length) {
+      const x0 = x(Math.min(...enN)) - 3, x1 = x(Math.max(...enN)) + 3;
+      svg.append(svgEl("rect", { x: x0, y: m.t, width: x1 - x0, height: H - m.t - m.b, fill: "var(--surface-alt)" }));
+      const tl = svgEl("text", { x: x0 + 4, y: m.t + 11, "font-size": 10, fill: "var(--ink-muted)" }); tl.textContent = "en parte por teléfono"; svg.append(tl);
+    }
+    // rejilla y eje y
+    const paso = (hi - lo) > 6 ? 2 : 1;
+    for (let v = Math.ceil(lo / paso) * paso; v <= hi; v += paso) {
+      svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: "var(--rule)", "stroke-width": 1 }));
+      const t = svgEl("text", { x: m.l - 6, y: y(v) + 4, "text-anchor": "end", "font-size": 11, fill: "var(--ink-muted)" }); t.textContent = v + "%"; svg.append(t);
+    }
+    for (let a = 2019; a <= M.ua; a++) {
+      const i0 = (a - 2019) * 4, i1 = Math.min(i0 + 3, nT - 1);
+      const t = svgEl("text", { x: x((i0 + i1) / 2), y: H - 6, "text-anchor": "middle", "font-size": 11, fill: "var(--ink-muted)" });
+      t.textContent = "’" + String(a).slice(2); svg.append(t);
+    }
+    // promedio de 2019
+    const p19 = vals.slice(0, 4).reduce((s, v) => s + v, 0) / 4;
+    svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: y(p19), y2: y(p19), stroke: "var(--ink-muted)", "stroke-dasharray": "3 3", "stroke-width": 1 }));
+    const tp = svgEl("text", { x: W - m.r + 4, y: y(p19) + 4, "font-size": 10, fill: "var(--ink-muted)" }); tp.textContent = "2019"; svg.append(tp);
+    // banda del margen y línea (cortadas donde falta un trimestre)
+    const tramos = []; let cur = [];
+    T.forEach((t, i) => { if (cur.length && idx(t) !== idx(T[i - 1]) + 1) { tramos.push(cur); cur = []; } cur.push(i); });
+    tramos.push(cur);
+    tramos.forEach((tr) => {
+      const up = tr.map((i) => `${x(idx(T[i])).toFixed(1)},${y(vals[i] + ics[i]).toFixed(1)}`), dn = tr.map((i) => `${x(idx(T[i])).toFixed(1)},${y(vals[i] - ics[i]).toFixed(1)}`).reverse();
+      svg.append(svgEl("path", { d: "M" + up.concat(dn).join("L") + "Z", fill: color, "fill-opacity": 0.16 }));
+      svg.append(svgEl("path", { d: "M" + tr.map((i) => `${x(idx(T[i])).toFixed(1)},${y(vals[i]).toFixed(1)}`).join("L"), fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round" }));
+    });
+    const iu = vals.length - 1;
+    svg.append(svgEl("circle", { cx: x(idx(M.U)), cy: y(vals[iu]), r: 4, fill: color, stroke: "var(--surface)", "stroke-width": 2 }));
+    const tv = svgEl("text", { x: x(idx(M.U)) + 6, y: y(vals[iu]) - 8, "font-size": 12, "font-weight": 700, fill: "var(--ink)", "text-anchor": "end" }); tv.textContent = p1(vals[iu]) + "%"; svg.append(tv);
+    // capa de lectura
+    const guia = svgEl("line", { y1: m.t, y2: H - m.b, stroke: "var(--ink)", "stroke-width": 1, opacity: 0 });
+    const pto = svgEl("circle", { r: 4, fill: color, stroke: "var(--surface)", "stroke-width": 2, opacity: 0 });
+    const hit = svgEl("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: "transparent", tabindex: 0,
+      "aria-label": `${nombre}: recorre los trimestres con el cursor` });
+    const cerca = (e) => {
+      const r = svg.getBoundingClientRect(), px = (e.clientX ?? (r.left + r.width)) - r.left;
+      const pos = (px / r.width) * W, k = Math.round((pos - m.l) / ((W - m.l - m.r) / (nT - 1)));
+      let best = 0, dist = 1e9; T.forEach((t, i) => { const d = Math.abs(idx(t) - k); if (d < dist) { dist = d; best = i; } });
+      return best;
+    };
+    bindTip(hit, (e) => {
+      const i = cerca(e);
+      guia.setAttribute("x1", x(idx(T[i]))); guia.setAttribute("x2", x(idx(T[i]))); guia.setAttribute("opacity", 0.35);
+      pto.setAttribute("cx", x(idx(T[i]))); pto.setAttribute("cy", y(vals[i])); pto.setAttribute("opacity", 1);
+      return [`${p1(vals[i])}% ± ${pf.format(ics[i])}`, `${nombre} | ${TRIM(T[i])}`].concat(M.encuesta[i] === "ENOE N" ? ["Encuesta levantada en parte por teléfono"] : []);
+    });
+    hit.addEventListener("pointerleave", () => { guia.setAttribute("opacity", 0); pto.setAttribute("opacity", 0); });
+    svg.append(guia, pto, hit);
+    fig.append(svg);
+  }
+  function drawSeries() {
+    const box = document.getElementById("series"); box.replaceChildren();
+    linea(box, 2, "Desempleo", "var(--cant)");
+    linea(box, 0, "Informalidad laboral", "var(--cant)");
+  }
+  document.getElementById("ser-sub").textContent = `Porcentaje por trimestre, de ${TRIM(T[0])} a ${TRIM(M.U)}. La franja de color es el margen de error de 90%; la línea punteada, el promedio de 2019.`;
+  document.getElementById("ser-note").textContent = "Del tercer trimestre de 2020 al cuarto de 2022 la encuesta se levantó en parte por teléfono (ENOE Nueva Edición). El segundo trimestre de 2020 no aparece: por la pandemia, el INEGI levantó otra encuesta, solo por teléfono.";
+
+  // ---------- mancuernas ----------
+  function dumbbell(el, rows, lo, hi, ejes) {
+    const x = (v) => ((v - lo) / (hi - lo)) * 100;
+    el.replaceChildren(...rows.map((r) => {
+      const c = r.c, row = document.createElement("div"); row.className = "drow"; row.tabIndex = 0;
+      row.setAttribute("aria-label", `${r.nombre}: ${cam(c)}, ${VERB[c.v].toLowerCase()}`);
+      const lab = document.createElement("div"); lab.className = "dlabel"; lab.innerHTML = r.label;
+      const tr = document.createElement("div"); tr.className = "dtrack";
+      const a = x(c.antes), b = x(c.ahora);
+      const ln = document.createElement("div"); ln.className = "dline"; ln.style.left = Math.min(a, b) + "%"; ln.style.width = Math.abs(b - a) + "%";
+      const pa = document.createElement("div"); pa.className = "dpt antes"; pa.style.left = a + "%";
+      const pb = document.createElement("div"); pb.className = "dpt"; pb.style.left = b + "%"; pb.style.background = c.v === "igual" ? "var(--gris)" : COLOR[c.v];
+      const val = document.createElement("div"); val.className = "dval";
+      val.innerHTML = `${p1(c.antes)} → <b>${p1(c.ahora)}%</b> ${tag(c.v)}`;
+      const izq = Math.min(a, b);
+      if (izq > 55) { val.style.right = (100 - Math.max(a, b)) + "%"; } else { val.style.left = izq + "%"; }
+      tr.append(ln, pa, pb, val); row.append(lab, tr);
+      bindTip(row, [r.nombre, `${cam(c)}`, VERB[c.v]]);
+      return row;
+    }));
+  }
+  const legDumb = `<span><i class="ring"></i>2019</span><span><i class="dot" style="background:var(--baja)"></i>Último año: bajó</span><span><i class="dot" style="background:var(--gris)"></i>Último año: sin cambio</span>`;
+
+  // ---------- tamaño de localidad ----------
+  document.getElementById("loc-title").textContent = M.solo_grandes
+    ? "La informalidad solo bajó en las ciudades de 100 mil habitantes o más"
+    : "La informalidad por tamaño de localidad";
+  document.getElementById("loc-sub").textContent = `De cada 100 personas que trabajan, cuántas lo hacen en la informalidad: promedio de 2019 contra ${M.ventana}.`;
+  document.getElementById("loc-legend").innerHTML = legDumb;
+  const nombreLoc = { 1: "100 mil o más habitantes", 2: "15 mil a 99,999", 3: "2,500 a 14,999", 4: "Menos de 2,500" };
+  const filasLoc = [{ nombre: "Todo el país", label: "<b>Todo el país</b>", c: ni }]
+    .concat(loc.map((l) => ({ nombre: `Localidades de ${nombreLoc[l.clave].toLowerCase()} habitantes`.replace("habitantes habitantes", "habitantes"),
+      label: `${nombreLoc[l.clave]}<small>${l.clave === 1 ? "ciudades grandes" : l.clave === 4 ? "rurales" : "habitantes"}</small>`, c: l.cambio.informalidad })));
+  dumbbell(document.getElementById("loc"), filasLoc, 30, 90);
+  const L4d = L4.cambio.desocupacion;
+  document.getElementById("loc-prose").innerHTML =
+    `<p>En las localidades de menos de 2,500 habitantes, ${Math.round(L4.cambio.informalidad.ahora)} de cada 100 personas que trabajan lo hacen en la informalidad, igual que en 2019. ` +
+    `Ahí el desempleo también bajó, de ${p1(L4d.antes)}% a ${p1(L4d.ahora)}%: hay menos gente buscando trabajo sin encontrarlo, pero el trabajo que hay sigue siendo informal.</p>` +
+    (loc.every((l) => l.cambio.desocupacion.v === "baja")
+      ? `<p>El desempleo bajó en los cuatro tamaños de localidad. La informalidad, ${M.solo_grandes ? "solo en las ciudades de 100 mil habitantes o más" : "no en todos"}.</p>` : "");
+
+  // ---------- ciudades ----------
+  const CI = M.ciudades.filter((c) => c.desde2019).sort((a, b) => a.cambio.informalidad.dif - b.cambio.informalidad.dif);
+  const nuevas = M.ciudades.filter((c) => !c.desde2019).map((c) => c.nombre);
+  document.getElementById("ciu-title").textContent = `En ${C.informalidad.igual.length} de ${nC} ciudades la informalidad no cambió más allá del margen de error`;
+  document.getElementById("ciu-sub").textContent = `Cambio en puntos entre 2019 y ${M.ventana}, en las ${nC} ciudades que la encuesta mide desde 2019. La raya es el margen de error de 90%: si cruza el cero, el cambio no se distingue.`;
+  document.getElementById("ciu-legend").innerHTML = `<span><i class="dot" style="background:var(--baja)"></i>Bajó</span><span><i class="dot" style="background:var(--gris)"></i>Sin cambio que se distinga</span><span><i class="dot" style="background:var(--sube)"></i>Subió</span>`;
+  function drawCities() {
+    const g = document.getElementById("ciu");
+    const dom = (ind) => { const lo = Math.min(-1, ...CI.map((c) => c.cambio[ind].dif - c.cambio[ind].margen)), hi = Math.max(1, ...CI.map((c) => c.cambio[ind].dif + c.cambio[ind].margen)); return [Math.floor(lo), Math.ceil(hi)]; };
+    const D = { desocupacion: dom("desocupacion"), informalidad: dom("informalidad") };
+    const X = (ind, v) => 7 + ((v - D[ind][0]) / (D[ind][1] - D[ind][0])) * 86;
+    const ticks = (ind) => { const [lo, hi] = D[ind], step = hi - lo > 8 ? 2 : 1, out = []; for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) out.push(v); return out; };
+    const head = (t) => { const d = document.createElement("div"); d.className = "chead"; d.textContent = t; return d; };
+    const tk = (ind) => { const d = document.createElement("div"); d.className = "ctick"; d.innerHTML = ticks(ind).map((v) => `<span style="left:${X(ind, v)}%">${v > 0 ? "+" : v < 0 ? MINUS : ""}${Math.abs(v)}</span>`).join(""); return d; };
+    const kids = [head(""), head("Desempleo"), head("Informalidad"), document.createElement("div"), tk("desocupacion"), tk("informalidad")];
+    CI.forEach((c) => {
+      const nm = document.createElement("div"); nm.className = "cname" + (c.nombre === "León" || c.cd === "1" ? " hl" : ""); nm.textContent = c.nombre;
+      kids.push(nm);
+      ["desocupacion", "informalidad"].forEach((ind) => {
+        const ch = c.cambio[ind], cell = document.createElement("div"); cell.className = "ccell"; cell.tabIndex = 0;
+        cell.setAttribute("aria-label", `${c.nombre}, ${ind === "desocupacion" ? "desempleo" : "informalidad"}: ${cam(ch)}, ${VERB[ch.v].toLowerCase()}`);
+        const z = document.createElement("div"); z.className = "czero"; z.style.left = X(ind, 0) + "%";
+        const ci = document.createElement("div"); ci.className = "cci"; ci.style.left = X(ind, ch.dif - ch.margen) + "%"; ci.style.width = (X(ind, ch.dif + ch.margen) - X(ind, ch.dif - ch.margen)) + "%";
+        ci.style.background = ch.v === "igual" ? "var(--gris)" : COLOR[ch.v]; ci.style.opacity = 0.55;
+        const pt = document.createElement("div"); pt.className = "cpt"; pt.style.left = X(ind, ch.dif) + "%"; pt.style.background = ch.v === "igual" ? "var(--gris)" : COLOR[ch.v];
+        cell.append(z, ci, pt);
+        bindTip(cell, [c.nombre, `${ind === "desocupacion" ? "Desempleo" : "Informalidad"}: ${cam(ch)}`, VERB[ch.v]]);
+        kids.push(cell);
+      });
+    });
+    g.replaceChildren(...kids);
+  }
+  document.getElementById("ciu-note").textContent =
+    `Ordenadas de la que más bajó su informalidad a la que más subió. ${lista(nuevas)} entraron a la encuesta en 2020: están en el buscador, pero no tienen comparación con 2019. Cada ciudad es como la define el INEGI y puede abarcar más de un municipio.`;
+  document.getElementById("ciu-table").innerHTML = `<table class="t"><thead><tr><th>Ciudad</th><th>Desempleo 2019</th><th>Último año</th><th>Cambio</th><th>Informalidad 2019</th><th>Último año</th><th>Cambio</th></tr></thead><tbody>${
+    [...CI].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")).map((c) => { const d = c.cambio.desocupacion, i = c.cambio.informalidad;
+      return `<tr><td>${esc(c.nombre)}</td><td>${p1(d.antes)}</td><td>${p1(d.ahora)}</td><td>${sg(d.dif)} ± ${pf.format(d.margen)} ${tag(d.v)}</td><td>${p1(i.antes)}</td><td>${p1(i.ahora)}</td><td>${sg(i.dif)} ± ${pf.format(i.margen)} ${tag(i.v)}</td></tr>`; }).join("")
+  }</tbody></table>`;
+
+  // ---------- la Ciudad de México en el promedio ----------
+  const A36 = M.agregados["36 ciudades"].cambio.informalidad, A35 = M.agregados["36 ciudades sin Ciudad de México"].cambio.informalidad;
+  const CDMX = M.ciudades.find((c) => c.cd === "1").cambio.informalidad;
+  document.getElementById("cdmx-title").textContent = A35.v === "baja"
+    ? `Sin la Ciudad de México, la informalidad de las ciudades bajó ${pf.format(Math.abs(A35.dif))} puntos y no ${pf.format(Math.abs(A36.dif))}`
+    : `Sin la Ciudad de México, la informalidad de las ciudades no cambió`;
+  document.getElementById("cdmx-sub").textContent = `Informalidad en el conjunto de las ${nC} ciudades, con y sin la Ciudad de México: promedio de 2019 contra ${M.ventana}.`;
+  dumbbell(document.getElementById("cdmx"), [
+    { nombre: `Las ${nC} ciudades`, label: `<b>Las ${nC} ciudades</b>`, c: A36 },
+    { nombre: `Las ${nC} ciudades sin la Ciudad de México`, label: `Sin la Ciudad de México`, c: A35 },
+    { nombre: "Ciudad de México", label: "Ciudad de México<small>como la define la encuesta</small>", c: CDMX },
+  ], 35, 55);
+  document.getElementById("cdmx-prose").innerHTML =
+    `<p>La Ciudad de México tiene ${Math.round(M.peso_cdmx)} de cada 100 personas que trabajan en estas ${nC} ciudades, y su informalidad bajó de ${p1(CDMX.antes)}% a ${p1(CDMX.ahora)}%. ` +
+    `Por eso pesa tanto en el promedio: buena parte de lo que bajó la informalidad urbana es lo que bajó en la capital.</p>`;
+
+  // ---------- casos ----------
+  const Le = M.ciudades.find((c) => c.cd === "5"), LE = M.leon, mu = LE.sexo.Mujeres, ho = LE.sexo.Hombres;
+  const casos = [];
+  if (LE.racha_participacion > 0) {
+    casos.push(`<div class="card"><div class="kicker">León, Guanajuato</div><h3>La ciudad con más gente trabajando o buscando trabajo</h3>
+      <p>En León, ${Math.round(Le.ultimo.participacion)} de cada 100 personas de 15 años o más trabajan o buscan trabajo. Es la cifra más alta de las ${LE.n_ciudades} ciudades en las estimaciones del INEGI desde el ${TRIM(LE.primer_trimestre_racha)}${LE.racha_participacion > 1 ? `, ${LE.racha_participacion} trimestres seguidos` : ""}${LE.segundo && !LE.segundo.distingue ? `, aunque con ${esc(LE.segundo.nombre)} (${p1(LE.segundo.valor)}) la diferencia cabe en el margen de error` : ""}.</p>
+      ${mu && mu.v === "sube" && ho && ho.v === "igual" ? `<p>La subida desde 2019 es de las mujeres: de ${Math.round(mu.antes)} a ${Math.round(mu.ahora)} de cada 100. La de los hombres no cambió (${Math.round(ho.ahora)}).</p>` : ""}
+      <p>Su informalidad ${Le.cambio.informalidad.v === "igual" ? `no cambió: ${p1(Le.cambio.informalidad.antes)}% en 2019 y ${p1(Le.cambio.informalidad.ahora)}% en el último año, mientras el conjunto de las ciudades bajó` : `pasó de ${p1(Le.cambio.informalidad.antes)}% a ${p1(Le.cambio.informalidad.ahora)}%`}. Los folios <a href="../mapa-leon/">001</a> y <a href="../gasto-leon/">002</a> son sobre León.</p></div>`);
+  }
+  const subeC = M.ciudades.filter((c) => c.desde2019 && c.cambio.informalidad.v === "sube");
+  const subeEnt = ENT.filter((e) => e.cambio.informalidad.v === "sube");
+  if (subeEnt.length || subeC.length) {
+    const e0 = subeEnt[0], c0 = subeC.find((c) => e0 && c.entidad === e0.nombre);
+    const titulo = subeEnt.length === 1 ? `${e0.nombre}: el único estado donde la informalidad subió` : `Donde la informalidad subió`;
+    casos.push(`<div class="card"><div class="kicker">${subeEnt.length === 1 ? esc(e0.nombre) : "Contra la tendencia"}</div><h3>${esc(titulo)}</h3>
+      ${subeEnt.map((e) => `<p>En el estado de ${esc(e.nombre)} la informalidad pasó de ${p1(e.cambio.informalidad.antes)}% a ${p1(e.cambio.informalidad.ahora)}% (${sg(e.cambio.informalidad.dif)} ± ${pf.format(e.cambio.informalidad.margen)} puntos).</p>`).join("")}
+      ${subeC.map((c) => `<p>En la ciudad de ${esc(c.nombre)}, de ${p1(c.cambio.informalidad.antes)}% a ${p1(c.cambio.informalidad.ahora)}%${c0 && c.cd === c0.cd && subeC.length === 1 ? ": es la única de las " + nC + " ciudades donde subió" : ""}.</p>`).join("")}
+      <p>${c0 ? "La ciudad es parte del estado, así que no son dos pruebas independientes. " : ""}Con ${nE} estados y ${nC} ciudades, uno puede salir por azar: conviene ver los siguientes trimestres antes de sacar conclusiones.</p></div>`);
+  }
+  document.getElementById("casos").innerHTML = casos.join("");
+
+  // ---------- buscador ----------
+  const OPC = [{ g: "País", items: [{ id: "n", nombre: "Todo el país" }] },
+    { g: "Estados", items: ENT.map((e) => ({ id: "e" + e.clave, nombre: e.nombre })) },
+    { g: "Ciudades", items: [...M.ciudades].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")).map((c) => ({ id: "c" + c.cd, nombre: c.nombre })) },
+    { g: "Tamaño de localidad", items: loc.map((l) => ({ id: "l" + l.clave, nombre: `Localidades de ${nombreLoc[l.clave].toLowerCase()}` + (l.clave === 1 ? "" : " habitantes") })) }];
+  const sel = document.getElementById("sel");
+  sel.innerHTML = OPC.map((o) => `<optgroup label="${o.g}">${o.items.map((i) => `<option value="${i.id}">${esc(i.nombre)}</option>`).join("")}</optgroup>`).join("");
+  document.getElementById("bus-sub").textContent = `Las cifras del ${TRIM(M.U)} y el cambio desde 2019 en cada estado, en las 39 ciudades y por tamaño de localidad.`;
+  function unidad(id) {
+    if (id === "n") return { nombre: "Todo el país", ultimo: N.ultimo, cambio: N.cambio, serie: N.serie.map((s) => [s[0], s[2]]) };
+    if (id[0] === "e") { const e = ENT.find((x) => x.clave === id.slice(1)); return { nombre: e.nombre, ultimo: e.ultimo, cambio: e.cambio, serie: e.serie }; }
+    if (id[0] === "c") { const c = M.ciudades.find((x) => x.cd === id.slice(1)); return { nombre: c.nombre, ultimo: c.ultimo, cambio: c.desde2019 ? c.cambio : null, serie: c.serie, nota: c.desde2019 ? "" : "Esta ciudad entró a la encuesta en 2020: no hay comparación con 2019." }; }
+    const l = loc.find((x) => x.clave === +id.slice(1)); return { nombre: OPC[3].items.find((i) => i.id === id).nombre, ultimo: l.ultimo, cambio: l.cambio, serie: null };
+  }
+  function spark(box, vals, nombre) {
+    const fig = document.createElement("div"); fig.className = "spark";
+    const h = document.createElement("div"); h.className = "note"; h.style.margin = "0 0 4px"; h.textContent = nombre + ", por trimestre"; fig.append(h);
+    box.append(fig);
+    const W = Math.max(240, fig.clientWidth), H = 70, m = { t: 8, r: 30, b: 14, l: 4 };
+    const ok = vals.filter((v) => v !== null), lo = Math.min(...ok), hi = Math.max(...ok), pad = Math.max(0.5, (hi - lo) * 0.15);
+    const x = (i) => m.l + (W - m.l - m.r) * i / (nT - 1), y = (v) => m.t + (H - m.t - m.b) * (1 - (v - lo + pad) / (hi - lo + 2 * pad));
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img", "aria-label": `${nombre} por trimestre: de ${p1(ok[0])}% a ${p1(ok[ok.length - 1])}%` });
+    let d = "", prev = null;
+    T.forEach((t, i) => { const v = vals[i]; if (v === null) { prev = null; return; } const pt = `${x(idx(t)).toFixed(1)},${y(v).toFixed(1)}`; d += (prev === null || idx(t) !== idx(T[prev]) + 1 ? "M" : "L") + pt; prev = i; });
+    svg.append(svgEl("path", { d, fill: "none", stroke: "var(--cant)", "stroke-width": 2, "stroke-linejoin": "round" }));
+    const last = vals.length - 1;
+    svg.append(svgEl("circle", { cx: x(idx(M.U)), cy: y(vals[last]), r: 3.5, fill: "var(--cant)", stroke: "var(--surface)", "stroke-width": 2 }));
+    const tl = svgEl("text", { x: W - m.r + 6, y: y(vals[last]) + 4, "font-size": 11, "font-weight": 700, fill: "var(--ink)" }); tl.textContent = p1(vals[last]); svg.append(tl);
+    for (const a of [2019, M.ua]) { const t = svgEl("text", { x: x((a - 2019) * 4), y: H - 2, "font-size": 10, fill: "var(--ink-muted)" }); t.textContent = a; svg.append(t); }
+    fig.append(svg);
+  }
+  function drawPanel() {
+    const u = unidad(sel.value), P = document.getElementById("panel"), U0 = u.ultimo;
+    const tile = (k, ind) => `<div class="tile"><div class="k">${k}</div><div class="v">${p1(U0[ind])}% <small>± ${pf.format(U0[ind + "_ic90"])}</small></div>` +
+      (u.cambio && u.cambio[ind] ? `<div class="c">2019: ${p1(u.cambio[ind].antes)}% | último año: ${p1(u.cambio[ind].ahora)}% ${tag(u.cambio[ind].v)}</div>` : "") + `</div>`;
+    P.innerHTML = `<h3>${esc(u.nombre)} | ${TRIM(M.U)}</h3><div class="tiles">${tile("Informalidad laboral", "informalidad")}${tile("Desempleo", "desocupacion")}${tile("Participación", "participacion")}</div>` +
+      (u.nota ? `<p class="note">${u.nota}</p>` : "") + `<div class="sparks" id="sparks"></div>`;
+    if (u.serie) {
+      const sp = document.getElementById("sparks");
+      spark(sp, u.serie.map((s) => s[0]), "Informalidad");
+      spark(sp, u.serie.map((s) => s[1]), "Desempleo");
+    }
+  }
+  sel.addEventListener("change", drawPanel);
+
+  // ---------- este trimestre ----------
+  const es = N.este, ei = es.informalidad, ed = es.desocupacion;
+  const frase = (x, nombre) => Math.abs(x.dif) < 0.05
+    ? `${nombre} fue de ${p1(x.ahora)}%, igual que un año antes.`
+    : `${nombre} fue de ${p1(x.ahora)}%, contra ${p1(x.antes)}% un año antes: ${x.distingue ? `una diferencia de ${sg(x.dif)} puntos, mayor que su margen de error (± ${pf.format(x.margen)})` : `la diferencia (${sg(x.dif)} puntos) no supera el margen de error (± ${pf.format(x.margen)})`}.`;
+  document.getElementById("trim-title").textContent = `El ${TRIM(M.U)}`;
+  document.getElementById("trim-body").innerHTML =
+    `<p>En el país, la informalidad laboral ${frase(ei, "").replace(/^ fue/, "fue")}</p>` +
+    `<p>El desempleo ${frase(ed, "").replace(/^ fue/, "fue")}</p>` +
+    `<p class="note">Este bloque y las cifras de la página se actualizan cada trimestre, cuando el INEGI publica la encuesta. El cambio desde 2019 siempre compara el último año completo con 2019.</p>`;
+
+  // ---------- método y fuentes ----------
+  document.getElementById("notas").innerHTML = [
+    `Usé los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI, tabla sociodemográfica, del ${TRIM(T[0])} al ${TRIM(M.U)}: ${T.length} trimestres. Cuento a las personas de 15 años o más, residentes de la vivienda, con entrevista completa, que es el criterio del INEGI.`,
+    `Desempleo es la tasa de desocupación: personas que no trabajaron y buscaron trabajo, entre la población económicamente activa (las que trabajan o buscan). Informalidad es la tasa de informalidad laboral 1 del INEGI: personas ocupadas en la informalidad (sin la seguridad social de un empleo formal, o en un negocio o actividad sin registro, entre otras) entre todas las ocupadas. Participación: población económicamente activa entre la de 15 años o más.`,
+    `Cada cifra trae su margen de error de 90%, calculado con el diseño de la encuesta (estratos y unidades primarias de muestreo).`,
+    `Para comparar con 2019 promedié los cuatro trimestres de 2019 y los últimos cuatro publicados (${M.ventana}): así los dos lados tienen todas las estaciones del año. Un cambio cuenta solo si es mayor que su margen de error. Calculé ese margen como si los trimestres de cada lado estuvieran totalmente relacionados entre sí, porque la encuesta repite viviendas de un trimestre a otro; es un criterio conservador.`,
+    `El cálculo reproduce lo que publica el INEGI: en el ${TRIM("2026-T2")} coincide con su boletín en el total nacional y en los estados y ciudades que revisé, con diferencias de 0.0 a 0.1 puntos.`,
+    `Del tercer trimestre de 2020 al cuarto de 2022 la encuesta fue la ENOE Nueva Edición, levantada en parte por teléfono. El segundo trimestre de 2020 no existe en esta serie.`,
+    `En el cuarto trimestre de 2024 el INEGI actualizó la población de las ciudades, y algunas cambian mucho de un trimestre a otro. Por eso uso tasas y no número de personas.`,
+    `Las ciudades son las 39 que el INEGI llama autorrepresentadas; cada una puede abarcar más de un municipio. Coatzacoalcos, Ciudad del Carmen y Tapachula entraron en 2020, así que el conjunto de ciudades que comparo con 2019 es de ${nC}.`,
+    `El código y los datos están publicados, y la página se rearma sola cada trimestre. Si los datos dejan de sostener el título, el proceso se detiene para que lo revise.`,
+  ].map((t) => `<li>${t}</li>`).join("");
+  document.getElementById("fuentes").innerHTML =
+    `Fuentes: INEGI, Encuesta Nacional de Ocupación y Empleo (ENOE y ENOE Nueva Edición), microdatos ${T[0].slice(0, 4)}–${M.ua}, y boletines trimestrales de la ENOE. ` +
+    `Código y datos: <a href="https://github.com/cifrapublicamx">github.com/cifrapublicamx</a>.`;
+
+  // ---------- dibujar ----------
+  const dibuja = () => { drawMaps(); drawSeries(); drawCities(); drawPanel(); };
+  dibuja();
+  let rt, ancho = innerWidth; addEventListener("resize", () => { if (innerWidth === ancho) return; ancho = innerWidth; clearTimeout(rt); rt = setTimeout(dibuja, 120); });
+})();
+</script>
+</body>
+</html>

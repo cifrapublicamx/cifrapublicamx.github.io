@@ -33,7 +33,7 @@ from extraer import TRIMESTRAL, hechos  # noqa: E402
 
 import pandas as pd  # noqa: E402
 
-TITULO = "Menos desempleo, la misma informalidad: así cambió el trabajo en las ciudades desde 2019"
+TITULO = "Menos desempleo, casi la misma informalidad: así cambió el trabajo en México desde 2019"
 BASE = [f"2019-T{t}" for t in (1, 2, 3, 4)]
 INDICADORES = (("informalidad", "Informalidad"), ("desocupacion", "Desocupación"),
                ("participacion", "Participación"), ("sector_informal", "Sector informal"))
@@ -100,25 +100,32 @@ def conteo(tabla: pd.DataFrame, clave: str, claves: list[str], ult: list[str], i
     return out
 
 
-def titular(ciu: pd.DataFrame, ult: list[str]) -> dict:
-    """Los hechos del título, calculados sobre las 36 ciudades que existen desde 2019.
-    «Menos desempleo»: la desocupación baja en más ciudades que en las que sube y baja en el agregado.
-    «La misma informalidad»: en la mayoría de las ciudades no cambia más allá del margen, y en menos
-    ciudades baja la informalidad que la desocupación."""
+def titular(ciu: pd.DataFrame, nac: pd.DataFrame, ult: list[str]) -> dict:
+    """Los hechos del título, con las 32 entidades, el total nacional y las 36 ciudades que existen desde 2019.
+    «Menos desempleo»: la desocupación nacional baja, y baja en más entidades que en las que sube.
+    «Casi la misma informalidad»: la nacional no sube y baja menos de 2 puntos; no cambia en la mayoría de
+    las entidades ni en la mayoría de las ciudades; y baja en menos entidades que la desocupación."""
     numericas = ciu[ciu["cd_a"].str.fullmatch(r"\d+")]
     en_2019 = sorted(set(numericas[numericas["trimestre"].isin(BASE)]["cd_a"]), key=int)
-    des = conteo(numericas, "cd_a", en_2019, ult, "desocupacion")
-    inf = conteo(numericas, "cd_a", en_2019, ult, "informalidad")
-    agg_des = cambio(ciu[ciu["cd_a"] == "36 ciudades"], ult, "desocupacion")
-    n = len(en_2019)
+    ciudades = {ind: conteo(numericas, "cd_a", en_2019, ult, ind) for ind in ("desocupacion", "informalidad")}
+    en = nac[nac["dominio"] == "entidad"] if not nac.empty else nac
+    claves = sorted(set(en["clave"]), key=int) if not en.empty else []
+    entidades = {ind: conteo(en, "clave", claves, ult, ind) for ind in ("desocupacion", "informalidad")} if claves else {}
+    tot = nac[nac["dominio"] == "nacional"] if not nac.empty else nac
+    nacional = {ind: cambio(tot, ult, ind) for ind in ("desocupacion", "informalidad", "participacion")} if not tot.empty else {}
+    nd, ni = nacional.get("desocupacion"), nacional.get("informalidad")
+    ed, ei = entidades.get("desocupacion"), entidades.get("informalidad")
+    n_ent, n_ciu = len(claves), len(en_2019)
     reglas = {
-        "la desocupación baja en más ciudades que en las que sube": len(des["baja"]) > len(des["sube"]),
-        "la desocupación del agregado de 36 baja": bool(agg_des and agg_des["veredicto"] == "baja"),
-        "la informalidad no cambia en la mayoría de las ciudades": len(inf["igual"]) > n / 2,
-        "la informalidad baja en menos ciudades que la desocupación": len(inf["baja"]) < len(des["baja"]),
+        "la desocupación nacional baja": bool(nd and nd["veredicto"] == "baja"),
+        "la desocupación baja en más entidades que en las que sube": bool(ed and len(ed["baja"]) > len(ed["sube"])),
+        "la informalidad nacional no sube y baja menos de 2 puntos": bool(ni and ni["veredicto"] != "sube" and ni["dif"] > -2),
+        "la informalidad no cambia en la mayoría de las entidades": bool(ei and len(ei["igual"]) > n_ent / 2),
+        "la informalidad no cambia en la mayoría de las ciudades": len(ciudades["informalidad"]["igual"]) > n_ciu / 2,
+        "la informalidad baja en menos entidades que la desocupación": bool(ei and ed and len(ei["baja"]) < len(ed["baja"])),
     }
-    return {"n": n, "desocupacion": des, "informalidad": inf, "reglas": reglas,
-            "se_sostiene": all(reglas.values())}
+    return {"n_ciudades": n_ciu, "n_entidades": n_ent, "ciudades": ciudades, "entidades": entidades,
+            "nacional": nacional, "reglas": reglas, "se_sostiene": all(reglas.values())}
 
 
 # ---------------------------------------------------------------- lectura
@@ -181,18 +188,24 @@ def main() -> int:
 
     # Titular
     if hay_base:
-        tt = titular(ciu, ult)
+        tt = titular(ciu, nac, ult)
         L += ["## El titular", "", f"«{TITULO}»", "",
-              f"**¿Se sostiene?** {'sí' if tt['se_sostiene'] else '**NO: revisar el título antes de publicar**'}", ""]
+              f"**¿Se sostiene?** {'sí' if tt['se_sostiene'] else '**NO: revisar el título antes de publicar** (la página no se rearma)'}", ""]
         for regla, ok in tt["reglas"].items():
             L.append(f"- {'✓' if ok else '✗'} {regla}")
         for ind, nombre in (("desocupacion", "Desocupación"), ("informalidad", "Informalidad")):
-            c = tt[ind]
-            L.append(f"- {nombre} en las {tt['n']} ciudades: baja en {len(c['baja'])}, igual en {len(c['igual'])}, "
+            if tt["nacional"].get(ind):
+                L.append(f"- {nombre} nacional: {texto_promedios(tt['nacional'][ind])}.")
+            if tt["entidades"].get(ind):
+                c = tt["entidades"][ind]
+                L.append(f"- {nombre} en las {tt['n_entidades']} entidades: baja en {len(c['baja'])}, igual en {len(c['igual'])}, "
+                         f"sube en {len(c['sube'])}.")
+            c = tt["ciudades"][ind]
+            L.append(f"- {nombre} en las {tt['n_ciudades']} ciudades: baja en {len(c['baja'])}, igual en {len(c['igual'])}, "
                      f"sube en {len(c['sube'])}.")
             for v in ("baja", "sube"):
                 if c[v] and (ind == "informalidad" or v == "sube"):
-                    L.append(f"  - {v}: {', '.join(nombre_ciudad(k) for k in c[v])}")
+                    L.append(f"  - ciudades donde {v}: {', '.join(nombre_ciudad(k) for k in c[v])}")
         L.append("")
 
         # Nacional, tamaño de localidad y agregados de ciudades
