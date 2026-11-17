@@ -1,0 +1,21 @@
+{
+  "trimestre": "2025-T2",
+  "anio": 2025,
+  "trim": 2,
+  "encuesta": "ENOE",
+  "archivo": "enoe_2025_trim2_csv.zip",
+  "url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_2025_trim2_csv.zip",
+  "bytes": 38752236,
+  "sha256": "291db61afcc472a0933d2bebf46720cfd024df8912dc899d541d8109bd406722",
+  "tabla": "ENOE_SDEMT225.csv",
+  "codificacion": "latin-1",
+  "filas": 423744,
+  "poblacion_15_muestra": 324613,
+  "peso": "fac_tri",
+  "estrato": "est_d_tri",
+  "upm": "upm",
+  "ciudades": 39,
+  "segundos": 6.1,
+  "procesado_utc": "2026-11-17T17:28:51Z",
+  "version_script": "2026-11-12"
+}

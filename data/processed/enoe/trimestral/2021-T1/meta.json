@@ -1,0 +1,21 @@
+{
+  "trimestre": "2021-T1",
+  "anio": 2021,
+  "trim": 1,
+  "encuesta": "ENOE N",
+  "archivo": "enoe_n_2021_trim1_csv.zip",
+  "url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_n_2021_trim1_csv.zip",
+  "bytes": 24586788,
+  "sha256": "208c114079eb368201c281e1e84ce34ad1c885a738f63da4dad04e85bd2c0a52",
+  "tabla": "ENOEN_SDEMT121.csv",
+  "codificacion": "latin-1",
+  "filas": 350728,
+  "poblacion_15_muestra": 264449,
+  "peso": "fac_tri",
+  "estrato": "est_d_tri",
+  "upm": "upm",
+  "ciudades": 39,
+  "segundos": 4.9,
+  "procesado_utc": "2026-11-17T17:13:34Z",
+  "version_script": "2026-11-12"
+}

@@ -1,0 +1,21 @@
+{
+  "trimestre": "2022-T3",
+  "anio": 2022,
+  "trim": 3,
+  "encuesta": "ENOE N",
+  "archivo": "enoe_n_2022_trim3_csv.zip",
+  "url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_n_2022_trim3_csv.zip",
+  "bytes": 29571337,
+  "sha256": "fc47029e5b11943d3006929252e2d378c5f555bbaabe67d704a89c81878596e5",
+  "tabla": "ENOEN_SDEMT322.csv",
+  "codificacion": "latin-1",
+  "filas": 398591,
+  "poblacion_15_muestra": 303937,
+  "peso": "fac_tri",
+  "estrato": "est_d_tri",
+  "upm": "upm",
+  "ciudades": 39,
+  "segundos": 5.7,
+  "procesado_utc": "2026-11-17T17:17:52Z",
+  "version_script": "2026-11-12"
+}

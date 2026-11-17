@@ -1,0 +1,21 @@
+{
+  "trimestre": "2023-T3",
+  "anio": 2023,
+  "trim": 3,
+  "encuesta": "ENOE",
+  "archivo": "enoe_2023_trim3_csv.zip",
+  "url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_2023_trim3_csv.zip",
+  "bytes": 40893331,
+  "sha256": "cb91900ad406e1d7435cc51ed418866cbdd08808892d2dd60644516e82be9752",
+  "tabla": "ENOE_SDEMT323.csv",
+  "codificacion": "latin-1",
+  "filas": 429077,
+  "poblacion_15_muestra": 329397,
+  "peso": "fac_tri",
+  "estrato": "est_d_tri",
+  "upm": "upm",
+  "ciudades": 39,
+  "segundos": 6.1,
+  "procesado_utc": "2026-11-17T17:21:56Z",
+  "version_script": "2026-11-12"
+}
