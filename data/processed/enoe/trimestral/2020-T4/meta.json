@@ -1,0 +1,21 @@
+{
+  "trimestre": "2020-T4",
+  "anio": 2020,
+  "trim": 4,
+  "encuesta": "ENOE N",
+  "archivo": "enoe_n_2020_trim4_csv.zip",
+  "url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_n_2020_trim4_csv.zip",
+  "bytes": 23007909,
+  "sha256": "5d6ce8a6dcc2cace4a1e6e5cbaf9d9c61ad7bbbfa3217ecc9cd2184e2093f6f3",
+  "tabla": "ENOEN_SDEMT420.csv",
+  "codificacion": "latin-1",
+  "filas": 356790,
+  "poblacion_15_muestra": 269715,
+  "peso": "fac_tri",
+  "estrato": "est_d_tri",
+  "upm": "upm",
+  "ciudades": 39,
+  "segundos": 5.1,
+  "procesado_utc": "2026-11-17T17:12:49Z",
+  "version_script": "2026-11-12"
+}

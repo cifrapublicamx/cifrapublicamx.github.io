@@ -1,0 +1,21 @@
+{
+  "trimestre": "2019-T4",
+  "anio": 2019,
+  "trim": 4,
+  "encuesta": "ENOE",
+  "archivo": "2019trim4_csv.zip",
+  "url": "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/2019trim4_csv.zip",
+  "bytes": 28058037,
+  "sha256": "d91658be67f515a26f501fc130731e866b7c77c992ed91471217074f4f18ad58",
+  "tabla": "sdemt419.csv",
+  "codificacion": "latin-1",
+  "filas": 402536,
+  "poblacion_15_muestra": 300418,
+  "peso": "fac",
+  "estrato": "est_d",
+  "upm": "upm",
+  "ciudades": 36,
+  "segundos": 5.7,
+  "procesado_utc": "2026-11-17T17:10:28Z",
+  "version_script": "2026-11-12"
+}
