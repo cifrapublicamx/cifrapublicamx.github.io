@@ -2,18 +2,23 @@
 Cifra Pública | Folio 003 | Extracción trimestral de la ENOE.
 
 Por cada trimestre guarda en data/processed/enoe/trimestral/AAAA-TN/:
-- ciudades.csv    las 39 ciudades, el agregado de 39 y el agregado comparable de 36 (sin las
-                  ciudades que entraron en 2020): participación, desocupación, informalidad y
-                  sector informal, cada una con su intervalo de 90%, más muestra y totales
-- desgloses.csv   León y los comparables (papel foco/comparable en ciudades.csv) por sexo y por
-                  sector (RAMA_EST2): las mismas tasas y, por sector, su peso en la ocupación
+- nacional.csv    total nacional, 32 entidades y 4 tamaños de localidad (dominio, clave)
+- ciudades.csv    las 39 ciudades, el agregado de 39 (desde 2020), el comparable de 36 (sin las
+                  ciudades que entraron en 2020) y el de 36 sin la Ciudad de México
+- desgloses.csv   total nacional, agregado de 36 ciudades, León y comparables (papel
+                  foco/comparable en ciudades.csv) por sexo y por sector (RAMA_EST2): las mismas
+                  tasas y, por sector, su peso en la ocupación
 - meta.json       archivo, tamaño, huella, filas, columnas, factor y diseño usados
+En cada archivo: participación, desocupación, informalidad y sector informal, cada una con su
+intervalo de 90%, más muestra y totales.
 
 El zip (~30 MB) se baja a data/raw/enoe/ (fuera del repo) y se borra con --borrar-crudo.
 
 Uso:
     python scripts/enoe/extraer.py --trimestres 2026-2
     python scripts/enoe/extraer.py --faltantes --desde 2019-1 --max 40 --borrar-crudo
+    python scripts/enoe/extraer.py --faltantes --rehacer --desde 2019-1 --max 60 --borrar-crudo
+                                                     # vuelve a calcular también los ya hechos
     python scripts/enoe/extraer.py --plan --desde 2019-1        # trimestres pendientes (JSON)
 """
 from __future__ import annotations
@@ -33,7 +38,7 @@ import inegi  # noqa: E402
 
 import pandas as pd  # noqa: E402
 
-VERSION = "2026-11-12"
+VERSION = "2026-11-17"
 TRIMESTRAL = inegi.PROCESADO / "trimestral"
 SECTORES = {1: "Agropecuario", 2: "Extractiva y electricidad", 3: "Manufactura", 4: "Construcción",
             5: "Comercio", 6: "Restaurantes y alojamiento", 7: "Transportes y comunicaciones",
@@ -76,14 +81,18 @@ def procesa(anio: int, trim: int, zip_path: Path) -> dict:
     p = inegi.prepara(df, info)
     del df
 
+    nacional = pd.DataFrame([{"dominio": d, "clave": k, **inegi.tasas(p, dom)}
+                             for d, k, dom in inegi.dominios_nacionales(p)])
     filas = [{"cd_a": et, **inegi.tasas(p, dom)} for et, dom in inegi.dominios_ciudades(p)]
     ciudades = pd.DataFrame(filas)
 
     desg = []
     sexo_ok = "sex" in p.columns
     sector_ok = "rama_est2" in p.columns
-    for c in elegidas():
-        en_c = p["cd_a"] == c
+    c36 = dict(inegi.dominios_ciudades(p, solo=set()))["36 ciudades"]
+    grupos = [("Nacional", pd.Series(True, index=p.index)), ("36 ciudades", c36)]
+    grupos += [(c, p["cd_a"] == c) for c in elegidas()]
+    for c, en_c in grupos:
         if not en_c.any():
             continue
         if sexo_ok:
@@ -103,6 +112,7 @@ def procesa(anio: int, trim: int, zip_path: Path) -> dict:
 
     destino = carpeta(anio, trim)
     destino.mkdir(parents=True, exist_ok=True)
+    nacional.to_csv(destino / "nacional.csv", index=False)
     ciudades.to_csv(destino / "ciudades.csv", index=False)
     desgloses.to_csv(destino / "desgloses.csv", index=False)
     h = hashlib.sha256()
@@ -117,6 +127,8 @@ def procesa(anio: int, trim: int, zip_path: Path) -> dict:
         "tabla": info["tabla"], "codificacion": info["codificacion"], "filas": info["filas"],
         "poblacion_15_muestra": int(len(p)), "peso": info["peso"], "estrato": info["estrato"],
         "upm": info["upm"], "ciudades": int(ciudades["cd_a"].map(lambda x: isinstance(x, (int, float))).sum()),
+        "entidades": int((nacional["dominio"] == "entidad").sum()),
+        "localidad": info.get("localidad"), "tamanos_localidad": int((nacional["dominio"] == "localidad").sum()),
         "segundos": round(time.time() - t0, 1),
         "procesado_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "version_script": VERSION,
     }
@@ -140,7 +152,8 @@ def main() -> int:
     salida = os.environ.get("GITHUB_OUTPUT")
     if a.faltantes or a.plan:
         hasta = parse_trim(a.hasta) if a.hasta else None
-        candidatos = [t for t in inegi.trimestres(parse_trim(a.desde), hasta) if t not in hechos()]
+        ya = set() if a.rehacer else hechos()
+        candidatos = [t for t in inegi.trimestres(parse_trim(a.desde), hasta) if t not in ya]
         trabajo = []
         for t in candidatos:                      # solo lo que de verdad ya está publicado
             c = inegi.consulta(s, inegi.url_trimestre(*t))
@@ -161,8 +174,9 @@ def main() -> int:
     trabajo = trabajo[: a.max]
     inegi.log(f"Por procesar ({len(trabajo)}): {', '.join(inegi.etiqueta(*t) for t in trabajo) or 'nada'}")
 
-    renglones = ["| Trimestre | Encuesta | MB | Descarga (s) | Proceso (s) | León: informalidad | Estado |",
-                 "|---|---|---|---|---|---|---|"]
+    renglones = ["| Trimestre | Encuesta | MB | Descarga (s) | Proceso (s) | Nacional: informalidad | "
+                 "36 ciudades: informalidad | Entidades | Estado |",
+                 "|---|---|---|---|---|---|---|---|---|"]
     fallas = 0
     for anio, trim in trabajo:
         et = inegi.etiqueta(anio, trim)
@@ -172,17 +186,21 @@ def main() -> int:
             t_desc = time.time() - t0
             meta = procesa(anio, trim, z)
             ciudades = pd.read_csv(carpeta(anio, trim) / "ciudades.csv", dtype={"cd_a": str})
-            leon = ciudades[ciudades["cd_a"] == "5"]
-            txt = f"{leon['informalidad'].iloc[0]:.1f} ± {leon['informalidad_ic90'].iloc[0]:.1f}" if len(leon) else "—"
+            nac = pd.read_csv(carpeta(anio, trim) / "nacional.csv", dtype={"clave": str})
+
+            def txt(fila):
+                return f"{fila['informalidad'].iloc[0]:.1f} ± {fila['informalidad_ic90'].iloc[0]:.1f}" if len(fila) else "—"
+            t_nac = txt(nac[nac["dominio"] == "nacional"])
+            t_36 = txt(ciudades[ciudades["cd_a"] == "36 ciudades"])
             renglones.append(f"| {et} | {meta['encuesta']} | {meta['bytes'] / 1e6:,.1f} | {t_desc:,.0f} | "
-                             f"{meta['segundos']:,.0f} | {txt} | ok |")
-            inegi.log(f"{et}: ok (León {txt})")
+                             f"{meta['segundos']:,.0f} | {t_nac} | {t_36} | {meta['entidades']} | ok |")
+            inegi.log(f"{et}: ok (nacional {t_nac}; 36 ciudades {t_36}; {meta['entidades']} entidades)")
             if a.borrar_crudo:
                 z.unlink(missing_ok=True)
         except Exception as e:                                # noqa: BLE001
             fallas += 1
             motivo = " ".join(str(e).split()).replace("|", "/")[:200]
-            renglones.append(f"| {et} | — | — | — | — | — | falla: {type(e).__name__}: {motivo} |")
+            renglones.append(f"| {et} | — | — | — | — | — | — | — | falla: {type(e).__name__}: {motivo} |")
             inegi.log(f"{et}: FALLA\n{traceback.format_exc()}")
     inegi.resumen_github("### Extracción ENOE\n\n" + "\n".join(renglones) + "\n")
     if salida:

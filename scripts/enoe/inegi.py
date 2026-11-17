@@ -1,8 +1,9 @@
 """
-Cifra Pública | Folio 003 | Ocupación e informalidad por ciudad (ENOE, INEGI)
+Cifra Pública | Folio 003 | Ocupación e informalidad en México (ENOE, INEGI)
 
 Módulo común: arma la dirección de los microdatos de cada trimestre, los descarga, lee la tabla
-sociodemográfica (SDEM) y calcula los indicadores laborales por ciudad con su margen de error.
+sociodemográfica (SDEM) y calcula los indicadores laborales con su margen de error para el total
+nacional, las 32 entidades, los cuatro tamaños de localidad y las 39 ciudades.
 
 Lo que sabemos (revisado el 12 de noviembre de 2026 en inegi.org.mx):
 - Un zip por trimestre, 28 a 41 MB en CSV. Tres formas de nombre:
@@ -16,6 +17,9 @@ Lo que sabemos (revisado el 12 de noviembre de 2026 en inegi.org.mx):
   2 = desocupada), EMP_PPAL (1 = empleo informal), TUE_PPAL (1 = sector informal).
 - Ciudades: 39, con claves CD_A (León 05, Puebla 04, San Luis Potosí 07, Aguascalientes 14,
   Tijuana 21, Querétaro 36); 81–86 son el complemento urbano-rural, no ciudades.
+- Tamaño de localidad: T_LOC en 2019 y T_LOC_TRI desde 2020 T3 (1 = 100 mil y más habitantes,
+  2 = 15 mil a 99 999, 3 = 2 500 a 14 999, 4 = menos de 2 500). Revisado en las columnas reales
+  de 2019 T4, 2021 T4 y 2026 T2 (data/fuentes/enoe/sondeo/columnas_*.json).
 
 Para pruebas locales: INEGI_BASE="http://127.0.0.1:8770/microdatos/" apunta a un servidor simulado.
 """
@@ -46,7 +50,8 @@ USER_AGENT = "CifraPublica/1.0 (+https://cifrapublicamx.github.io; microdatos EN
 # Columnas que se leen de la SDEM (nombres en minúsculas, después de normalizar).
 COLUMNAS = ["cd_a", "cve_ent", "ent", "cve_mun", "mun", "r_def", "c_res", "eda", "sex",
             "clase1", "clase2", "emp_ppal", "tue_ppal", "pos_ocu", "rama_est2", "ingocup",
-            "ing7c", "hrsocup", "fac", "fac_tri", "upm", "est_d_tri", "est_d", "est"]
+            "ing7c", "hrsocup", "fac", "fac_tri", "upm", "est_d_tri", "est_d", "est", "t_loc",
+            "t_loc_tri"]
 REQUERIDAS = ["cd_a", "r_def", "c_res", "eda", "clase1", "clase2", "emp_ppal", "tue_ppal"]
 
 
@@ -207,11 +212,14 @@ def lee_sdem(zip_path: Path):
         df = df.rename(columns={"ent": "cve_ent"})
     if "cve_mun" not in df.columns and "mun" in df.columns:
         df = df.rename(columns={"mun": "cve_mun"})
+    localidad = "t_loc_tri" if "t_loc_tri" in df.columns else ("t_loc" if "t_loc" in df.columns else None)
+    if localidad == "t_loc_tri":
+        df = df.drop(columns=["t_loc"], errors="ignore").rename(columns={"t_loc_tri": "t_loc"})
     peso = "fac_tri" if "fac_tri" in df.columns else ("fac" if "fac" in df.columns else None)
     estrato = next((c for c in ("est_d_tri", "est_d", "est") if c in df.columns), None)
     info = {"tabla": nombre, "codificacion": cod, "separador": sep, "filas": len(df),
             "columnas_archivo": cab, "peso": peso, "estrato": estrato,
-            "upm": "upm" if "upm" in df.columns else None,
+            "upm": "upm" if "upm" in df.columns else None, "localidad": localidad,
             "faltan": [c for c in REQUERIDAS if c not in df.columns] + ([] if peso else ["fac/fac_tri"])}
     return df, info
 
@@ -226,6 +234,9 @@ def poblacion_15(df):
 # Ciudades que entraron a la ENOE en 2020 T1 (Coatzacoalcos, Ciudad del Carmen, Tapachula). Para comparar
 # contra 2019 se usa el agregado de las 36 ciudades que están en toda la serie.
 NUEVAS_2020 = {30, 42, 52}
+CDMX = 1                                   # CD_A de la Ciudad de México (zona metropolitana)
+LOCALIDADES = {1: "100 mil y más habitantes", 2: "15 mil a 99 999 habitantes",
+               3: "2 500 a 14 999 habitantes", 4: "Menos de 2 500 habitantes"}
 TASAS = {  # nombre: (numerador, denominador)
     "participacion": ("pea", "uno"),
     "desocupacion": ("desoc", "pea"),
@@ -292,12 +303,39 @@ def tasas(p, dom, cuales=TASAS) -> dict:
 
 
 def dominios_ciudades(p, solo=None):
-    """[(etiqueta, máscara)]: agregado de 39 ciudades, agregado comparable de 36 y cada ciudad."""
+    """[(etiqueta, máscara)]: agregado de 39 ciudades (solo desde 2020, cuando existen las 39), agregado
+    comparable de 36, el de 36 sin la Ciudad de México y cada ciudad."""
     codigos = sorted(int(c) for c in p["cd_a"].dropna().unique() if 1 <= c <= 52)
-    out = [("39 ciudades", p["cd_a"].between(1, 52)),
-           ("36 ciudades", p["cd_a"].between(1, 52) & ~p["cd_a"].isin(NUEVAS_2020))]
+    en_ciudad = p["cd_a"].between(1, 52)
+    c36 = en_ciudad & ~p["cd_a"].isin(NUEVAS_2020)
+    out = [("39 ciudades", en_ciudad)] if p["cd_a"].isin(NUEVAS_2020).any() else []
+    out += [("36 ciudades", c36), ("36 ciudades sin Ciudad de México", c36 & (p["cd_a"] != CDMX))]
     out += [(c, p["cd_a"] == c) for c in codigos if solo is None or c in solo]
     return out
+
+
+def dominios_nacionales(p):
+    """[(dominio, clave, máscara)]: total nacional, cada entidad (CVE_ENT 1–32) y cada tamaño de localidad."""
+    import pandas as pd
+    out = [("nacional", "0", pd.Series(True, index=p.index))]
+    if "cve_ent" in p.columns:
+        out += [("entidad", str(k), p["cve_ent"] == k)
+                for k in sorted(int(e) for e in p["cve_ent"].dropna().unique() if 1 <= e <= 32)]
+    if "t_loc" in p.columns:
+        out += [("localidad", str(k), p["t_loc"] == k)
+                for k in sorted(int(e) for e in p["t_loc"].dropna().unique() if k_valida(e))]
+    return out
+
+
+def k_valida(e) -> bool:
+    return 1 <= e <= 4 and float(e).is_integer()
+
+
+def entidades() -> dict[str, dict]:
+    """Catálogo de entidades: clave (sin ceros) → {entidad, nombre_corto}."""
+    import csv
+    archivo = FUENTES / "entidades.csv"
+    return {str(int(f["cve_ent"])): f for f in csv.DictReader(archivo.open(encoding="utf-8"))}
 
 
 def indicadores(df, info, ciudades=None):
