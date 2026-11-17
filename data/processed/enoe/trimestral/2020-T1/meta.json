@@ -15,7 +15,10 @@
   "estrato": "est_d",
   "upm": "upm",
   "ciudades": 39,
-  "segundos": 5.9,
-  "procesado_utc": "2026-11-17T17:11:24Z",
-  "version_script": "2026-11-12"
+  "entidades": 32,
+  "localidad": "t_loc",
+  "tamanos_localidad": 4,
+  "segundos": 8.7,
+  "procesado_utc": "2026-11-17T19:06:18Z",
+  "version_script": "2026-11-17"
 }
