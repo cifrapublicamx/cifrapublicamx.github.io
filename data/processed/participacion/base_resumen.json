@@ -1,0 +1,11 @@
+{
+ "secciones_censo": 68806,
+ "secciones_ine_2024": 70460,
+ "con_participacion": {
+  "2018": 67361,
+  "2021": 68374,
+  "2024": 67694
+ },
+ "con_coordenadas": 65878,
+ "ine_2024_sin_censo": 2766
+}

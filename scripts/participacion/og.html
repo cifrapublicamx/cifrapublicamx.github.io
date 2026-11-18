@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<!-- Imagen para redes del Análisis 006 (1200x630). Se toma con scripts/participacion/og.py -->
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; font-weight: 200 800; font-stretch: 75% 100%; src: url(../../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Bricolage Grotesque"; font-weight: 200 800; font-stretch: 75% 100%; src: url(../../assets/fonts/bricolage-grotesque-latin-ext-standard-normal.woff2) format("woff2"); unicode-range: U+0100-02BA; }
+  @font-face { font-family: "Figtree"; font-weight: 300 900; src: url(../../assets/fonts/figtree-latin-wght-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Figtree"; font-weight: 300 900; src: url(../../assets/fonts/figtree-latin-ext-wght-normal.woff2) format("woff2"); unicode-range: U+0100-02BA; }
+  * { box-sizing: border-box; }
+  body { margin: 0; width: 1200px; height: 630px; background: #fff; color: #17151b; font-family: Figtree, sans-serif; padding: 40px 56px; }
+  .brand { display: flex; justify-content: space-between; align-items: center; }
+  .brand img { height: 30px; }
+  .folio { font-size: 17px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #5c5962; }
+  .dbl { height: 6px; border-top: 2px solid #17151b; border-bottom: 1px solid #17151b; margin-top: 14px; }
+  .grid { display: grid; grid-template-columns: 1fr 520px; gap: 48px; margin-top: 26px; }
+  .label { font-size: 16px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #b61066; }
+  h1 { font-family: "Bricolage Grotesque"; font-stretch: 92%; font-weight: 700; font-size: 46px; line-height: 1.04; letter-spacing: -0.03em; margin: 14px 0 18px; }
+  p { font-size: 20px; line-height: 1.4; color: #5c5962; margin: 0; }
+  .bars { padding-top: 34px; }
+  .row { margin-bottom: 26px; }
+  .row .n { font-size: 19px; font-weight: 600; margin-bottom: 8px; }
+  .row .n b { font-weight: 800; }
+  .row .b { display: flex; align-items: center; gap: 12px; }
+  .row .b i { display: block; height: 30px; border-radius: 5px; }
+  .row .b span { font-family: "Bricolage Grotesque"; font-stretch: 92%; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; }
+  .k { font-size: 15px; color: #5c5962; margin-top: 4px; }
+</style>
+</head>
+<body>
+  <div class="brand"><img src="../../assets/cifra-publica-logotipo.svg" alt=""><span class="folio">Análisis 006</span></div>
+  <div class="dbl"></div>
+  <div class="grid">
+    <div>
+      <div class="label">Participación electoral | México</div>
+      <h1 id="t"></h1>
+      <p>Aprendizaje automático con el Censo 2020 por sección electoral y la elección presidencial de 2024 del INE.</p>
+    </div>
+    <div class="bars" id="bars"></div>
+  </div>
+<script>
+  const D = JSON.parse(decodeURIComponent(location.hash.slice(1)));
+  document.getElementById("t").textContent = D.titulo;
+  const max = 100, W = 400;
+  document.getElementById("bars").innerHTML = `<div class="k" style="margin:0 0 18px">De cada 100 secciones que cada método señala, en cuántas votó menos de la mitad</div>` +
+    D.filas.map((r) => `<div class="row"><div class="n">${r.mejor ? `<b>${r.n}</b>` : r.n}</div><div class="b"><i style="width:${W * r.v / max}px;background:${r.c}"></i><span>${r.v}</span></div></div>`).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>__TITULO__ | Cifra Pública</title>
+<meta name="description" content="Puse a competir una regla simple y tres modelos de aprendizaje automático con el Censo 2020 por sección electoral para adivinar dónde votó menos de la mitad de la lista nominal en 2024. Qué datos pesan más, un simulador y el mapa de León.">
+<meta name="author" content="__AUTOR__">
+<meta property="og:title" content="__TITULO__">
+<meta property="og:description" content="Al azar le atinas a 15 de cada 100. Con el censo, un modelo llega a 69. Busca tu sección de León y mira si votó más o menos de lo que predice su censo.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cifrapublicamx.github.io/participacion/">
+<meta property="og:site_name" content="Cifra Pública">
+<meta property="og:locale" content="es_MX">
+<meta property="og:image" content="https://cifrapublicamx.github.io/assets/og/participacion.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Barras que comparan cuántas de cada 100 secciones señaladas votaron menos de la mitad: al azar 15, con el mejor modelo 69.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../assets/cifra-publica-avatar-tinta.svg">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>/*__LEAFLET_CSS__*/</style>
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-ext-standard-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-wght-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-ext-wght-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+
+  :root {
+    --surface: #ffffff; --surface-alt: #f7f6f8; --surface-sunken: #edecef;
+    --ink: #17151b; --ink-muted: #5c5962; --rule: #e2e0e5;
+    --rosa: #b61066; --rosa-suave: #ffe7ef;
+    --enf: #c06100; --gris: #9a9aa3; --gris-claro: #cfced4;
+    --c1: #e29f63; --c2: #d57e30; --c3: #c06100; --c4: #a34a00; --c5: #823905;
+    --menos-3: #6c3c9a; --menos-2: #926abe; --menos-1: #b59dd2; --igual: #d4d4d6;
+    --mas-1: #e3945c; --mas-2: #c26300; --mas-3: #8c3f00;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: Figtree, system-ui, sans-serif;
+    --s1: 8px; --s2: 14px; --s3: 22px; --s4: 40px; --r: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--surface); color: var(--ink); font: 16px/1.5 var(--body); }
+  a { color: var(--rosa); text-underline-offset: 2px; }
+  .wrap { max-width: 720px; margin-inline: auto; padding: 0 var(--s3); }
+  .wide { max-width: 1040px; }
+  section { margin-top: 56px; }
+
+  .top { padding-top: 18px; }
+  .brand { display: flex; justify-content: space-between; align-items: center; }
+  .brand img { height: 26px; width: auto; display: block; }
+  .folio { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .dbl { height: 4px; border-top: 1.5px solid var(--ink); border-bottom: 0.75px solid var(--ink); margin-top: 10px; }
+  .label { margin-top: 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rosa); }
+  h1 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: clamp(30px, 6vw, 44px); line-height: 1.05; letter-spacing: -0.03em; margin: 10px 0 var(--s2); }
+  .dek { font-size: 16px; margin: 0 0 var(--s2); }
+  @media (min-width: 720px) { .dek { font-size: 17px; } }
+  .byline { font-size: 12px; color: var(--ink-muted); margin: 0; }
+
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: var(--s2); }
+  .findings { display: grid; gap: var(--s1); margin-top: var(--s3); }
+  @media (min-width: 560px) { .findings { grid-template-columns: repeat(2, 1fr); } }
+  .findings .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .findings .big small { font-size: 16px; letter-spacing: -0.01em; }
+  .findings p { margin: 8px 0 0; font-size: 15px; }
+
+  h2 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; }
+  h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .sub { font-size: 15px; color: var(--ink-muted); margin: 0 0 var(--s2); }
+  .prose p { font-size: 16px; margin: 0 0 var(--s2); }
+  .prose p:last-child { margin-bottom: 0; }
+  .note { font-size: 12px; color: var(--ink-muted); margin: 10px 0 0; }
+  figure { margin: 0; }
+  svg text { font-family: var(--body); }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-muted); margin-bottom: 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .aviso { margin-top: var(--s2); background: var(--surface-alt); border-radius: var(--r); padding: 12px 16px; font-size: 14px; }
+  .aviso b { font-weight: 700; }
+
+  /* Controles */
+  .ctrl { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); margin-bottom: var(--s2); }
+  .grupo { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .grupo .k { font-size: 12px; color: var(--ink-muted); width: 100%; }
+  .chip { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); font: 600 15px var(--body); cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .chip:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .chip.sm { min-height: 40px; font-size: 14px; padding: 0 12px; }
+
+  /* Modelos */
+  .que-es { display: grid; gap: var(--s1); margin-top: var(--s2); }
+  @media (min-width: 620px) { .que-es { grid-template-columns: repeat(3, 1fr); } }
+  .que-es .card { background: var(--surface-alt); border-color: var(--surface-alt); }
+  .que-es b { font-family: var(--display); font-stretch: 92%; font-size: 16px; letter-spacing: -0.01em; display: block; margin-bottom: 4px; }
+  .que-es p { margin: 0; font-size: 14px; }
+
+  /* Curvas */
+  .curvas { display: grid; gap: var(--s2); }
+  @media (min-width: 620px) { .curvas { grid-template-columns: 1fr 1fr; } }
+  .curvas h3 { font-size: 15px; margin: 0 0 2px; }
+  .curvas .k { font-size: 12px; color: var(--ink-muted); margin: 0 0 6px; }
+
+  /* Simulador */
+  .sim { display: grid; gap: var(--s3); }
+  @media (min-width: 680px) { .sim { grid-template-columns: 1fr 260px; align-items: start; } }
+  .slider { display: grid; gap: 2px; margin-bottom: 12px; }
+  .slider label { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; font-weight: 600; }
+  .slider label output { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .slider small { font-size: 12px; color: var(--ink-muted); }
+  input[type=range] { width: 100%; min-height: 32px; accent-color: var(--ink); }
+  .res { background: var(--surface-alt); border-radius: var(--r); padding: 16px; position: sticky; top: 12px; }
+  .res .k { font-size: 12px; color: var(--ink-muted); font-weight: 600; }
+  .res .v { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 52px; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin: 6px 0; }
+  .res .v small { font-size: 22px; }
+  .res p { margin: 8px 0 0; font-size: 14px; }
+
+  /* Mapa */
+  .map-shell { display: grid; gap: var(--s2); }
+  @media (min-width: 900px) { .map-shell { grid-template-columns: 1fr 320px; align-items: start; } }
+  #map { height: 62vh; min-height: 380px; max-height: 640px; border-radius: var(--r); border: 1px solid var(--rule); background: var(--surface-alt); }
+  .leaflet-container { font-family: var(--body); }
+  .leaflet-bar { border: 1px solid var(--rule) !important; box-shadow: none !important; border-radius: var(--r) !important; overflow: hidden; }
+  .leaflet-bar a { color: var(--ink); }
+  .leaflet-tooltip.hex-tip { font: 13px/1.4 var(--body); color: var(--ink); background: var(--surface); border-radius: 8px; border: 1px solid var(--rule); box-shadow: none; padding: 6px 9px; }
+  .leaflet-tooltip.hex-tip::before { display: none; }
+  .map-hint { font-size: 12px; color: var(--ink-muted); margin: 6px 2px 0; }
+  .side { display: grid; gap: var(--s2); }
+  .legend-title { font-size: 13px; font-weight: 600; margin: 0 0 10px; }
+  .ramp { display: flex; gap: 2px; }
+  .ramp span { flex: 1; height: 12px; border-radius: 999px; }
+  .ramp-lab { display: flex; gap: 2px; font-size: 11px; color: var(--ink-muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .ramp-lab span { flex: 1; text-align: center; white-space: nowrap; }
+  .buscar { display: flex; gap: 6px; }
+  .campo { display: flex; align-items: center; gap: 8px; border: 1px solid var(--rule); border-radius: 10px; padding: 0 12px; min-height: 48px; flex: 1; background: var(--surface); }
+  .campo:focus-within { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .campo input { border: 0; outline: 0; font: 700 18px var(--display); font-stretch: 92%; width: 100%; color: var(--ink); background: transparent; font-variant-numeric: tabular-nums; }
+  .ficha { background: var(--surface-alt); border-radius: var(--r); overflow: hidden; padding: 0 18px 16px; display: flex; flex-direction: column; gap: var(--s2); }
+  .ficha .dbl { margin: 0 -18px; }
+  .ficha-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .ficha-head h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; line-height: 1.2; margin: 0; }
+  .ficha-head span { font-size: 12px; color: var(--ink-muted); white-space: nowrap; }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .kpis div { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--ink-muted); }
+  .kpis b { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 22px; letter-spacing: -0.02em; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .ficha p { margin: 0; font-size: 15px; }
+  .ficha .muted { color: var(--ink-muted); font-size: 13px; }
+  .ficha ul { margin: 0; padding: 0; list-style: none; font-size: 14px; }
+  .ficha li { display: flex; justify-content: space-between; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+  .ficha li:last-child { border-bottom: 0; }
+  .ficha li button { all: unset; cursor: pointer; text-decoration: underline; text-decoration-color: var(--gris); text-underline-offset: 3px; }
+  .ficha li button:focus-visible { outline: 2px solid var(--rosa); }
+
+  .bar:hover, .bar:focus-visible { opacity: .8; outline: none; }
+  details.more summary { font-size: 13px; color: var(--ink-muted); cursor: pointer; margin-top: 10px; min-height: 24px; }
+  .tscroll { overflow-x: auto; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  table.t th { text-align: right; font-size: 12px; color: var(--ink-muted); font-weight: 600; padding: 6px; border-bottom: 1px solid var(--ink); vertical-align: bottom; }
+  table.t td { text-align: right; padding: 7px 6px; border-bottom: 1px solid var(--rule); vertical-align: top; white-space: nowrap; }
+  table.t th:first-child, table.t td:first-child { text-align: left; white-space: normal; }
+  table.t td small { font-size: 11px; color: var(--ink-muted); }
+
+  .tip { position: fixed; z-index: 1000; pointer-events: none; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font-size: 13px; line-height: 1.35; max-width: 270px; opacity: 0; transition: opacity .08s; }
+  .tip.on { opacity: 1; }
+  .tip b { display: block; font-size: 15px; }
+  .tip span { display: block; color: var(--ink-muted); }
+
+  .uso { background: var(--rosa-suave); border-radius: var(--r); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .uso p { margin: 0; font-size: 15px; }
+  details.metodo { margin-top: var(--s3); }
+  details.metodo summary { font-weight: 600; cursor: pointer; min-height: 24px; }
+  details.metodo li { margin: 8px 0; font-size: 15px; }
+  .cierre { display: flex; flex-direction: column; gap: var(--s2); padding-top: 18px; border-top: 1px solid var(--rule); }
+  .cierre p { margin: 0; font-size: 16px; }
+  .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 999px; background: var(--rosa); color: #fff; font: 700 15px var(--body); text-decoration: none; }
+  .btn:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  @media (min-width: 720px) { .btn { max-width: 320px; } }
+  .correo { font-size: 13px; color: var(--ink-muted); }
+  footer { padding: var(--s3) 0 48px; }
+  footer p { font-size: 12px; color: var(--ink-muted); margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand"><a href="../" aria-label="Cifra Pública, inicio"><img src="../assets/cifra-publica-logotipo.svg" alt="Cifra Pública" width="139" height="26"></a><span class="folio">Análisis 006</span></div>
+  <div class="dbl"></div>
+  <div class="label">Participación electoral | México y León</div>
+  <h1>__TITULO__</h1>
+  <p class="dek" id="dek"></p>
+  <p class="byline">Por __AUTOR__ | __FECHA__ | Elección de 2024 y Censo 2020, los datos más recientes por sección</p>
+  <p class="aviso" id="aviso"></p>
+</header>
+
+<main>
+  <div class="wrap"><div class="findings" id="findings"></div></div>
+
+  <section class="wrap">
+    <h2>Tres modelos y una regla contra el azar</h2>
+    <p class="sub" id="esc-sub"></p>
+    <figure class="card chart"><div id="esc"></div></figure>
+    <div class="prose" id="esc-prose" style="margin-top:var(--s2)"></div>
+    <div class="que-es">
+      <div class="card"><b>Regresión logística</b><p>Le da un peso a cada dato y los suma. Es la más sencilla de explicar: si sube la escolaridad, sube la probabilidad de votar, siempre en la misma proporción.</p></div>
+      <div class="card"><b>SVM</b><p>Máquina de vectores de soporte. Busca la frontera que mejor separa a las secciones que votaron poco de las demás, y puede doblarla para seguir patrones curvos.</p></div>
+      <div class="card"><b>Gradient boosting</b><p>Cientos de árboles de decisión pequeños, del tipo «¿más de 9 años de escuela? ¿más de 20% de casas vacías?». Cada árbol corrige los errores de los anteriores.</p></div>
+    </div>
+    <details class="more"><summary>Ver todas las métricas de la prueba</summary><div class="tscroll" id="tabla-modelos"></div></details>
+  </section>
+
+  <section class="wrap">
+    <h2>Después del estado, pesa la escuela</h2>
+    <p class="sub">Cuánto empeora el mejor modelo si le escondo un grupo de datos (le revuelvo esos datos entre secciones y mido cuánto pierde). El grupo que más le cuesta perder vale 100.</p>
+    <figure class="card chart"><div id="imp"></div></figure>
+    <div class="prose" id="imp-prose" style="margin-top:var(--s2)"></div>
+    <h3 style="margin-top:var(--s3)">Cómo se mueve la participación con cada dato</h3>
+    <p class="sub" id="curvas-sub"></p>
+    <div class="curvas" id="curvas"></div>
+    <p class="note">La franja gris marca dónde están 8 de cada 10 secciones de Guanajuato. Fuera de ella el modelo tiene pocos ejemplos y la curva es menos confiable.</p>
+  </section>
+
+  <section class="wrap">
+    <h2>Arma una sección de Guanajuato</h2>
+    <p class="sub">Mueve los seis datos y mira qué participación predice el modelo. Empieza con la sección típica del estado: la mediana de cada dato.</p>
+    <div class="card">
+      <div class="grupo" role="group" aria-label="Perfiles" style="margin-bottom:var(--s2)" id="presets"></div>
+      <div class="sim">
+        <div id="sliders"></div>
+        <div class="res" aria-live="polite"><div class="k">Participación que predice el modelo</div><div class="v" id="sim-v"></div><div id="sim-bar"></div><p id="sim-txt"></p></div>
+      </div>
+    </div>
+    <p class="note" id="sim-nota"></p>
+  </section>
+
+  <section class="wrap wide">
+    <div style="max-width:720px">
+      <h2 id="mapa-h2"></h2>
+      <p class="sub" id="mapa-sub"></p>
+    </div>
+    <div class="ctrl">
+      <div class="grupo" role="group" aria-label="Qué ver en el mapa"><span class="k">Qué ver</span>
+        <button class="chip" data-modo="r" aria-pressed="true">Participación 2024</button><button class="chip" data-modo="p" aria-pressed="false">Lo que predijo el modelo</button><button class="chip" data-modo="d" aria-pressed="false">Diferencia</button><button class="chip" data-modo="r21" aria-pressed="false">2021, intermedia</button></div>
+    </div>
+    <div class="map-shell">
+      <div><div id="map" role="region" aria-label="Mapa de León por hexágonos"></div><p class="map-hint" id="map-hint"></p></div>
+      <div class="side">
+        <div class="card"><p class="legend-title" id="leg-t"></p><div class="ramp" id="leg-r"></div><div class="ramp-lab" id="leg-l"></div></div>
+        <div>
+          <label for="buscar" style="font-size:12px;color:var(--ink-muted)">Busca tu sección (viene en tu credencial para votar)</label>
+          <div class="buscar"><div class="campo"><input id="buscar" inputmode="numeric" autocomplete="off" placeholder="Por ejemplo, 1234"></div><button class="chip" id="buscar-b">Buscar</button></div>
+        </div>
+        <div class="ficha" id="ficha" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2 id="mun-h2"></h2>
+    <p class="sub" id="mun-sub"></p>
+    <figure class="card chart"><div class="legend"><span><i style="background:var(--surface);border:2px solid var(--gris);width:12px;height:12px"></i>Lo que predijo el modelo</span><span><i style="background:var(--enf)"></i>Lo que votó</span></div><div id="mun"></div></figure>
+    <div class="prose" id="mun-prose" style="margin-top:var(--s2)"></div>
+    <details class="more"><summary>Ver los 46 municipios</summary><div class="tscroll" id="tabla-mun"></div></details>
+  </section>
+
+  <section class="wrap">
+    <h2>Si el modelo nunca hubiera visto Guanajuato</h2>
+    <p class="sub" id="ciegas-sub"></p>
+    <figure class="card chart"><div id="ciegas"></div></figure>
+    <div class="prose" id="ciegas-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="uso">
+      <h2>Para qué sirve, y para qué no</h2>
+      <div id="uso" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+    <details class="metodo card">
+      <summary>Cómo lo hice</summary>
+      <ul id="notas"></ul>
+    </details>
+  </section>
+
+  <section class="wrap">
+    <div class="cierre">
+      <p>¿Quieres este modelo para tu municipio, tu distrito o tu campaña de promoción del voto? Platiquemos.</p>
+      <a class="btn" href="mailto:__EMAIL__?subject=Participaci%C3%B3n%20por%20secci%C3%B3n">Escríbeme</a>
+      <span class="correo">__EMAIL__</span>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p id="fuentes"></p>
+  <p>Hecho por __AUTOR__ en León | Cifra Pública</p>
+</footer>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>/*__LEAFLET_JS__*/</script>
+<script id="meta" type="application/json">__META__</script>
+<script>
+(() => {
+  const M = JSON.parse(document.getElementById("meta").textContent);
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+  // ---------- formato ----------
+  const nf = new Intl.NumberFormat("es-MX");
+  const f1 = (v) => new Intl.NumberFormat("es-MX", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v);
+  const pc = (v) => f1(100 * v) + "%";
+  const pts = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + f1(Math.abs(v));
+  const svgEl = (tag, attrs = {}) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+  const txt = (svg, x, y, s, attrs = {}) => { const t = svgEl("text", { x, y, "font-size": 11, fill: "var(--ink-muted)", ...attrs }); t.textContent = s; svg.append(t); return t; };
+  const ancho = (box) => Math.max(300, Math.min(680, box.clientWidth || 680));
+
+  // ---------- tooltip ----------
+  const tip = document.getElementById("tip");
+  function showTip(e, lines) {
+    tip.replaceChildren(...lines.map((t, i) => { const n = document.createElement(i ? "span" : "b"); n.textContent = t; return n; }));
+    tip.classList.add("on");
+    const r = e.target.getBoundingClientRect();
+    const x = e.clientX ?? (r.left + r.width / 2), y = e.clientY ?? r.top;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, x - w / 2)) + "px";
+    tip.style.top = (y - h - 14 < 8 ? y + 18 : y - h - 14) + "px";
+  }
+  const hideTip = () => tip.classList.remove("on");
+  function bindTip(el, f) {
+    el.addEventListener("pointermove", (e) => showTip(e, f()));
+    el.addEventListener("pointerleave", hideTip);
+    el.addEventListener("focus", (e) => showTip({ target: e.target }, f()));
+    el.addEventListener("blur", hideTip);
+  }
+
+  // ---------- datos de apoyo ----------
+  const C = M.ctx, E = Object.fromEntries(M.escalera.map((r) => [r.k, r])), CI = Object.fromEntries(M.ciegas.map((r) => [r.k, r]));
+  const MUN = Object.fromEntries(M.mun.map((r) => [r.n, r]));
+  const leonM = MUN["León"], ira = MUN["Irapuato"];
+  const VARS = {
+    escolaridad: { n: "Escolaridad promedio", u: "años de escuela, gente de 15 años o más", f: (x) => f1(x) + " años" },
+    mayores_60: { n: "Adultos de 60 años o más", u: "% de las personas de 18 años o más", f: (x) => Math.round(100 * x) + "%" },
+    jovenes_18_24: { n: "Jóvenes de 18 a 24 años", u: "% de las personas de 18 años o más", f: (x) => Math.round(100 * x) + "%" },
+    issste: { n: "Afiliados al ISSSTE", u: "% de la población (federal o estatal)", f: (x) => f1(100 * x) + "%" },
+    sin_afiliacion: { n: "Sin servicios de salud", u: "% de la población sin IMSS, ISSSTE, Insabi ni otro", f: (x) => Math.round(100 * x) + "%" },
+    casas_deshabitadas: { n: "Casas deshabitadas", u: "% de las viviendas particulares", f: (x) => Math.round(100 * x) + "%" },
+    computadora: { n: "Casas con computadora", u: "% de las viviendas habitadas", f: (x) => Math.round(100 * x) + "%" },
+    log_lista_por_adulto: { n: "Inscritos por adulto que vive ahí", u: "lista nominal 2024 entre adultos del censo 2020", f: (x) => f1(Math.exp(x)) },
+  };
+
+  // ---------- entradilla, aviso y hallazgos ----------
+  document.getElementById("dek").textContent =
+    `Puse a competir una regla simple y tres modelos de aprendizaje automático, con ${M.n_vars} datos de cada sección electoral del país (casi todos del Censo 2020), para adivinar en cuáles votó menos de la mitad de la lista nominal en la elección presidencial de 2024. ` +
+    `Al azar le atinarías a ${E.azar.v} de cada 100. El mejor llegó a ${E.boosting.v}, prediciendo cada municipio sin haber visto ninguna de sus secciones. ` +
+    `Abajo puedes ver qué datos pesan más, armar una sección y buscar la tuya en León, donde se votó ${f1(leonM.r - leonM.p)} puntos más de lo que predice su censo.`;
+  document.getElementById("aviso").innerHTML = `<b>Hasta dónde llegan los datos.</b> La elección federal más reciente fue el 2 de junio de 2024; la siguiente, la intermedia, será en junio de 2027. El censo más reciente con datos por sección es el de 2020: lo que el modelo sabe de cada sección es cuatro años más viejo que la elección. Y hablo de participación, no de por quién se votó: los modelos no usan ningún resultado por partido.`;
+  document.getElementById("findings").innerHTML = `
+    <div class="card"><div class="big">${E.boosting.v} <small>de cada 100</small></div>
+      <p>secciones que el mejor modelo marcó como las más probables votaron, en efecto, menos de la mitad en 2024. Al azar serían ${E.azar.v}; sabiendo solo el estado, ${E.estado.v}.</p></div>
+    <div class="card"><div class="big">${f1(100 * C.nacional.bajo)}<small>%</small></div>
+      <p>de las ${nf.format(C.nacional.secciones)} secciones votó menos de la mitad de su lista nominal (${nf.format(C.nacional.bajo_n)} secciones). En Guanajuato, ${f1(100 * C.guanajuato.bajo)}%; en León, ${f1(100 * C.leon.bajo)}%.</p></div>
+    <div class="card"><div class="big">${pts(leonM.r - leonM.p)} <small>puntos</small></div>
+      <p>votó León por encima de lo que predice su censo: ${f1(leonM.r)}% contra ${f1(leonM.p)}%. Irapuato votó ${f1(ira.p - ira.r)} puntos por debajo (${f1(ira.r)}% contra ${f1(ira.p)}%).</p></div>
+    <div class="card"><div class="big">${E.historia.v} <small>de cada 100</small></div>
+      <p>si además el modelo sabe cuánto votó cada sección en 2018 y en 2021. Lo que una sección votó antes predice mejor que todo su censo: solo con eso, sin censo ni estado, llega a ${M.solo_historia}.</p></div>`;
+
+  // ---------- barras horizontales ----------
+  const COL = { base: "var(--gris-claro)", modelo: "var(--gris)", mejor: "var(--enf)", historia: "var(--gris)" };
+  function barras(box, filas, { max = 100, ref = null, refTxt = "", valor = (r) => String(r.v), tipLines }) {
+    const W = ancho(box), fila = 44, sep = filas.some((r) => r.t === "historia") ? 18 : 0;
+    const m = { t: ref == null ? 6 : 20, r: 36, l: 0 };
+    const H = m.t + filas.length * fila + sep + 4;
+    const x = (v) => m.l + (W - m.l - m.r) * v / max;
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
+      "aria-label": filas.map((r) => `${r.n}: ${valor(r)}`).join("; ") });
+    let y = m.t;
+    filas.forEach((r) => {
+      if (r.t === "historia") {
+        svg.append(svgEl("line", { x1: 0, x2: W - m.r, y1: y + sep / 2 - 2, y2: y + sep / 2 - 2, stroke: "var(--rule)" }));
+        y += sep;
+      }
+      const lab = txt(svg, 0, y + 13, r.n, { fill: "var(--ink)", "font-size": 13, "font-weight": r.t === "mejor" ? 700 : 500 });
+      if (r.d && W >= 560) { const s = svgEl("tspan", { fill: "var(--ink-muted)", "font-weight": 400, "font-size": 12 }); s.textContent = `  ${r.d}`; lab.append(s); }
+      const b = svgEl("rect", { x: x(0), y: y + 19, width: Math.max(2, x(r.v) - x(0)), height: 16, rx: 3, fill: COL[r.t] || "var(--gris)", class: "bar", tabindex: 0 });
+      if (tipLines) bindTip(b, () => tipLines(r));
+      svg.append(b);
+      txt(svg, x(r.v) + 6, y + 32, valor(r), { fill: "var(--ink)", "font-size": 14, "font-weight": 700 });
+      y += fila;
+    });
+    if (ref != null) {
+      svg.append(svgEl("line", { x1: x(ref), x2: x(ref), y1: m.t - 4, y2: H - 2, stroke: "var(--ink-muted)", "stroke-dasharray": "3 3" }));
+      txt(svg, x(ref) + 4, m.t - 8, refTxt, { "font-size": 11 });
+    }
+    box.replaceChildren(svg);
+  }
+
+  // ---------- escalera de modelos ----------
+  document.getElementById("esc-sub").textContent = `De cada 100 secciones que cada método marca como más probables (el 10% de arriba de su lista), en cuántas votó menos de la mitad. Cada municipio se predijo con un modelo que nunca vio ninguna de sus secciones.`;
+  const tipEsc = (r) => [r.n, `${r.v} de cada 100 señaladas votaron menos de la mitad`, r.k === "azar" ? "Es el porcentaje de secciones que votó menos de la mitad" : `De las que votaron menos de la mitad, encuentra ${r.rec} de cada 100`, `AUC: ${r.auc.toFixed(2)} (1 es perfecto, 0.5 es el azar)`];
+  const svmT = M.svm_t || {};
+  document.getElementById("esc-prose").innerHTML = `
+    <p>La regla más obvia, una sola variable, apenas pasa de ${E.azar.v} a ${E.regla.v}. Saber el estado ayuda más (${E.estado.v}): en ${M.estados[0].e} votó menos de la mitad en ${f1(M.estados[0].b)}% de las secciones y en ${M.estados[M.estados.length - 1].e}, en ${f1(M.estados[M.estados.length - 1].b)}%. Pero el censo solo, sin decirle al modelo de qué estado es cada sección, llega a ${E.censo.v}. Juntos, ${E.boosting.v}.</p>
+    <p>De los tres modelos ganó el gradient boosting. El SVM, el que yo tenía más curiosidad por probar, quedó en medio con ${E.svm.v}${svmT["32000"] ? `, y no fue por falta de datos: con el doble de secciones para entrenar llegó a ${svmT["32000"].v}` : ""}. La regresión logística, la más sencilla, se quedó a ${E.boosting.v - E.logistica.v} del primero. Y con la historia de cada sección (lo que votó en 2018 y 2021), el boosting sube a ${E.historia.v}.</p>`;
+  document.getElementById("tabla-modelos").innerHTML = `<table class="t"><thead><tr><th>Método</th><th>De 100 señaladas, votaron menos de la mitad</th><th>De 100 que votaron menos de la mitad, encuentra</th><th>AUC</th></tr></thead><tbody>${
+    M.escalera.map((r) => `<tr><td>${r.n}<br><small>${r.d}</small></td><td>${r.v}</td><td>${r.rec}</td><td>${r.auc.toFixed(3)}</td></tr>`).join("")
+  }</tbody></table><p class="note">«Encuentra»: si cada método marca tantas secciones como las que de verdad votaron menos de la mitad (${f1(100 * C.nacional.bajo)}%), cuántas de esas atrapa. AUC: la probabilidad de que, tomando una sección que votó menos de la mitad y otra que no, el modelo le dé más riesgo a la primera.</p>`;
+
+  // ---------- importancia ----------
+  document.getElementById("imp-prose").innerHTML = (() => {
+    const cu = M.curvas.escolaridad, band = cu.gto_p10_p50_p90;
+    const at = (x) => interp(cu.x, cu.y, x);
+    return `<p>El estado es lo que más pesa, seguramente porque ahí se mete lo que el censo no ve: qué más se votó ese día, qué tan competida estuvo la elección local, cuánto movilizaron los partidos. Después viene la escolaridad, muy lejos de todo lo demás. En una sección típica de Guanajuato, el modelo predice ${f1(100 * at(band[0]))}% de participación con ${f1(band[0])} años de escuela promedio y ${f1(100 * at(band[2]))}% con ${f1(band[2])}.</p>
+      <p>Que dos cosas vayan juntas no quiere decir que una cause la otra. La escolaridad viaja con el ingreso, el empleo formal y la edad; el modelo encuentra patrones, no causas.</p>`;
+  })();
+  function interp(xs, ys, x) {
+    if (x <= xs[0]) return ys[0];
+    if (x >= xs[xs.length - 1]) return ys[ys.length - 1];
+    let i = 1; while (xs[i] < x) i++;
+    const t = (x - xs[i - 1]) / (xs[i] - xs[i - 1]);
+    return ys[i - 1] + t * (ys[i] - ys[i - 1]);
+  }
+
+  // ---------- curvas ----------
+  const CURV = ["escolaridad", "mayores_60", "casas_deshabitadas", "sin_afiliacion"];
+  document.getElementById("curvas-sub").textContent = `Participación promedio que predice el modelo para las secciones de Guanajuato si les cambio solo ese dato y dejo los demás como están.`;
+  const yAll = CURV.flatMap((k) => M.curvas[k].y);
+  const yMin = Math.floor(Math.min(...yAll) * 50) / 50 - 0.01, yMax = Math.ceil(Math.max(...yAll) * 50) / 50 + 0.01;
+  function curva(box, key) {
+    const c = M.curvas[key], v = VARS[key];
+    const W = Math.max(260, Math.min(330, box.clientWidth || 330)), H = 170;
+    const m = { t: 10, r: 10, b: 26, l: 36 };
+    const x = (t) => m.l + (W - m.l - m.r) * (t - c.x[0]) / (c.x[c.x.length - 1] - c.x[0]);
+    const y = (t) => m.t + (H - m.t - m.b) * (1 - (t - yMin) / (yMax - yMin));
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
+      "aria-label": `${v.n}: de ${v.f(c.x[0])} a ${v.f(c.x[c.x.length - 1])}, la participación predicha va de ${pc(c.y[0])} a ${pc(c.y[c.y.length - 1])}` });
+    const [p10, , p90] = c.gto_p10_p50_p90;
+    svg.append(svgEl("rect", { x: x(Math.max(p10, c.x[0])), y: m.t, width: Math.max(0, x(Math.min(p90, c.x[c.x.length - 1])) - x(Math.max(p10, c.x[0]))), height: H - m.t - m.b, fill: "var(--surface-sunken)" }));
+    for (let t = Math.ceil(yMin * 20) / 20; t <= yMax + 1e-9; t += 0.05) {
+      svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t), stroke: "var(--rule)" }));
+      txt(svg, m.l - 6, y(t) + 4, Math.round(100 * t) + "%", { "text-anchor": "end" });
+    }
+    txt(svg, m.l, H - 8, v.f(c.x[0]), {});
+    txt(svg, W - m.r, H - 8, v.f(c.x[c.x.length - 1]), { "text-anchor": "end" });
+    svg.append(svgEl("path", { d: c.x.map((t, i) => `${i ? "L" : "M"}${x(t).toFixed(1)},${y(c.y[i]).toFixed(1)}`).join(""), fill: "none", stroke: "var(--enf)", "stroke-width": 2.5, "stroke-linejoin": "round" }));
+    const hot = svgEl("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: "transparent", tabindex: 0 });
+    const dot = svgEl("circle", { r: 4.5, fill: "var(--enf)", stroke: "#fff", "stroke-width": 1.5, opacity: 0 });
+    hot.addEventListener("pointermove", (e) => {
+      const r = hot.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width;
+      const xv = c.x[0] + fx * (c.x[c.x.length - 1] - c.x[0]), yv = interp(c.x, c.y, xv);
+      dot.setAttribute("cx", x(xv)); dot.setAttribute("cy", y(yv)); dot.setAttribute("opacity", 1);
+      showTip(e, [v.n + ": " + v.f(xv), `Participación predicha: ${pc(yv)}`]);
+    });
+    hot.addEventListener("pointerleave", () => { dot.setAttribute("opacity", 0); hideTip(); });
+    svg.append(hot, dot);
+    box.replaceChildren(svg);
+  }
+  const curvasBox = document.getElementById("curvas");
+  curvasBox.innerHTML = CURV.map((k) => `<figure class="card chart"><h3>${VARS[k].n}</h3><p class="k">${VARS[k].u}</p><div id="cu-${k}"></div></figure>`).join("");
+
+  // ---------- simulador ----------
+  const S = M.sim;
+  const simState = { ...S.perfiles.gto };
+  const PRESETS = [["gto", "Típica de Guanajuato"], ["leon", "Típica de León"], ["gto_rural", "Rural de Guanajuato"], ["leon_alta_escolaridad", "León, el 10% con más escuela"]];
+  document.getElementById("presets").innerHTML = `<span class="k" style="font-size:12px;color:var(--ink-muted);width:100%">Empieza con</span>` +
+    PRESETS.map(([k, n]) => `<button class="chip sm" data-pre="${k}" aria-pressed="${k === "gto"}">${n}</button>`).join("");
+  document.getElementById("sliders").innerHTML = S.vars.map((k) => {
+    const fx = S.formas[k].x, v = VARS[k];
+    return `<div class="slider"><label for="sl-${k}"><span>${v.n}</span><output id="o-${k}"></output></label>
+      <input type="range" id="sl-${k}" data-k="${k}" min="${fx[0]}" max="${fx[fx.length - 1]}" step="${(fx[fx.length - 1] - fx[0]) / 200}" value="${simState[k]}">
+      <small>${v.u}</small></div>`;
+  }).join("");
+  function predice(st) { return S.base + S.vars.reduce((s, k) => s + interp(S.formas[k].x, S.formas[k].delta, st[k]), 0); }
+  function pintaSim() {
+    const p = predice(simState);
+    for (const k of S.vars) { document.getElementById("o-" + k).textContent = VARS[k].f(simState[k]); document.getElementById("sl-" + k).value = simState[k]; }
+    document.getElementById("sim-v").innerHTML = `${f1(100 * p)}<small>%</small>`;
+    const box = document.getElementById("sim-bar"), W = 228, H = 46, lo = 0.35, hi = 0.8;
+    const x = (t) => 4 + (W - 8) * (Math.min(hi, Math.max(lo, t)) - lo) / (hi - lo);
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img", "aria-label": `Predicción ${f1(100 * p)}%; la mitad es 50%, Guanajuato votó ${pc(C.guanajuato.part)}` });
+    svg.append(svgEl("rect", { x: 4, y: 8, width: W - 8, height: 10, rx: 5, fill: "var(--surface-sunken)" }));
+    svg.append(svgEl("rect", { x: 4, y: 8, width: Math.max(6, x(p) - 4), height: 10, rx: 5, fill: p < 0.5 ? "var(--menos-2)" : "var(--enf)" }));
+    [[0.5, "la mitad"], [C.guanajuato.part, "Gto."]].forEach(([t, s], i) => {
+      svg.append(svgEl("line", { x1: x(t), x2: x(t), y1: 3, y2: 23, stroke: "var(--ink)", "stroke-width": 1.2 }));
+      txt(svg, x(t), 36 + i * 0, s, { "text-anchor": i ? "start" : "end", dx: i ? 2 : -2, fill: "var(--ink-muted)" });
+    });
+    box.replaceChildren(svg);
+    document.getElementById("sim-txt").textContent = p < 0.5
+      ? `Con este perfil el modelo espera que vote menos de la mitad de la lista nominal.`
+      : `${f1(100 * (p - C.guanajuato.part))} puntos ${p >= C.guanajuato.part ? "arriba" : "abajo"} de lo que votó todo Guanajuato (${pc(C.guanajuato.part)}).`;
+  }
+  document.getElementById("sliders").addEventListener("input", (e) => { const k = e.target.dataset.k; if (!k) return; simState[k] = Number(e.target.value); document.querySelectorAll("[data-pre]").forEach((b) => b.setAttribute("aria-pressed", false)); pintaSim(); });
+  document.getElementById("presets").addEventListener("click", (e) => { const b = e.target.closest("[data-pre]"); if (!b) return; Object.assign(simState, S.perfiles[b.dataset.pre]); document.querySelectorAll("[data-pre]").forEach((x) => x.setAttribute("aria-pressed", x === b)); pintaSim(); });
+  document.getElementById("sim-nota").textContent = `El simulador usa una versión simple del modelo, con solo estos seis datos y el estado, sumados por separado para que se pueda calcular en tu navegador. En Guanajuato se equivoca en promedio ${f1(S.mae_gto)} puntos por sección; el modelo completo, ${f1(M.gto.mae_puntos)}. Por eso los perfiles de León dan menos de lo que León votó: el modelo no sabe que es León.`;
+  pintaSim();
+
+  // ---------- mapa de León ----------
+  const L_ = M.leon;
+  document.getElementById("mapa-h2").textContent = `León votó ${f1(leonM.r - leonM.p)} puntos más de lo que dice su censo`;
+  document.getElementById("mapa-sub").textContent = `Cada hexágono junta las secciones de León cuyas casillas caen ahí (unos 0.7 km²). El modelo predijo León sin haber visto ninguna de sus ${nf.format(C.leon.secciones)} secciones. En el orden le fue bien: de las ${L_.k} secciones de León donde votó menos de la mitad, ${L_.hits} estaban entre las ${L_.k} que marcó como más probables. Pero se quedó corto en el nivel: León votó ${f1(leonM.r)}% y el modelo esperaba ${f1(leonM.p)}%.`;
+  const SC = M.secs_cols, SECS = M.secs.map((a) => Object.fromEntries(SC.map((c, i) => [c, a[i]])));
+  const SECIX = Object.fromEntries(SECS.map((s) => [s.seccion, s]));
+  const CANT = ["--c1", "--c2", "--c3", "--c4", "--c5"].map(css), CANT_T = [0.4, 0.5, 0.6, 0.7];
+  const DIF = ["--menos-3", "--menos-2", "--menos-1", "--igual", "--mas-1", "--mas-2", "--mas-3"].map(css), DIF_T = [-6, -3, -1, 1, 3, 6];
+  const bin = (v, ts) => ts.filter((t) => v >= t).length;
+  const MODOS = {
+    r: { t: "Participación en 2024", v: (h) => h.r, col: (v) => CANT[bin(v, CANT_T)], ramp: CANT, lab: ["<40%", "40–50", "50–60", "60–70", "70%+"] },
+    p: { t: "Participación que predijo el modelo", v: (h) => h.p, col: (v) => CANT[bin(v, CANT_T)], ramp: CANT, lab: ["<40%", "40–50", "50–60", "60–70", "70%+"] },
+    d: { t: "Votó más (naranja) o menos (morado) de lo predicho, en puntos", v: (h) => 100 * (h.r - h.p), col: (v) => DIF[bin(v, DIF_T)], ramp: DIF, lab: ["−6", "−3", "−1", "±1", "+1", "+3", "+6"] },
+    r21: { t: "Participación en 2021, la intermedia", v: (h) => h.r21, col: (v) => v == null ? "transparent" : CANT[bin(v, CANT_T)], ramp: CANT, lab: ["<40%", "40–50", "50–60", "60–70", "70%+"] },
+  };
+  let modo = "r", selHex = null;
+  const touch = matchMedia("(hover: none)").matches;
+  const map = L.map("map", { zoomSnap: 0.5, zoomControl: true, scrollWheelZoom: false, dragging: !touch, tap: true });
+  map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
+  document.getElementById("map-hint").textContent = touch ? "Usa dos dedos para acercar y mover el mapa. Toca un hexágono para ver sus secciones." : "Usa + y − o doble clic para acercar; arrastra para moverte. Haz clic en un hexágono para ver sus secciones.";
+  map.createPane("labels"); map.getPane("labels").style.zIndex = 450; map.getPane("labels").style.pointerEvents = "none";
+  const attr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", { attribution: attr, subdomains: "abcd", maxZoom: 18 }).addTo(map);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png", { pane: "labels", subdomains: "abcd", maxZoom: 18 }).addTo(map);
+  const capas = M.hex.map((h) => {
+    const pol = L.polygon(h.poly, { color: "#fff", weight: 1, fillOpacity: 0.85 });
+    pol.bindTooltip(() => `<b>${h.s} ${h.s === 1 ? "sección" : "secciones"}</b><br>2024: ${pc(h.r)} | predicha: ${pc(h.p)}<br>Diferencia: ${pts(100 * (h.r - h.p))} puntos`, { className: "hex-tip", sticky: true });
+    pol.on("click", () => { selHex = h; estilo(); fichaHex(h); });
+    pol.h = h;
+    return pol.addTo(map);
+  });
+  const grupo = L.featureGroup(capas);
+  // vista inicial: la mancha urbana (hexágonos a menos de 7 km del centro ponderado por lista nominal)
+  const cen = M.hex.reduce((a, h) => { const c = h.poly.reduce((s, q) => [s[0] + q[0] / h.poly.length, s[1] + q[1] / h.poly.length], [0, 0]); return [a[0] + c[0] * h.l, a[1] + c[1] * h.l, a[2] + h.l]; }, [0, 0, 0]);
+  const centro = L.latLng(cen[0] / cen[2], cen[1] / cen[2]);
+  const urbanos = capas.filter((c) => c.getBounds().getCenter().distanceTo(centro) < 7000);
+  map.fitBounds(L.featureGroup(urbanos).getBounds(), { padding: [10, 10] });
+  function estilo() {
+    const md = MODOS[modo];
+    capas.forEach((p) => {
+      const v = md.v(p.h), sel = selHex && p.h.h === selHex.h;
+      p.setStyle({ fillColor: md.col(v), fillOpacity: v == null ? 0 : 0.85, color: sel ? css("--ink") : "#fff", weight: sel ? 2.6 : 1 });
+      if (sel) p.bringToFront();
+    });
+    document.getElementById("leg-t").textContent = md.t;
+    document.getElementById("leg-r").innerHTML = md.ramp.map((c) => `<span style="background:${c}"></span>`).join("");
+    document.getElementById("leg-l").innerHTML = md.lab.map((s) => `<span>${s}</span>`).join("");
+    document.querySelectorAll("[data-modo]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.modo === modo));
+  }
+  document.querySelectorAll("[data-modo]").forEach((b) => b.addEventListener("click", () => { modo = b.dataset.modo; estilo(); }));
+  const ficha = document.getElementById("ficha");
+  function fichaLeon() {
+    ficha.innerHTML = `<div class="dbl"></div><div class="ficha-head"><h3>León</h3><span>${nf.format(C.leon.secciones)} secciones</span></div>
+      <div class="kpis"><div><b>${pc(C.leon.part)}</b>votó en 2024</div><div><b>${f1(leonM.p)}%</b>predijo el modelo</div><div><b>${pc(C.leon.part_2021)}</b>votó en 2021</div></div>
+      <p>En ${L_.k} secciones votó menos de la mitad (${f1(100 * C.leon.bajo)}%). En la intermedia de 2021 votó ${pc(C.leon.part_2021)}; las intermedias suelen votar menos que las presidenciales.</p>
+      <p class="muted">Toca un hexágono o busca tu sección.</p>`;
+  }
+  function fichaHex(h) {
+    const ss = h.secs.map((s) => SECIX[s]).filter(Boolean).sort((a, b) => a.part_2024 - b.part_2024);
+    ficha.innerHTML = `<div class="dbl"></div><div class="ficha-head"><h3>${h.s} ${h.s === 1 ? "sección" : "secciones"}</h3><span>${nf.format(h.l)} en lista nominal</span></div>
+      <div class="kpis"><div><b>${pc(h.r)}</b>votó en 2024</div><div><b>${pc(h.p)}</b>predijo el modelo</div><div><b>${h.r21 == null ? "–" : pc(h.r21)}</b>votó en 2021</div></div>
+      <ul>${ss.map((s) => `<li><button data-sec="${s.seccion}">Sección ${s.seccion}</button><span>${pc(s.part_2024)} <small style="color:var(--ink-muted)">| ${pts(100 * (s.part_2024 - s.pred_part))} pts</small></span></li>`).join("")}</ul>
+      <p class="muted">Toca una sección para ver su ficha. Al lado: participación 2024 y diferencia con lo predicho.</p>`;
+  }
+  function fichaSec(s) {
+    const h = M.hex.find((x) => x.secs.includes(s.seccion));
+    if (h) { selHex = h; estilo(); const p = capas.find((c) => c.h === h); map.fitBounds(p.getBounds(), { maxZoom: 14, padding: [40, 40] }); }
+    const d = 100 * (s.part_2024 - s.pred_part);
+    ficha.innerHTML = `<div class="dbl"></div><div class="ficha-head"><h3>Sección ${s.seccion}</h3><span>${nf.format(s.lista_2024)} en lista nominal</span></div>
+      <div class="kpis"><div><b>${pc(s.part_2024)}</b>votó en 2024</div><div><b>${pc(s.pred_part)}</b>predijo el modelo</div><div><b>${s.part_2021 == null ? "–" : pc(s.part_2021)}</b>votó en 2021</div></div>
+      <p>${Math.abs(d) < 1 ? "Votó casi lo mismo que predice su censo." : `Votó ${f1(Math.abs(d))} puntos ${d > 0 ? "más" : "menos"} de lo que predice su censo.`} El modelo le daba ${Math.round(100 * s.prob_boosting)}% de probabilidad de votar menos de la mitad${s.y ? ", y así fue" : ""}.</p>
+      <ul>${["escolaridad", "mayores_60", "jovenes_18_24", "sin_afiliacion", "casas_deshabitadas"].map((k) => `<li><span>${VARS[k].n}</span><span>${s[k] == null ? "–" : VARS[k].f(s[k])}</span></li>`).join("")}</ul>
+      <p class="muted">Datos del Censo 2020 para la sección. ${h ? "" : "La sección no tiene casillas ubicadas en el mapa."}</p>`;
+  }
+  ficha.addEventListener("click", (e) => { const b = e.target.closest("[data-sec]"); if (b) fichaSec(SECIX[b.dataset.sec]); });
+  function buscar() {
+    const n = Number(String(document.getElementById("buscar").value).replace(/[^\d]/g, ""));
+    if (!n) return;
+    const s = SECIX[n];
+    if (s) fichaSec(s);
+    else ficha.innerHTML = `<div class="dbl"></div><div class="ficha-head"><h3>Sección ${n}</h3></div><p>No la encontré en León. Puede ser de otro municipio, o una sección creada después del censo de 2020: esas no tienen datos del censo y no entran en el modelo.</p>`;
+  }
+  document.getElementById("buscar-b").addEventListener("click", buscar);
+  document.getElementById("buscar").addEventListener("keydown", (e) => { if (e.key === "Enter") buscar(); });
+  estilo(); fichaLeon();
+
+  // ---------- municipios de Guanajuato ----------
+  const MG = M.mun.slice(0, 12);
+  const pen = MUN["Pénjamo"];
+  document.getElementById("mun-h2").textContent = `En Guanajuato, León vota arriba de lo esperado; Irapuato y Pénjamo, abajo`;
+  document.getElementById("mun-sub").textContent = `Los 12 municipios con más gente en la lista nominal. Participación en 2024 y lo que predijo el modelo con el censo, sin haber visto ninguna sección del municipio.`;
+  function mancuernas(box) {
+    const W = ancho(box), angosto = W < 480, H = MG.length * 30 + 34;
+    const m = { t: 24, r: 16, b: 8, l: angosto ? 108 : 160 };
+    const lo = 40, hi = 70;
+    const x = (v) => m.l + (W - m.l - m.r) * (v - lo) / (hi - lo);
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
+      "aria-label": MG.map((r) => `${r.n}: votó ${f1(r.r)}%, predicho ${f1(r.p)}%`).join("; ") });
+    for (let v = lo; v <= hi; v += 10) {
+      svg.append(svgEl("line", { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b, stroke: "var(--rule)" }));
+      txt(svg, x(v), m.t - 8, v + "%", { "text-anchor": "middle" });
+    }
+    MG.forEach((r, k) => {
+      const yy = m.t + 15 + k * 30;
+      txt(svg, 0, yy + 4, r.n, { fill: "var(--ink)", "font-size": angosto ? 12 : 13 });
+      svg.append(svgEl("line", { x1: x(r.p), x2: x(r.r), y1: yy, y2: yy, stroke: "var(--gris)", "stroke-width": 2 }));
+      const a = svgEl("circle", { cx: x(r.p), cy: yy, r: 6, fill: "var(--surface)", stroke: "var(--gris)", "stroke-width": 2, class: "bar", tabindex: 0 });
+      const b = svgEl("circle", { cx: x(r.r), cy: yy, r: 6.5, fill: "var(--enf)", class: "bar", tabindex: 0 });
+      const lines = () => [r.n, `Votó: ${f1(r.r)}%`, `Predijo el modelo: ${f1(r.p)}%`, `Diferencia: ${pts(r.r - r.p)} puntos`, `Secciones que votaron menos de la mitad: ${f1(r.b)}%`];
+      bindTip(a, lines); bindTip(b, lines);
+      svg.append(a, b);
+    });
+    box.replaceChildren(svg);
+  }
+  document.getElementById("mun-prose").innerHTML = `
+    <p>En 2024 todo Guanajuato votó el mismo día gobernadora, diputaciones locales y los 46 ayuntamientos, así que la elección local no explica estas diferencias entre municipios. León votó ${f1(leonM.r)}% cuando el modelo esperaba ${f1(leonM.p)}%. Irapuato, ${f1(ira.r)}% contra ${f1(ira.p)}%${pen ? `, y Pénjamo, ${f1(pen.r)}% contra ${f1(pen.p)}%` : ""}.</p>
+    <p>El modelo no sabe por qué y yo tampoco lo voy a adivinar: el censo no mide la competencia de cada elección municipal, la seguridad, el trabajo de los partidos para llevar gente a las urnas ni qué tan lejos queda la casilla. Lo que sí dice es dónde buscar.</p>`;
+  document.getElementById("tabla-mun").innerHTML = `<table class="t"><thead><tr><th>Municipio</th><th>Lista nominal</th><th>Votó</th><th>Predicho</th><th>Diferencia</th><th>Secciones bajo la mitad</th></tr></thead><tbody>${
+    M.mun.map((r) => `<tr><td>${r.n}</td><td>${nf.format(r.l)}</td><td>${f1(r.r)}%</td><td>${f1(r.p)}%</td><td>${pts(r.r - r.p)}</td><td>${f1(r.b)}%</td></tr>`).join("")
+  }</tbody></table><p class="note">Participación en la elección presidencial de 2024, sin casillas especiales. Ordenados por lista nominal.</p>`;
+
+  // ---------- Guanajuato a ciegas ----------
+  document.getElementById("ciegas-sub").textContent = `La prueba más dura: entrené los modelos con los otros 31 estados, sin decirles de qué estado es cada sección, y les pedí las secciones de Guanajuato. De cada 100 que cada uno marcó como más probables, en cuántas votó menos de la mitad.`;
+  document.getElementById("ciegas-prose").innerHTML = `
+    <p>Aquí ganó la regresión logística, con ${CI.logistica.v} de cada 100; al azar serían ${CI.azar.v}, porque en Guanajuato votó menos de la mitad en una de cada cuatro secciones. El gradient boosting, que ganó en todo el país, quedó último con ${CI.boosting.v}: aprendió detalles de otros estados que en Guanajuato no se cumplen. Y la regla más simple (más afiliados al ISSSTE, más votos) llegó a ${CI.regla.v}.</p>
+    <p>La lección sirve para cualquier modelo: lo que funciona donde lo entrenaste no siempre funciona en un lugar que nunca vio. Por eso la prueba principal predice cada municipio con un modelo que no lo conoce, y por eso la reporto completa, aunque aquí el ganador del país quede último.</p>`;
+
+  // ---------- para qué sirve ----------
+  document.getElementById("uso").innerHTML = `
+    <p>Sirve para saber dónde es más probable que se vote poco y para ordenar el trabajo: a un instituto electoral, una organización o una campaña de cualquier partido que quiera promover el voto, le dice por dónde empezar. Y sirve para ver qué rasgos acompañan a la participación baja.</p>
+    <p>No sirve para explicar por qué una sección vota poco: el modelo encuentra patrones, no causas. No dice nada de por quién se vota. Y no sirve para las ${nf.format(M.base.ine_2024_sin_censo)} secciones de 2024 que se crearon o redibujaron después del censo y no tienen datos de él.</p>
+    <p>«Menos de la mitad» se mide contra la lista nominal. En secciones con mucha migración, la lista incluye a gente que ya no vive ahí y no va a votar; el modelo lo detecta en parte con el número de inscritos por adulto que vive en la sección, pero esas secciones se ven peor de lo que son.</p>
+    <p>El modelo aprendió de una elección presidencial, y las intermedias votan menos: en 2021 votó ${f1(M.oficial["2021"])}% del país y en 2024, ${f1(M.oficial["2024"])}%. Aun así, el modelo entrenado con 2024 ordena bien a las secciones de 2021: si tomas una sección que en 2021 votó menos de la mitad y otra que no, le da más riesgo a la primera ${Math.round(100 * M.p2021.auc_2021)} de cada 100 veces. Lo que tumbaría esta lectura: que en la intermedia de 2027 las secciones que el modelo marca como de más riesgo no voten menos que las demás.</p>`;
+
+  // ---------- método y fuentes ----------
+  const R = M.regresion;
+  document.getElementById("notas").innerHTML = [
+    `Participación: cómputos distritales del INE, bases de datos por casilla de la elección de Presidencia 2024 (las actas definitivas), de Diputaciones 2021 y de Presidencia 2018. Sumo votos y lista nominal por sección solo en casillas básicas, contiguas y extraordinarias; dejo fuera las especiales (donde vota gente de paso, sin lista de la sección), el voto anticipado, el voto desde el extranjero, el de prisión preventiva y las actas sin datos (paquete no recibido o casilla no instalada). Con ese corte el país votó ${pc(C.nacional.part)} en 2024; con todas las actas, ${f1(M.oficial["2024"])}%.`,
+    `Censo: Estadísticas Censales a Escalas Geoelectorales 2020 del INEGI y el INE, el Censo de Población y Vivienda 2020 por sección electoral, con la cartografía electoral de enero de 2021. Uno las dos fuentes por estado y número de sección: ${nf.format(C.nacional.secciones)} secciones tienen las dos. Quedan fuera las secciones creadas o redibujadas después de 2021 y las que tienen menos de 100 personas en la lista nominal o menos de 50 adultos en el censo.`,
+    `Datos de cada sección (${M.n_vars}): escolaridad promedio, adultos con preparatoria o más, analfabetismo; jóvenes de 18 a 24 y adultos de 60 o más; población económicamente activa, total y de mujeres; afiliación a servicios de salud (sin afiliación, IMSS, ISSSTE); casados o unidos, ocupantes por vivienda y hogares con jefa; nacidos en otro estado y llegados desde 2015; casas deshabitadas y de uso temporal; hablantes de lengua indígena y afromexicanos; casas con auto, internet, computadora, piso de tierra, sin drenaje y con plataformas de video; personas en la lista nominal 2024 por adulto del censo; tamaño y tipo (urbana, mixta, rural). Más el estado.`,
+    `Lo que se predice: si la sección votó menos de la mitad de su lista nominal en la elección presidencial de 2024 (${f1(100 * C.nacional.bajo)}% de las secciones).`,
+    `Validación por municipio: parto los municipios en 5 bloques; cada bloque se predice con un modelo entrenado con los otros 4, así que ninguna sección se predice con un modelo que vio su municipio. Guanajuato a ciegas: entreno con los otros 31 estados, sin la variable del estado. Con historia: igual que la validación por municipio, sumando la participación de 2018 y 2021.`,
+    `Modelos (scikit-learn): regresión logística con regularización L2; SVM con kernel radial, entrenado con una muestra al azar de 16 mil secciones por bloque porque su costo crece con el cuadrado de los datos${svmT["32000"] ? ` (con 32 mil: ${svmT["32000"].v} de 100 y AUC ${svmT["32000"].auc.toFixed(3)}, contra ${svmT["16000"].v} y ${svmT["16000"].auc.toFixed(3)})` : ""}; y gradient boosting con histogramas. En los dos primeros cada dato pasa por una transformación de cuantiles; las clases se pesan para compensar que las secciones con baja participación son pocas. La regla simple usa la variable sola que mejor separa en los datos de entrenamiento.`,
+    `Métricas: «de cada 100 señaladas» es la precisión en el 10% de secciones con más riesgo según cada modelo; «encuentra» es cuántas de las que votaron menos de la mitad caen entre las que el modelo marca si marca tantas como hubo; el AUC es el área bajo la curva ROC.`,
+    `Qué pesa más: importancia por permutación por grupos de datos, con el gradient boosting y en municipios que el modelo no vio (5 bloques, 3 repeticiones). Las curvas son dependencia parcial de un gradient boosting que predice el porcentaje de participación, promediada sobre las secciones de Guanajuato.`,
+    `Porcentaje predicho por sección (mapa y municipios): gradient boosting de regresión con la misma validación por municipio. Se equivoca en promedio ${f1(R.mae_puntos)} puntos por sección; ${Math.round(100 * R.dentro_5_puntos)}% de las secciones quedan a menos de 5 puntos de lo que votaron.`,
+    `Simulador: gradient boosting de regresión con seis datos y el estado, con restricciones para que cada dato sume por separado (un modelo aditivo); por eso se puede calcular exacto en el navegador con una curva por dato.`,
+    `Mapa: ubico cada sección con el promedio de las coordenadas de sus casillas en 2024 (recopiladas por Eric Magar en el repositorio elecRetrns, a partir del INE) y la asigno a un hexágono H3 de resolución 8.`,
+    `El código está en el repositorio de Cifra Pública, en scripts/participacion/.`,
+  ].map((s) => `<li>${s}</li>`).join("");
+  document.getElementById("fuentes").textContent =
+    "Fuentes: INE, Cómputos Distritales de las elecciones federales de 2024 (Presidencia), 2021 (Diputaciones) y 2018 (Presidencia), bases de datos por casilla | INEGI e INE, Estadísticas Censales a Escalas Geoelectorales 2020 | E. Magar, elecRetrns (coordenadas de casillas 2024 y copia de las bases del INE). Consultadas el 18 de noviembre de 2026.";
+
+  // ---------- dibujo y redibujo ----------
+  function dibuja() {
+    barras(document.getElementById("esc"), M.escalera, { tipLines: tipEsc });
+    barras(document.getElementById("imp"), M.importancia.map((r) => ({ n: r.g, v: r.v, t: r.g === "Escolaridad" ? "mejor" : "modelo" })), { tipLines: (r) => [r.n, `${r.v} (el estado = 100)`] });
+    barras(document.getElementById("ciegas"), M.ciegas, { tipLines: (r) => [r.n, `${r.v} de cada 100 señaladas votaron menos de la mitad`, `AUC: ${r.auc.toFixed(2)}`] });
+    CURV.forEach((k) => curva(document.getElementById("cu-" + k), k));
+    mancuernas(document.getElementById("mun"));
+  }
+  let ultimoAncho = innerWidth, espera;
+  addEventListener("resize", () => { if (innerWidth === ultimoAncho) return; ultimoAncho = innerWidth; clearTimeout(espera); espera = setTimeout(dibuja, 150); });
+  dibuja();
+})();
+</script>
+</body>
+</html>

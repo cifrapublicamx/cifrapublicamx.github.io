@@ -123,6 +123,28 @@
   <section class="wrap">
     <h2>Lo más reciente</h2>
     <div class="piezas">
+    <a class="pieza" href="participacion/">
+      <div class="viz" aria-hidden="true">
+        <!-- Gráfica de la pieza: de cada 100 secciones señaladas, cuántas votaron menos de la mitad (azar, solo el estado, censo + estado) -->
+        <svg viewBox="0 0 200 120" role="presentation">
+          <text x="0" y="12" font-family="Figtree, system-ui, sans-serif" font-size="9" font-weight="600" fill="#17151b">Al azar</text>
+          <rect x="0" y="17" width="27.5" height="14" rx="3" fill="#cfced4"/>
+          <text x="32" y="28" font-family="Figtree, system-ui, sans-serif" font-size="10" font-weight="700" fill="#17151b">15</text>
+          <text x="0" y="52" font-family="Figtree, system-ui, sans-serif" font-size="9" font-weight="600" fill="#17151b">Solo el estado</text>
+          <rect x="0" y="57" width="64" height="14" rx="3" fill="#9a9aa3"/>
+          <text x="69" y="68" font-family="Figtree, system-ui, sans-serif" font-size="10" font-weight="700" fill="#17151b">35</text>
+          <text x="0" y="92" font-family="Figtree, system-ui, sans-serif" font-size="9" font-weight="700" fill="#17151b">Censo y estado, gradient boosting</text>
+          <rect x="0" y="97" width="126" height="14" rx="3" fill="#c06100"/>
+          <text x="131" y="108" font-family="Figtree, system-ui, sans-serif" font-size="10" font-weight="700" fill="#17151b">69</text>
+        </svg>
+      </div>
+      <div class="txt">
+        <div class="meta">Análisis 006 | Participación electoral | México y León</div>
+        <h3>De 100 secciones que el modelo señaló, en 69 votó menos de la mitad</h3>
+        <p>Puse a competir una regla simple y tres modelos de aprendizaje automático con el Censo 2020 por sección para adivinar dónde se vota poco. Al azar le atinas a 15 de cada 100. Busca tu sección de León: votó más de lo que predice su censo.</p>
+        <span class="ir">Ver la pieza</span>
+      </div>
+    </a>
     <a class="pieza" href="compras/">
       <div class="viz" aria-hidden="true">
         <!-- Gráfica de la pieza: 100 pesos de compras de los hogares de México por lugar, 2020 (pandemia) y 2024 (naranja: tiendita) -->
@@ -691,6 +713,7 @@
       <li><b>¿La gente compra menos de lo que vendo, o lo compra en otro lado?</b>Como en <a href="compras/">¿A dónde se van tus 100 pesos?</a></li>
       <li><b>¿Hay una cifra que alguien de mi equipo actualiza a mano cada mes?</b>Puede llegar sola, como en <a href="informalidad/">Menos desempleo, casi la misma informalidad</a>, que se actualiza cada trimestre.</li>
       <li><b>¿En qué se va el presupuesto de mi municipio y cómo se compara con otros?</b>Como en <a href="gasto-leon/">León gasta más por habitante desde 2023</a>.</li>
+      <li><b>¿Dónde es más probable que pase algo, y por dónde empiezo?</b>Un modelo de aprendizaje automático lo puede ordenar, como en <a href="participacion/">De 100 secciones que el modelo señaló, en 69 votó menos de la mitad</a>.</li>
     </ul>
     <p class="sub">Puede ser un análisis que te entrego y listo, o un acompañamiento de varios meses en el que reviso contigo los números cada vez que toca decidir algo.</p>
     <p class="sub">También hago la parte de datos para consultoras y agencias, escribo análisis para medios y trabajo con equipos de gobierno, campañas y organizaciones civiles, de cualquier partido y con las mismas reglas: la cifra antes que el adjetivo y los límites a la vista.</p>

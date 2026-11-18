@@ -96,3 +96,9 @@ Cómo reproducirlo y notas de método: `scripts/amanecer/LEEME.md`. El ITER no s
 Dónde compran los hogares (tiendita, súper, mercado, internet…) y cómo pagan, en el país y en Guanajuato, con los microdatos de la Encuesta Nacional de Ingresos y Gastos de los Hogares (ENIGH) 2020 (pandemia), 2022 y 2024 (la más reciente) del INEGI. Cada cifra lleva su margen de error con el diseño de la encuesta, y la página incluye un buscador por ingreso del hogar.
 
 Cómo reproducirlo y notas de método: `scripts/compras/LEEME.md`. Los microdatos de la ENIGH no se suben al repo: pesan más de 1.5 GB.
+
+## De 100 secciones que el modelo señaló, en 69 votó menos de la mitad | `/participacion/`
+
+Cuatro modelos de aprendizaje automático (regla simple, regresión logística, SVM y gradient boosting) que adivinan, con el Censo 2020 por sección electoral, en qué secciones votó menos de la mitad de la lista nominal en la elección presidencial de 2024. Incluye qué datos pesan más, un simulador para Guanajuato, el mapa de León por hexágonos con buscador de sección y la prueba de Guanajuato a ciegas. Fuentes: cómputos distritales del INE (2018, 2021 y 2024) y las Estadísticas Censales a Escalas Geoelectorales 2020 del INEGI. No usa resultados por partido.
+
+Cómo reproducirlo y notas de método: `scripts/participacion/LEEME.md`. Los datos de origen no se suben al repo: pesan cerca de 150 MB.
