@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>__TITULO__ | Cifra Pública</title>
+<meta name="description" content="A qué hora sale el sol en cada municipio de México, cada día del ciclo escolar 2026-2027. Mismo reloj, otro sol: el amanecer cambia más de hora y media de un extremo a otro del horario del Centro.">
+<meta name="author" content="__AUTOR__">
+<meta property="og:title" content="__TITULO__">
+<meta property="og:description" content="Calculé el amanecer en las 189 mil localidades de México para cada día del ciclo escolar. Busca el de tu municipio.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cifrapublicamx.github.io/amanecer/">
+<meta property="og:site_name" content="Cifra Pública">
+<meta property="og:locale" content="es_MX">
+<meta property="og:image" content="https://cifrapublicamx.github.io/assets/og/amanecer.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mapa de México en hexágonos con la hora del amanecer más tardío en día de clase: más tarde en el noroeste, más temprano en el sureste.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../assets/cifra-publica-avatar-tinta.svg">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-ext-standard-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-wght-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-ext-wght-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+
+  :root {
+    --surface: #ffffff; --surface-alt: #f7f6f8; --surface-sunken: #edecef;
+    --ink: #17151b; --ink-muted: #5c5962; --rule: #e2e0e5;
+    --rosa: #b61066; --rosa-suave: #ffe7ef;
+    --c0: #e29f63; --c1: #d57e30; --c2: #c06100; --c3: #a34a00; --c4: #823905;
+    --cat1: #7750b1; --cat2: #d67523; --cat3: #009072; --enf: #c06100; --gris: #9a9aa3;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: Figtree, system-ui, sans-serif;
+    --s1: 8px; --s2: 14px; --s3: 22px; --s4: 40px; --r: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--surface); color: var(--ink); font: 16px/1.5 var(--body); }
+  a { color: var(--rosa); text-underline-offset: 2px; }
+  .wrap { max-width: 720px; margin-inline: auto; padding: 0 var(--s3); }
+  section { margin-top: 56px; }
+
+  .top { padding-top: 18px; }
+  .brand { display: flex; justify-content: space-between; align-items: center; }
+  .brand img { height: 26px; width: auto; display: block; }
+  .folio { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .dbl { height: 4px; border-top: 1.5px solid var(--ink); border-bottom: 0.75px solid var(--ink); margin-top: 10px; }
+  .label { margin-top: 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rosa); }
+  h1 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: clamp(32px, 6.4vw, 48px); line-height: 1.05; letter-spacing: -0.03em; margin: 10px 0 var(--s2); }
+  .dek { font-size: 16px; margin: 0 0 var(--s2); }
+  @media (min-width: 720px) { .dek { font-size: 17px; } }
+  .byline { font-size: 12px; color: var(--ink-muted); margin: 0; }
+
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: var(--s2); }
+  .findings { display: grid; gap: var(--s1); margin-top: var(--s3); }
+  @media (min-width: 560px) { .findings { grid-template-columns: repeat(2, 1fr); } }
+  .findings .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .findings .big small { font-size: 16px; letter-spacing: -0.01em; }
+  .findings p { margin: 8px 0 0; font-size: 15px; }
+
+  h2 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; }
+  h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .sub { font-size: 15px; color: var(--ink-muted); margin: 0 0 var(--s2); }
+  .prose p { font-size: 16px; margin: 0 0 var(--s2); }
+  .note { font-size: 12px; color: var(--ink-muted); margin: 10px 0 0; }
+  figure { margin: 0; }
+  svg text { font-family: var(--body); }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-muted); margin-bottom: 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .legend i.ln { height: 3px; border-radius: 2px; width: 16px; }
+
+  .hexmap path { stroke: var(--surface); stroke-width: 0.6; }
+  .hexmap path:hover { stroke: var(--ink); stroke-width: 1.5; }
+  .bar:hover, .bar:focus-visible { opacity: .8; outline: none; }
+
+  details.more summary { font-size: 13px; color: var(--ink-muted); cursor: pointer; margin-top: 10px; min-height: 24px; }
+  .tscroll { overflow-x: auto; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  table.t th { text-align: right; font-size: 12px; color: var(--ink-muted); font-weight: 600; padding: 6px; border-bottom: 1px solid var(--ink); vertical-align: bottom; }
+  table.t td { text-align: right; padding: 7px 6px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.t th:first-child, table.t td:first-child { text-align: left; }
+  table.t td small { display: block; font-size: 12px; color: var(--ink-muted); }
+
+  /* Buscador */
+  .busca select { width: 100%; min-height: 48px; border: 1px solid var(--rule); border-radius: 10px; padding: 0 12px; font: 600 16px var(--body); color: var(--ink); background: var(--surface); }
+  .busca select:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .selects { display: grid; gap: var(--s1); }
+  @media (min-width: 560px) { .selects { grid-template-columns: 1fr 1fr; } }
+  .selects label { display: block; font-size: 12px; color: var(--ink-muted); margin: 0 0 6px; }
+  .panel { margin-top: var(--s2); }
+  .tiles { display: grid; gap: var(--s1); grid-template-columns: repeat(3, 1fr); margin-top: var(--s2); }
+  @media (max-width: 519px) { .tiles { grid-template-columns: 1fr; } }
+  .tile { border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; }
+  .tile .k { font-size: 12px; color: var(--ink-muted); font-weight: 600; }
+  .tile .v { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tile .c { font-size: 13px; margin-top: 4px; }
+  .panel h3 { font-size: 19px; margin: 0; }
+  .panel .lugar { font-size: 14px; color: var(--ink-muted); margin: 2px 0 0; }
+
+  .tip { position: fixed; z-index: 10; pointer-events: none; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font-size: 13px; line-height: 1.35; max-width: 270px; opacity: 0; transition: opacity .08s; }
+  .tip.on { opacity: 1; }
+  .tip b { display: block; font-size: 15px; }
+  .tip span { display: block; color: var(--ink-muted); }
+
+  .uso { background: var(--rosa-suave); border-radius: var(--r); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .uso p { margin: 0; font-size: 15px; }
+  details.metodo { margin-top: var(--s3); }
+  details.metodo summary { font-weight: 600; cursor: pointer; min-height: 24px; }
+  details.metodo li { margin: 8px 0; font-size: 15px; }
+  .cierre { display: flex; flex-direction: column; gap: var(--s2); padding-top: 18px; border-top: 1px solid var(--rule); }
+  .cierre p { margin: 0; font-size: 16px; }
+  .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 999px; background: var(--rosa); color: #fff; font: 700 15px var(--body); text-decoration: none; }
+  .btn:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  @media (min-width: 720px) { .btn { max-width: 320px; } }
+  .correo { font-size: 13px; color: var(--ink-muted); }
+  footer { padding: var(--s3) 0 48px; }
+  footer p { font-size: 12px; color: var(--ink-muted); margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand"><a href="../" aria-label="Cifra Pública, inicio"><img src="../assets/cifra-publica-logotipo.svg" alt="Cifra Pública" width="139" height="26"></a><span class="folio">Folio 004</span></div>
+  <div class="dbl"></div>
+  <div class="label">Sol y reloj | México</div>
+  <h1>__TITULO__</h1>
+  <p class="dek" id="dek"></p>
+  <p class="byline">Por __AUTOR__ | __FECHA__ | Ciclo escolar 2026-2027</p>
+</header>
+
+<main>
+  <div class="wrap"><div class="findings" id="findings"></div></div>
+
+  <section class="wrap">
+    <h2>Dónde amanece más tarde</h2>
+    <p class="sub">Hora del amanecer en la mañana más oscura del ciclo escolar, en día de clase. Más oscuro el color, más tarde sale el sol.</p>
+    <figure class="card chart"><div class="legend" id="map-legend"></div><div id="mapa"></div></figure>
+    <p class="note">Cada hexágono mide unos 1,770 km² y lleva el promedio de sus localidades, pesado por su población. Solo aparecen los que tienen gente. Toca o pasa el cursor por uno para ver sus datos.</p>
+    <details class="more"><summary>Ver las ciudades de 300 mil habitantes o más</summary><div class="tscroll" id="tabla-grandes"></div></details>
+  </section>
+
+  <section class="wrap">
+    <h2 id="dist-title">Cuánta gente vive con cada hora</h2>
+    <p class="sub" id="dist-sub"></p>
+    <figure class="card chart"><div id="dist"></div></figure>
+    <p class="note" id="dist-note"></p>
+  </section>
+
+  <section class="wrap">
+    <h2>Mismo reloj, otro sol</h2>
+    <p class="sub" id="cmp-sub"></p>
+    <figure class="card chart"><div class="legend" id="cmp-legend"></div><div id="cmp"></div></figure>
+    <div class="prose" id="cmp-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <h2 id="fr-title"></h2>
+    <p class="sub" id="fr-sub"></p>
+    <figure class="card chart"><div class="legend" id="fr-legend"></div><div id="fr"></div></figure>
+    <div class="prose" id="fr-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <h2>Lo que le falta a la mañana le sobra a la tarde</h2>
+    <p class="sub">El reloj no quita luz: la mueve. Donde amanece tarde, también oscurece tarde.</p>
+    <div class="tscroll card" id="tarde"></div>
+    <p class="note">Amanecer: el más tardío en día de clase del ciclo 2026-2027. Atardeceres: el más temprano y el más tardío de 2027.</p>
+  </section>
+
+  <section class="wrap busca">
+    <h2>¿A qué hora amanece en tu municipio?</h2>
+    <p class="sub">Elige tu estado y tu municipio. La página calcula el sol de su localidad principal para cada día del ciclo escolar.</p>
+    <div class="selects">
+      <div><label for="sel-ent">Estado</label><select id="sel-ent"></select></div>
+      <div><label for="sel-mun">Municipio</label><select id="sel-mun"></select></div>
+    </div>
+    <div class="panel card" id="panel" aria-live="polite"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="uso">
+      <h2>Para qué sirve, y para qué no</h2>
+      <p>Sirve para saber a qué hora sale el sol en tu municipio cada día del ciclo escolar, comparar lugares y ver cuánta gente vive con mañanas oscuras.</p>
+      <p>No sirve para saber a qué hora entra cada escuela: no hay una base nacional con eso. Muchas secundarias entran a las 7:00 y muchas primarias a las 8:00, pero cambia de escuela a escuela y de turno a turno. Tampoco mide efectos en el sueño ni en las calificaciones. Y amanecer no es lo mismo que «ya hay luz»: la primera luz llega unos 25 minutos antes.</p>
+      <p>Las horas son de la hora oficial. Cerca de la frontera algunas localidades pueden vivir, en la práctica, con la hora de la ciudad de al lado.</p>
+      <p>Qué cambiaría estas horas: un cambio en la ley de husos horarios. El sol no se va a mover.</p>
+    </div>
+    <details class="metodo card">
+      <summary>Cómo lo hice</summary>
+      <ul id="notas"></ul>
+    </details>
+  </section>
+
+  <section class="wrap">
+    <div class="cierre">
+      <p>¿Quieres un cálculo así para tu escuela, tu empresa o tu turno de trabajo? Platiquemos.</p>
+      <a class="btn" href="mailto:__EMAIL__?subject=Mismo%20reloj%2C%20otro%20sol">Escríbeme</a>
+      <span class="correo">__EMAIL__</span>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p id="fuentes"></p>
+  <p>Hecho por __AUTOR__ en León | Cifra Pública</p>
+</footer>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script id="meta" type="application/json">__META__</script>
+<script>
+(() => {
+  const M = JSON.parse(document.getElementById("meta").textContent);
+  const R = M.resumen, L = M.lugares;
+  const COL = ["var(--c0)", "var(--c1)", "var(--c2)", "var(--c3)", "var(--c4)"];
+  const CLASES = ["antes de 7:00", "7:00 a 7:14", "7:15 a 7:29", "7:30 a 7:44", "7:45 o más tarde"];
+  const clase = (m) => M.cortes.filter((c) => m >= c).length;
+
+  // ---------- formato ----------
+  const nf = new Intl.NumberFormat("es-MX");
+  const mf = (v) => new Intl.NumberFormat("es-MX", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v);
+  const millones = (v) => `${mf(v / 1e6)} millones`;
+  const hm = (m) => { const t = Math.round(m); return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`; };
+  const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  const MES3 = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+  const fecha = (iso) => { const [a, m, d] = iso.split("-").map(Number); return `${d} de ${MESES[m - 1]}`; };
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const lista = (a) => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " y " + a[a.length - 1];
+  const svgEl = (tag, attrs = {}) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+  const txt = (svg, x, y, s, attrs = {}) => { const t = svgEl("text", { x, y, "font-size": 11, fill: "var(--ink-muted)", ...attrs }); t.textContent = s; svg.append(t); return t; };
+
+  // ---------- tooltip ----------
+  const tip = document.getElementById("tip");
+  function showTip(e, lines) {
+    tip.replaceChildren(...lines.map((t, i) => { const n = document.createElement(i ? "span" : "b"); n.textContent = t; return n; }));
+    tip.classList.add("on");
+    const r = e.target.getBoundingClientRect();
+    const x = e.clientX ?? (r.left + r.width / 2), y = e.clientY ?? r.top;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, x - w / 2)) + "px";
+    tip.style.top = (y - h - 14 < 8 ? y + 18 : y - h - 14) + "px";
+  }
+  const hideTip = () => tip.classList.remove("on");
+  function bindTip(el, f) {
+    el.addEventListener("pointermove", (e) => showTip(e, f()));
+    el.addEventListener("pointerleave", hideTip);
+    el.addEventListener("focus", (e) => showTip({ target: e.target }, f()));
+    el.addEventListener("blur", hideTip);
+  }
+
+  // ---------- el sol (mismas ecuaciones de la NOAA que scripts/amanecer/sol.py) ----------
+  const DIA = 864e5, T0 = Date.parse(M.zonas.inicio + "T00:00:00Z");
+  const iso = (t) => new Date(t).toISOString().slice(0, 10);
+  function offset(zona, t) {
+    const i = Math.round((t - T0) / DIA), tr = M.zonas.zonas[zona];
+    let o = tr[0][1];
+    for (const [k, v] of tr) if (k <= i) o = v;
+    return o;
+  }
+  function sol(t, lat, lon, cenit = 90.833, salida = true) {
+    const d = new Date(t), y = d.getUTCFullYear();
+    const doy = Math.round((t - Date.UTC(y, 0, 1)) / DIA) + 1, n = (y % 4 === 0) ? 366 : 365;
+    const g = 2 * Math.PI / n * (doy - 1);
+    const eqt = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+    const dec = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g)
+      - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+    const la = lat * Math.PI / 180;
+    const c = Math.cos(cenit * Math.PI / 180) / (Math.cos(la) * Math.cos(dec)) - Math.tan(la) * Math.tan(dec);
+    let ha = Math.acos(Math.max(-1, Math.min(1, c))) * 180 / Math.PI;
+    if (!salida) ha = -ha;
+    return 720 - 4 * (lon + ha) - eqt;
+  }
+  const local = (t, p, cenit, salida) => sol(t, p.lat, p.lng, cenit, salida) + offset(p.zona, t);
+  const VAC = M.ciclo.vacaciones.map(([a, b]) => [Date.parse(a + "T00:00:00Z"), Date.parse(b + "T00:00:00Z")]);
+  const INI = Date.parse(M.ciclo.inicio + "T00:00:00Z"), FIN = Date.parse(M.ciclo.fin + "T00:00:00Z");
+  const enVac = (t) => VAC.some(([a, b]) => t >= a && t <= b);
+  const DIAS = []; for (let t = INI; t <= FIN; t += DIA) DIAS.push(t);
+  const CLASE = DIAS.filter((t) => { const w = new Date(t).getUTCDay(); return w >= 1 && w <= 5 && !enVac(t); });
+  const A2027 = []; for (let t = Date.UTC(2027, 0, 1); t <= Date.UTC(2027, 11, 31); t += DIA) A2027.push(t);
+
+  function perfil(p) {
+    let max = -1, dia = null, luzMax = -1; const tras = { 420: 0, 450: 0, 480: 0 };
+    for (const t of CLASE) {
+      const a = local(t, p, 90.833, true), l = local(t, p, 96, true);
+      if (a > max) { max = a; dia = t; }
+      if (l > luzMax) luzMax = l;
+      for (const u of [420, 450, 480]) if (a > u) tras[u]++;
+    }
+    let atMin = 9e9, atMax = -1, atMinT = null, atMaxT = null;
+    for (const t of A2027) { const s = local(t, p, 90.833, false); if (s < atMin) { atMin = s; atMinT = t; } if (s > atMax) { atMax = s; atMaxT = t; } }
+    return { max, dia, luzMax, tras, atMin, atMax, atMinT, atMaxT };
+  }
+
+  // ---------- entradilla y hallazgos ----------
+  const E = R.extremos_utc6, ncg = L.ncg, vall = L.valladolid, chi = L.chihuahua, nl = L.nuevo_laredo;
+  const dif = Math.round(ncg.am_max) - Math.round(vall.am_max);
+  const s7 = R.sensibilidad["420"]["420"];
+  document.getElementById("dek").textContent =
+    `Calculé a qué hora sale el sol en cada una de las ${nf.format(R.localidades)} localidades del país, en cada día del ciclo escolar 2026-2027. ` +
+    `Casi todo México usa la misma hora todo el año, pero el sol sale primero en el oriente: en la mañana más oscura del ciclo, ` +
+    `en Valladolid, Yucatán, amanece a las ${hm(vall.am_max)} y en Nuevo Casas Grandes, Chihuahua, a las ${hm(ncg.am_max)}. Abajo puedes buscar tu municipio.`;
+  document.getElementById("findings").innerHTML = `
+    <div class="card"><div class="big">${dif} <small>minutos</small></div>
+      <p>de diferencia en la mañana más oscura del ciclo entre Nuevo Casas Grandes (${hm(ncg.am_max)}) y Valladolid (${hm(vall.am_max)}). Las dos usan la hora del Centro.</p></div>
+    <div class="card"><div class="big">${hm(chi.am_max)}</div>
+      <p>amanece en la ciudad de Chihuahua en las mañanas más oscuras de enero. Es la ciudad grande donde más tarde sale el sol: ${chi.dias_am_450} días de clase amanece después de las 7:30.</p></div>
+    <div class="card"><div class="big">8 <small>de cada 10</small></div>
+      <p>personas viven donde al menos un día de clase amanece después de las 7:00: ${millones(s7.pob)}, entre ellas ${millones(s7.ninos)} de niñas y niños de 3 a 14 años.</p></div>
+    <div class="card"><div class="big">${fecha(nl.am_max_dia)}</div>
+      <p>es la mañana más oscura del ciclo en Nuevo Laredo, Reynosa y Matamoros. Ahí el reloj se adelanta en marzo y el amanecer llega hasta las ${hm(nl.am_max)}.</p></div>`;
+
+  // ---------- mapa de hexágonos ----------
+  document.getElementById("map-legend").innerHTML = CLASES.map((c, i) => `<span><i style="background:${COL[i]}"></i>${c}</span>`).join("");
+  (() => {
+    const { w, h } = M.dim;
+    const svg = svgEl("svg", { viewBox: `0 0 ${w} ${h}`, class: "hexmap", role: "img",
+      "aria-label": `Mapa de México en hexágonos con la hora del amanecer más tardío en día de clase. Más tarde en Chihuahua, Durango y el noroeste; más temprano en la península de Yucatán.` });
+    for (const [d, c, am, pob, nin, lugar, edo] of M.hex) {
+      const p = svgEl("path", { d, fill: COL[c] });
+      bindTip(p, () => [`${lugar}, ${edo}`, `Amanecer más tardío: ${hm(am)}`, `${nf.format(pob)} habitantes en el hexágono`]);
+      svg.append(p);
+    }
+    document.getElementById("mapa").append(svg);
+  })();
+  document.getElementById("tabla-grandes").innerHTML = `<table class="t"><thead><tr><th>Ciudad</th><th>Amanecer más tardío</th><th>Fecha</th><th>Días de clase después de 7:30</th></tr></thead><tbody>${
+    M.grandes.map((g) => `<tr><td>${esc(g.nombre)}<small>${esc(g.estado)} | ${nf.format(g.pob)} hab.</small></td><td>${hm(g.am_max)}</td><td>${fecha(g.dia)}</td><td>${g.dias_450}</td></tr>`).join("")
+  }</tbody></table><p class="note">Localidades de 300 mil habitantes o más en el Censo 2020 (cada una es la localidad principal de su municipio).</p>`;
+
+  // ---------- distribución por minuto ----------
+  const ancho = (box) => Math.max(300, Math.min(680, box.clientWidth || 680));
+  function distribucion() {
+    const box = document.getElementById("dist");
+    const tr = M.tramos.filter(([t]) => t >= 375 && t < 495);
+    const W = ancho(box), angosto = W < 520;
+    const t0 = 375, t1 = 495, mx = { r: 8, l: 34 }, x = (t) => mx.l + (W - mx.l - mx.r) * (t - t0) / (t1 - t0);
+    const marcas = [[angosto ? "Mérida" : "Mérida", L.merida], ["Tijuana", L.tijuana], [angosto ? "CDMX" : "Cd. de México", L.cdmx], ["León", L.leon], [angosto ? "Gdl." : "Guadalajara", L.guadalajara], ["Chihuahua", L.chihuahua]]
+      .sort((a, b) => a[1].am_max - b[1].am_max);
+    const ocupado = [], filas = [];
+    for (const [nom, p] of marcas) {
+      const xx = x(p.am_max), w = (nom.length + 5) * 6.1 + 8;
+      let fila = 0; while (ocupado.some(([f, a, b]) => f === fila && xx - w / 2 < b && xx + w / 2 > a)) fila++;
+      ocupado.push([fila, xx - w / 2, xx + w / 2]); filas.push([nom, p, xx, fila]);
+    }
+    const nf_ = Math.max(...filas.map((f) => f[3])) + 1;
+    const H = 300, m = { t: 30 + nf_ * 18, b: 30, ...mx };
+    const top = Math.max(...tr.map((r) => r[1])), ymax = Math.ceil(top / 5e6) * 5e6;
+    const y = (v) => m.t + (H - m.t - m.b) * (1 - v / ymax);
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
+      "aria-label": `Población por hora del amanecer más tardío en día de clase, en tramos de 5 minutos. El tramo más grande es de ${hm(tr.reduce((a, b) => b[1] > a[1] ? b : a)[0])}.` });
+    for (let v = 0; v <= ymax; v += 5e6) {
+      svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: "var(--rule)" }));
+      txt(svg, m.l - 6, y(v) + 4, v ? `${v / 1e6}` : "0", { "text-anchor": "end" });
+    }
+    txt(svg, 0, m.t - 10, "millones de personas", { "text-anchor": "start" });
+    for (const [t, p, n] of tr) {
+      const r = svgEl("rect", { class: "bar", x: x(t) + 1, y: y(p), width: Math.max(1, x(t + 5) - x(t) - 2), height: y(0) - y(p), fill: COL[clase(t)], tabindex: 0 });
+      bindTip(r, () => [`${hm(t)} a ${hm(t + 4)}`, `${millones(p)} de personas`, `${millones(n)} de niñas y niños de 3 a 14`]);
+      svg.append(r);
+    }
+    for (let t = 390; t <= 480; t += 30) txt(svg, x(t), H - 10, hm(t), { "text-anchor": "middle" });
+    svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: y(0), y2: y(0), stroke: "var(--ink-muted)" }));
+    for (const [nom, p, xx, fila] of filas) {
+      const yy = 12 + fila * 18;
+      svg.append(svgEl("line", { x1: xx, x2: xx, y1: yy + 4, y2: H - m.b, stroke: "var(--ink)", "stroke-width": 1, "stroke-dasharray": "2 3", opacity: 0.55 }));
+      txt(svg, xx, yy, `${nom} ${hm(p.am_max)}`, { "text-anchor": "middle", fill: "var(--ink)", "font-weight": 600 });
+    }
+    box.replaceChildren(svg);
+  }
+  document.getElementById("dist-sub").textContent =
+    `Personas según la hora del amanecer en la mañana más oscura del ciclo escolar, en tramos de 5 minutos. ${millones(R.poblacion - s7.pob)} viven donde ningún día de clase amanece después de las 7:00.`;
+  const s730 = R.sensibilidad["450"];
+  document.getElementById("dist-note").textContent =
+    `¿Cuánta gente vive donde amanece después de las 7:30? Aquí no doy una sola cifra: con esa línea son ${millones(s730["450"].pob)}, pero un error de dos minutos en el cálculo la movería entre ${millones(s730["452"].pob)} y ${millones(s730["448"].pob)}. ` +
+    `Monterrey (${hm(L.monterrey.am_max)}), Aguascalientes (${hm(L.aguascalientes.am_max)}), Saltillo (${hm(L.saltillo.am_max)}) y Guadalajara (${hm(L.guadalajara.am_max)}) quedan justo en el corte. ` +
+    `La de las 7:00 sí aguanta: con dos minutos de margen queda entre ${millones(R.sensibilidad["420"]["422"].pob)} y ${millones(R.sensibilidad["420"]["418"].pob)}.`;
+
+  // ---------- gráfica de líneas a lo largo del ciclo ----------
+  function lineas(box, series, { cortes = [420, 450, 480], luz = false } = {}) {
+    const W = ancho(box), angosto = W < 520, H = angosto ? 240 : 280;
+    const m = { t: 14, r: Math.max(...series.map((s) => (angosto && s.corto ? s.corto : s.nombre).length)) * 6.3 + 12, b: 28, l: 34 };
+    const all = series.flatMap((s) => s.v);
+    const lo = Math.floor((Math.min(...all) - 8) / 30) * 30, hi = Math.ceil((Math.max(...all) + 8) / 30) * 30;
+    const x = (i) => m.l + (W - m.l - m.r) * i / (DIAS.length - 1), y = (v) => m.t + (H - m.t - m.b) * (1 - (v - lo) / (hi - lo));
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img", "aria-label": series.map((s) => `${s.nombre}: amanecer entre ${hm(Math.min(...s.v))} y ${hm(Math.max(...s.v))}`).join("; ") });
+    for (const [a, b] of VAC) {
+      const i0 = DIAS.indexOf(a), i1 = DIAS.indexOf(b);
+      svg.append(svgEl("rect", { x: x(i0), y: m.t, width: x(i1) - x(i0), height: H - m.t - m.b, fill: "var(--surface-alt)" }));
+      if (!angosto) txt(svg, (x(i0) + x(i1)) / 2, m.t + 11, "vacaciones", { "text-anchor": "middle", "font-size": 10 });
+    }
+    for (let v = lo; v <= hi; v += 30) {
+      const fuerte = cortes.includes(v);
+      svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: fuerte ? "var(--ink-muted)" : "var(--rule)", "stroke-dasharray": fuerte ? "3 3" : "", opacity: fuerte ? 0.6 : 1 }));
+      txt(svg, m.l - 6, y(v) + 4, hm(v), { "text-anchor": "end" });
+    }
+    DIAS.forEach((t, i) => { const d = new Date(t), mo = d.getUTCMonth(); if (d.getUTCDate() === 1 && (!angosto || mo % 2 === 0)) txt(svg, x(i), H - 9, MES3[mo], { "text-anchor": "start" }); });
+    const etiquetas = [];
+    for (const s of series) {
+      if (s.luz) svg.append(svgEl("path", { d: "M" + s.luz.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("L"), fill: "none", stroke: s.color, "stroke-width": 1.2, "stroke-dasharray": "2 3", opacity: 0.8 }));
+      svg.append(svgEl("path", { d: "M" + s.v.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("L"), fill: "none", stroke: s.color, "stroke-width": s.ancho || 2.2, "stroke-linejoin": "round" }));
+      etiquetas.push([y(s.v[s.v.length - 1]), s]);
+    }
+    etiquetas.sort((a, b) => a[0] - b[0]);
+    let prev = -99;
+    for (const [yy, s] of etiquetas) { const yv = Math.max(yy + 4, prev + 14); prev = yv; txt(svg, W - m.r + 6, yv, angosto && s.corto ? s.corto : s.nombre, { fill: "var(--ink)", "font-weight": 600 }); }
+    // capa para el cursor
+    const guia = svgEl("line", { y1: m.t, y2: H - m.b, stroke: "var(--ink)", "stroke-width": 1, opacity: 0 });
+    const capa = svgEl("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: "transparent" });
+    svg.append(guia, capa);
+    capa.addEventListener("pointermove", (e) => {
+      const r = svg.getBoundingClientRect(), px = (e.clientX - r.left) * W / r.width;
+      const i = Math.max(0, Math.min(DIAS.length - 1, Math.round((px - m.l) / (W - m.l - m.r) * (DIAS.length - 1))));
+      guia.setAttribute("x1", x(i)); guia.setAttribute("x2", x(i)); guia.setAttribute("opacity", 0.35);
+      const d = new Date(DIAS[i]), w = d.getUTCDay();
+      const nota = enVac(DIAS[i]) ? " | vacaciones" : (w === 0 || w === 6) ? " | fin de semana" : "";
+      showTip(e, [`${fecha(iso(DIAS[i]))}${nota}`, ...series.map((s) => `${s.nombre}: amanece ${hm(s.v[i])}${s.luz ? `, primera luz ${hm(s.luz[i])}` : ""}`)]);
+    });
+    capa.addEventListener("pointerleave", () => { hideTip(); guia.setAttribute("opacity", 0); });
+    box.replaceChildren(svg);
+  }
+  const serie = (p) => DIAS.map((t) => local(t, p, 90.833, true));
+  const serieLuz = (p) => DIAS.map((t) => local(t, p, 96, true));
+
+  // Comparación de tres lugares
+  const cmp = [{ nombre: "Nuevo Casas Grandes", corto: "N. Casas Gdes.", p: ncg, color: "var(--cat2)" }, { nombre: "León", p: L.leon, color: "var(--cat1)" }, { nombre: "Valladolid", p: vall, color: "var(--cat3)" }];
+  document.getElementById("cmp-legend").innerHTML = `<span><i class="ln" style="background:var(--ink-muted);opacity:.6"></i>Líneas punteadas: 7:00, 7:30 y 8:00</span>`;
+  const sCmp = cmp.map((c) => ({ nombre: c.nombre, corto: c.corto, v: serie(c.p), color: c.color }));
+  document.getElementById("cmp-sub").textContent = `Hora del amanecer, cada día del ciclo escolar 2026-2027. Las tres ciudades usan la hora del Centro.`;
+  document.getElementById("cmp-prose").innerHTML = `
+    <p>La Tierra gira un grado cada cuatro minutos. El horario del Centro va de la sierra de Chihuahua, a más de 108 grados al oeste de Greenwich, hasta la península de Yucatán, a unos 87: más de 20 grados con la misma hora en el reloj. Eso da casi hora y media de diferencia; la latitud pone el resto, porque en invierno los días son más cortos en el norte.</p>
+    <p>Nuevo Casas Grandes está a ${mf(Math.abs(ncg.lng))} grados oeste y a ${mf(ncg.lat)} de latitud norte; Valladolid, a ${mf(Math.abs(vall.lng))} oeste y ${mf(vall.lat)} norte. En Nuevo Casas Grandes, ${L.ncg.dias_am_480} días de clase amanece después de las 8:00. León queda en medio: su mañana más oscura es el ${fecha(L.leon.am_max_dia)}, a las ${hm(L.leon.am_max)}.</p>
+    <p>Desde octubre de 2022 casi todo el país dejó el horario de verano, y desde finales de noviembre de ese año Chihuahua usa la hora del Centro; antes usaba la del Pacífico, una hora menos.</p>`;
+
+  // Frontera
+  const fr = [{ nombre: "Nuevo Laredo", p: nl, color: "var(--enf)" }, { nombre: "Monterrey", p: L.monterrey, color: "var(--gris)" }];
+  document.getElementById("fr-title").textContent = `En la frontera, la mañana más oscura llega en marzo`;
+  document.getElementById("fr-sub").textContent = `Hora del amanecer en Nuevo Laredo, con horario de verano, y en Monterrey, sin él. Están a unos 220 kilómetros en línea recta.`;
+  const sFr = fr.map((c) => ({ nombre: c.nombre, v: serie(c.p), color: c.color, ancho: c.nombre === "Nuevo Laredo" ? 2.4 : 1.8 }));
+  document.getElementById("fr-legend").innerHTML = `<span><i class="ln" style="background:var(--ink-muted);opacity:.6"></i>Líneas punteadas: 7:00, 7:30 y 8:00</span>`;
+  document.getElementById("fr-prose").innerHTML = `
+    <p>Baja California y 30 municipios de la frontera norte cambian de hora con Estados Unidos: adelantan el reloj el segundo domingo de marzo y lo atrasan el primero de noviembre. En Nuevo Laredo, Reynosa y Matamoros eso pone la mañana más oscura del ciclo el ${fecha(nl.am_max_dia)}, no en enero: ese día amanece a las ${hm(nl.am_max)} en Nuevo Laredo, a las ${hm(L.reynosa.am_max)} en Reynosa y a las ${hm(L.matamoros.am_max)} en Matamoros.</p>`;
+
+  // Tarde
+  (() => {
+    const filas = [["Ciudad de México", L.cdmx], ["León", L.leon], ["Guadalajara", L.guadalajara], ["Monterrey", L.monterrey], ["Chihuahua", L.chihuahua], ["Tijuana", L.tijuana], ["Mérida", L.merida]];
+    document.getElementById("tarde").innerHTML = `<table class="t"><thead><tr><th>Ciudad</th><th>Amanecer más tardío</th><th>Atardecer más temprano</th><th>Atardecer más tardío</th></tr></thead><tbody>${
+      filas.map(([n, p]) => `<tr><td>${esc(n)}</td><td>${hm(p.am_max)}</td><td>${hm(p.at_min)}</td><td>${hm(p.at_max)}</td></tr>`).join("")}</tbody></table>`;
+  })();
+
+  // ---------- buscador ----------
+  const MUN = M.municipios.map(([e, ne, nm, loc, lat, lng, zona, pob, nin]) => ({ e, ne, nm, loc, lat, lng, zona, pob, nin }));
+  const selE = document.getElementById("sel-ent"), selM = document.getElementById("sel-mun");
+  const ents = [...new Map(MUN.map((m) => [m.e, m.ne])).entries()].sort((a, b) => a[1].localeCompare(b[1], "es"));
+  selE.innerHTML = ents.map(([e, n]) => `<option value="${e}">${esc(n)}</option>`).join("");
+  function llenaMun(e, elegido) {
+    const ms = MUN.filter((m) => m.e === e).sort((a, b) => a.nm.localeCompare(b.nm, "es"));
+    selM.innerHTML = ms.map((m) => `<option value="${MUN.indexOf(m)}">${esc(m.nm)}</option>`).join("");
+    if (elegido != null) selM.value = elegido;
+    pinta(MUN[selM.value]);
+  }
+  function pinta(m) {
+    const pf = perfil(m);
+    const panel = document.getElementById("panel");
+    const n7 = pf.tras[420], n730 = pf.tras[450], n8 = pf.tras[480];
+    const frase = n8 ? `${n8} días de clase amanece después de las 8:00.` : n730 ? `${n730} días de clase amanece después de las 7:30.` :
+      n7 ? `${n7} de ${CLASE.length} días de clase amanece después de las 7:00, pero ninguno después de las 7:30.` : `Ningún día de clase amanece después de las 7:00.`;
+    panel.innerHTML = `
+      <h3>${esc(m.nm)}, ${esc(m.ne)}</h3>
+      <p class="lugar">Horas de ${esc(m.loc)}, su localidad principal. En el municipio viven ${nf.format(m.pob)} personas, ${nf.format(m.nin)} de ellas de 3 a 14 años.</p>
+      <div class="tiles">
+        <div class="tile"><div class="k">Amanecer más tardío en día de clase</div><div class="v">${hm(pf.max)}</div><div class="c">el ${fecha(iso(pf.dia))}</div></div>
+        <div class="tile"><div class="k">Primera luz ese día</div><div class="v">${hm(pf.luzMax)}</div><div class="c">empieza a clarear</div></div>
+        <div class="tile"><div class="k">Días de clase con amanecer después de…</div><div class="c" style="font-size:15px;margin-top:6px">7:00: <b>${n7}</b> | 7:30: <b>${n730}</b> | 8:00: <b>${n8}</b></div></div>
+      </div>
+      <p style="margin:14px 0 4px;font-size:15px">${frase} En 2027 el sol se pone desde las ${hm(pf.atMin)} (${fecha(iso(pf.atMinT))}) hasta las ${hm(pf.atMax)} (${fecha(iso(pf.atMaxT))}).</p>
+      <div class="legend" style="margin-top:10px"><span><i class="ln" style="background:var(--enf)"></i>Amanecer</span><span><i class="ln" style="background:var(--enf);opacity:.6"></i>Primera luz (punteada)</span></div>
+      <div class="chart" id="bus-chart"></div>
+      <p class="note">${CLASE.length} días entre semana fuera de vacaciones, del 31 de agosto de 2026 al 9 de julio de 2027.</p>`;
+    actual = m;
+    lineas(document.getElementById("bus-chart"), [{ nombre: m.nm.length > 14 ? m.nm.slice(0, 13) + "…" : m.nm, v: serie(m), luz: serieLuz(m), color: "var(--enf)" }]);
+  }
+  let actual = null;
+  function dibuja() {
+    distribucion();
+    lineas(document.getElementById("cmp"), sCmp);
+    lineas(document.getElementById("fr"), sFr);
+    if (actual) lineas(document.getElementById("bus-chart"), [{ nombre: actual.nm.length > 14 ? actual.nm.slice(0, 13) + "…" : actual.nm, v: serie(actual), luz: serieLuz(actual), color: "var(--enf)" }]);
+  }
+  let ultimoAncho = innerWidth, espera;
+  addEventListener("resize", () => { if (innerWidth === ultimoAncho) return; ultimoAncho = innerWidth; clearTimeout(espera); espera = setTimeout(dibuja, 150); });
+  selE.addEventListener("change", () => llenaMun(selE.value));
+  selM.addEventListener("change", () => pinta(MUN[selM.value]));
+  const leonIdx = MUN.findIndex((m) => m.e === "11" && m.nm === "León");
+  selE.value = "11"; llenaMun("11", leonIdx);
+  dibuja();
+
+  // ---------- método y fuentes ----------
+  const er = R.edades_reservadas;
+  document.getElementById("notas").innerHTML = [
+    `Coordenadas y población: Censo de Población y Vivienda 2020 del INEGI, resultados por localidad (ITER): ${nf.format(R.localidades)} localidades y ${nf.format(R.poblacion)} habitantes. Niñas y niños: población de 3 a 14 años. En ${nf.format(er.localidades)} localidades pequeñas (${nf.format(er.poblacion)} habitantes) el INEGI reserva las edades y no se cuentan.`,
+    `Hora del sol: ecuaciones de posición solar de la NOAA. El amanecer es cuando el borde de arriba del sol toca el horizonte, con la refracción del aire; la primera luz, cuando el sol está 6 grados abajo del horizonte (inicio del crepúsculo civil). Precisión de uno a dos minutos; contrasté con tablas publicadas (por ejemplo, la ciudad de Chihuahua amanece a las 7:58 a mediados de enero en timeanddate.com).`,
+    `Hora oficial: Ley de los Husos Horarios en los Estados Unidos Mexicanos (DOF, última reforma del 29 de noviembre de 2022). Quintana Roo, UTC−5; Baja California Sur, Nayarit (salvo Bahía de Banderas), Sinaloa y Sonora, UTC−7; Baja California, UTC−8 con horario de verano; el resto, UTC−6. Horario de verano en Baja California y en 30 municipios fronterizos de Chihuahua, Coahuila, Nuevo León y Tamaulipas; las fechas de cambio salen de la base de husos horarios de IANA.`,
+    `Ciclo escolar 2026-2027 de la SEP: del 31 de agosto de 2026 al 9 de julio de 2027, con vacaciones del 21 de diciembre al 6 de enero y del 22 de marzo al 3 de abril. Cuento los ${CLASE.length} días entre semana fuera de vacaciones; el calendario oficial tiene 185 días de clase porque también descansa en días festivos y de Consejo Técnico.`,
+    `Mapa: hexágonos H3 de resolución 4 (unos 1,770 km²). Las horas de cada municipio en el buscador son las de su localidad más poblada; el municipio puede ser grande y la hora cambia unos cuatro minutos por cada grado hacia el este o el oeste.`,
+    `El código está en el repositorio de Cifra Pública, en scripts/amanecer/.`,
+  ].map((s) => `<li>${s}</li>`).join("");
+  document.getElementById("fuentes").textContent =
+    "Fuentes: INEGI, Censo de Población y Vivienda 2020, Principales resultados por localidad (ITER) | Cámara de Diputados, Ley de los Husos Horarios en los Estados Unidos Mexicanos | IANA, Time Zone Database 2026f | SEP, calendario escolar 2026-2027 | NOAA, Global Monitoring Laboratory, ecuaciones de posición solar. Consultadas el 17 y 18 de noviembre de 2026.";
+})();
+</script>
+</body>
+</html>

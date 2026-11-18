@@ -1,0 +1,97 @@
+{
+ "poblacion": 126014024.0,
+ "ninos": 25920973.0,
+ "localidades": 189432,
+ "dias_clase": 202,
+ "edades_reservadas": {
+  "localidades": 81257,
+  "poblacion": 414737.0
+ },
+ "sensibilidad": {
+  "420": {
+   "418": {
+    "pob": 107578841.0,
+    "ninos": 21826525.0
+   },
+   "420": {
+    "pob": 105750117.0,
+    "ninos": 21449862.0
+   },
+   "422": {
+    "pob": 102997384.0,
+    "ninos": 20901518.0
+   }
+  },
+  "450": {
+   "448": {
+    "pob": 27347979.0,
+    "ninos": 5670102.0
+   },
+   "450": {
+    "pob": 19692060.0,
+    "ninos": 4138451.0
+   },
+   "452": {
+    "pob": 13025494.0,
+    "ninos": 2737977.0
+   }
+  },
+  "480": {
+   "478": {
+    "pob": 1573478.0,
+    "ninos": 315075.0
+   },
+   "480": {
+    "pob": 571524.0,
+    "ninos": 126584.0
+   },
+   "482": {
+    "pob": 342771.0,
+    "ninos": 75298.0
+   }
+  }
+ },
+ "extremos_utc6": {
+  "tarde": {
+   "nombre": "Nuevo Casas Grandes",
+   "estado": "Chihuahua",
+   "pob": 62038.0,
+   "am_max": 489.18181880576276,
+   "dia": "2027-01-11",
+   "lng": -107.91210305555556
+  },
+  "temprano": {
+   "nombre": "Valladolid",
+   "estado": "Yucatán",
+   "pob": 56494.0,
+   "am_max": 391.45257261144593,
+   "dia": "2027-01-18",
+   "lng": -88.20098
+  }
+ },
+ "municipios_tras": {
+  "420": 1842,
+  "450": 326,
+  "480": 30
+ },
+ "municipios_tras_480_estados": {
+  "Chihuahua": 29,
+  "Coahuila de Zaragoza": 1
+ },
+ "municipios_tras_450_estados": {
+  "Jalisco": 93,
+  "Chihuahua": 62,
+  "Zacatecas": 51,
+  "Durango": 39,
+  "Coahuila de Zaragoza": 38,
+  "Colima": 10,
+  "Tamaulipas": 10,
+  "Aguascalientes": 8,
+  "Nuevo León": 8,
+  "Sonora": 3,
+  "San Luis Potosí": 2,
+  "Nayarit": 1,
+  "Quintana Roo": 1
+ },
+ "n_municipios": 2469
+}

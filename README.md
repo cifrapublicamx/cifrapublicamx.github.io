@@ -84,3 +84,9 @@ python scripts/gasto/build_page.py --autor "Rodrigo Méndez Hernández" \
 - La EFIPEM coincide con la cuenta pública si se le quita la «disponibilidad final», que el INEGI cuenta como egreso.
 - La clasificación por función cambió en 2018 y 2022 en algunas funciones (Comunicaciones, Construcción, Transporte, Otros asuntos sociales, Protección social); las series de diez años se muestran por finalidad y para seguridad pública.
 - Los meses de agosto de 2024 a diciembre de 2025 del INPC no vienen en el archivo de datos abiertos del INEGI (llega a julio de 2024). Se tomaron de una reproducción de las tablas del INEGI y se cotejaron con los valores publicados por el INEGI para diciembre de 2024 (137.949), noviembre de 2025 (142.645) y diciembre de 2025 (143.042). Enero de 2016 a julio de 2024 coincide exacto con el archivo oficial.
+
+## Con el mismo reloj, en Nuevo Casas Grandes amanece 98 minutos después que en Valladolid | `/amanecer/`
+
+A qué hora sale el sol en cada una de las 189,432 localidades del país, cada día del ciclo escolar 2026-2027, con la hora oficial de cada municipio. Fuentes: Censo 2020 del INEGI (ITER), Ley de los Husos Horarios, base de husos horarios de IANA, calendario escolar de la SEP y las ecuaciones de posición solar de la NOAA.
+
+Cómo reproducirlo y notas de método: `scripts/amanecer/LEEME.md`. El ITER no se sube al repo: va en `data/raw/`.
