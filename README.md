@@ -90,3 +90,9 @@ python scripts/gasto/build_page.py --autor "Rodrigo Méndez Hernández" \
 A qué hora sale el sol en cada una de las 189,432 localidades del país, cada día del ciclo escolar 2026-2027, con la hora oficial de cada municipio. Fuentes: Censo 2020 del INEGI (ITER), Ley de los Husos Horarios, base de husos horarios de IANA, calendario escolar de la SEP y las ecuaciones de posición solar de la NOAA.
 
 Cómo reproducirlo y notas de método: `scripts/amanecer/LEEME.md`. El ITER no se sube al repo: va en `data/raw/`.
+
+## De la pandemia a 2024, la tiendita pasó de 17.5 a 14.3 de cada 100 pesos que gastan los hogares en México | `/compras/`
+
+Dónde compran los hogares (tiendita, súper, mercado, internet…) y cómo pagan, en el país y en Guanajuato, con los microdatos de la Encuesta Nacional de Ingresos y Gastos de los Hogares (ENIGH) 2020 (pandemia), 2022 y 2024 (la más reciente) del INEGI. Cada cifra lleva su margen de error con el diseño de la encuesta, y la página incluye un buscador por ingreso del hogar.
+
+Cómo reproducirlo y notas de método: `scripts/compras/LEEME.md`. Los microdatos de la ENIGH no se suben al repo: pesan más de 1.5 GB.

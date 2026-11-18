@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>__TITULO__ | Cifra Pública</title>
+<meta name="description" content="Dónde compran los hogares de México y de Guanajuato y cómo pagan, de la pandemia (2020) a 2024, el dato más reciente de la ENIGH del INEGI. La tiendita pierde terreno, el efectivo cede arriba de la mitad y el internet todavía no se lleva ni 2 de cada 100 pesos.">
+<meta name="author" content="__AUTOR__">
+<meta property="og:title" content="__TITULO__">
+<meta property="og:description" content="Revisé dónde compran y cómo pagan 270 mil hogares de la ENIGH. Mira a dónde se van 100 pesos y qué hacen los hogares con un ingreso como el tuyo.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cifrapublicamx.github.io/compras/">
+<meta property="og:site_name" content="Cifra Pública">
+<meta property="og:locale" content="es_MX">
+<meta property="og:image" content="https://cifrapublicamx.github.io/assets/og/compras.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cien monedas pintadas según el lugar donde gastan los hogares de México; las de la tiendita bajan entre 2020, en pandemia, y 2024.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../assets/cifra-publica-avatar-tinta.svg">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-ext-standard-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-wght-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-ext-wght-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+
+  :root {
+    --surface: #ffffff; --surface-alt: #f7f6f8; --surface-sunken: #edecef;
+    --ink: #17151b; --ink-muted: #5c5962; --rule: #e2e0e5;
+    --rosa: #b61066; --rosa-suave: #ffe7ef;
+    --cat1: #7750b1; --cat2: #d67523; --cat3: #009072; --enf: #c06100; --gris: #9a9aa3; --gris-claro: #cfced4;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: Figtree, system-ui, sans-serif;
+    --s1: 8px; --s2: 14px; --s3: 22px; --s4: 40px; --r: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--surface); color: var(--ink); font: 16px/1.5 var(--body); }
+  a { color: var(--rosa); text-underline-offset: 2px; }
+  .wrap { max-width: 720px; margin-inline: auto; padding: 0 var(--s3); }
+  section { margin-top: 56px; }
+
+  .top { padding-top: 18px; }
+  .brand { display: flex; justify-content: space-between; align-items: center; }
+  .brand img { height: 26px; width: auto; display: block; }
+  .folio { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .dbl { height: 4px; border-top: 1.5px solid var(--ink); border-bottom: 0.75px solid var(--ink); margin-top: 10px; }
+  .label { margin-top: 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rosa); }
+  h1 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: clamp(30px, 6vw, 44px); line-height: 1.05; letter-spacing: -0.03em; margin: 10px 0 var(--s2); }
+  .dek { font-size: 16px; margin: 0 0 var(--s2); }
+  @media (min-width: 720px) { .dek { font-size: 17px; } }
+  .byline { font-size: 12px; color: var(--ink-muted); margin: 0; }
+
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: var(--s2); }
+  .findings { display: grid; gap: var(--s1); margin-top: var(--s3); }
+  @media (min-width: 560px) { .findings { grid-template-columns: repeat(2, 1fr); } }
+  .findings .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .findings .big small { font-size: 16px; letter-spacing: -0.01em; }
+  .findings p { margin: 8px 0 0; font-size: 15px; }
+
+  h2 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; }
+  h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .sub { font-size: 15px; color: var(--ink-muted); margin: 0 0 var(--s2); }
+  .prose p { font-size: 16px; margin: 0 0 var(--s2); }
+  .note { font-size: 12px; color: var(--ink-muted); margin: 10px 0 0; }
+  figure { margin: 0; }
+  svg text { font-family: var(--body); }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-muted); margin-bottom: 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+  .aviso { margin-top: var(--s2); background: var(--surface-alt); border-radius: var(--r); padding: 12px 16px; font-size: 14px; }
+  .aviso b { font-weight: 700; }
+  .chip small { font-weight: 500; font-size: 12px; opacity: .75; margin-left: 4px; }
+  /* Controles */
+  .ctrl { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); margin-bottom: var(--s2); }
+  .grupo { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .grupo .k { font-size: 12px; color: var(--ink-muted); width: 100%; }
+  .chip { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); font: 600 15px var(--body); cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .chip:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .chip.play { border-color: var(--ink); }
+
+  /* 100 monedas */
+  .monedas { display: grid; gap: var(--s3); align-items: start; }
+  @media (min-width: 620px) { .monedas { grid-template-columns: minmax(0, 300px) 1fr; } }
+  .monedas svg circle { transition: fill .45s ease; }
+  .monedas svg circle:hover { stroke: var(--ink); stroke-width: 1.5; }
+  .anio-grande { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 15px; color: var(--ink-muted); margin: 0 0 6px; }
+  .reparto { list-style: none; margin: 0; padding: 0; }
+  .reparto li { display: grid; grid-template-columns: 14px 1fr auto; gap: 10px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--rule); }
+  .reparto li:last-child { border-bottom: 0; }
+  .reparto i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; transform: translateY(1px); }
+  .reparto .n { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 22px; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; text-align: right; }
+  .reparto .q { font-size: 15px; font-weight: 600; }
+  .reparto small { display: block; font-size: 12px; color: var(--ink-muted); font-weight: 400; }
+  .lectura { font-size: 15px; margin: var(--s2) 0 0; min-height: 3em; }
+
+  /* Tus 100 pesos */
+  .ingreso { display: grid; gap: var(--s1); }
+  .ingreso label { font-size: 12px; color: var(--ink-muted); }
+  .campo { display: flex; align-items: center; gap: 8px; border: 1px solid var(--rule); border-radius: 10px; padding: 0 12px; min-height: 52px; max-width: 320px; }
+  .campo:focus-within { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .campo span { font: 700 20px var(--display); color: var(--ink-muted); }
+  .campo input { border: 0; outline: 0; font: 700 22px var(--display); font-stretch: 92%; width: 100%; color: var(--ink); background: transparent; font-variant-numeric: tabular-nums; }
+  .presets { display: flex; flex-wrap: wrap; gap: 6px; }
+  .presets .chip { min-height: 40px; font-size: 14px; padding: 0 12px; }
+  .panel { margin-top: var(--s2); }
+  .panel h3 { font-size: 19px; margin: 0; }
+  .panel .lugar { font-size: 14px; color: var(--ink-muted); margin: 2px 0 0; }
+  .tiles { display: grid; gap: var(--s1); grid-template-columns: repeat(3, 1fr); margin-top: var(--s2); }
+  @media (max-width: 559px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+  .tile { border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; }
+  .tile .k { font-size: 12px; color: var(--ink-muted); font-weight: 600; }
+  .tile .v { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tile .v small { font-size: 14px; color: var(--ink-muted); font-weight: 600; }
+  .tile .c { font-size: 13px; margin-top: 4px; color: var(--ink-muted); }
+  .tile .c b { color: var(--ink); }
+
+  /* Mito */
+  .mito { display: grid; gap: var(--s2); }
+  @media (min-width: 560px) { .mito { grid-template-columns: 1fr 1fr; } }
+  .mito .card { background: var(--surface-alt); border-color: var(--surface-alt); }
+  .mito .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .mito .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 30px; line-height: 1.05; letter-spacing: -0.02em; margin: 6px 0; }
+  .mito p { margin: 0; font-size: 15px; }
+
+  ol.lecturas { margin: 0; padding-left: 22px; }
+  ol.lecturas li { margin: 0 0 var(--s2); font-size: 16px; }
+  ol.lecturas li::marker { font-family: var(--display); font-weight: 700; }
+
+  .bar:hover, .bar:focus-visible { opacity: .8; outline: none; }
+  details.more summary { font-size: 13px; color: var(--ink-muted); cursor: pointer; margin-top: 10px; min-height: 24px; }
+  .tscroll { overflow-x: auto; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  table.t th { text-align: right; font-size: 12px; color: var(--ink-muted); font-weight: 600; padding: 6px; border-bottom: 1px solid var(--ink); vertical-align: bottom; }
+  table.t td { text-align: right; padding: 7px 6px; border-bottom: 1px solid var(--rule); vertical-align: top; white-space: nowrap; }
+  table.t th:first-child, table.t td:first-child { text-align: left; white-space: normal; }
+  table.t td small { font-size: 11px; color: var(--ink-muted); }
+
+  .tip { position: fixed; z-index: 10; pointer-events: none; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font-size: 13px; line-height: 1.35; max-width: 270px; opacity: 0; transition: opacity .08s; }
+  .tip.on { opacity: 1; }
+  .tip b { display: block; font-size: 15px; }
+  .tip span { display: block; color: var(--ink-muted); }
+
+  .uso { background: var(--rosa-suave); border-radius: var(--r); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .uso p { margin: 0; font-size: 15px; }
+  details.metodo { margin-top: var(--s3); }
+  details.metodo summary { font-weight: 600; cursor: pointer; min-height: 24px; }
+  details.metodo li { margin: 8px 0; font-size: 15px; }
+  .cierre { display: flex; flex-direction: column; gap: var(--s2); padding-top: 18px; border-top: 1px solid var(--rule); }
+  .cierre p { margin: 0; font-size: 16px; }
+  .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 999px; background: var(--rosa); color: #fff; font: 700 15px var(--body); text-decoration: none; }
+  .btn:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  @media (min-width: 720px) { .btn { max-width: 320px; } }
+  .correo { font-size: 13px; color: var(--ink-muted); }
+  footer { padding: var(--s3) 0 48px; }
+  footer p { font-size: 12px; color: var(--ink-muted); margin: 0 0 6px; }
+  @media (prefers-reduced-motion: reduce) { .monedas svg circle { transition: none; } }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand"><a href="../" aria-label="Cifra Pública, inicio"><img src="../assets/cifra-publica-logotipo.svg" alt="Cifra Pública" width="139" height="26"></a><span class="folio">Folio 005</span></div>
+  <div class="dbl"></div>
+  <div class="label">Consumo | México y Guanajuato</div>
+  <h1>__TITULO__</h1>
+  <p class="dek" id="dek"></p>
+  <p class="byline">Por __AUTOR__ | __FECHA__ | Datos de 2020 a 2024, los más recientes del INEGI</p>
+  <p class="aviso"><b>Hasta dónde llegan los datos.</b> El INEGI levanta la ENIGH cada dos años, de agosto a noviembre. La más reciente publicada es la de 2024, que salió en julio de 2025; la de 2026 se levanta en estos meses y, si sigue el calendario de siempre, saldrá a mediados de 2027. Comparo tres momentos: 2020, en plena pandemia; 2022, con la economía ya reabierta; y 2024.</p>
+</header>
+
+<main>
+  <div class="wrap"><div class="findings" id="findings"></div></div>
+
+  <section class="wrap">
+    <h2>¿A dónde se van 100 pesos?</h2>
+    <p class="sub">Cada moneda es un peso de cada 100 que los hogares gastan en compras con lugar: tiendas, mercados, restaurantes, internet. Sin renta, luz, escuelas ni transporte.</p>
+    <div class="card">
+      <div class="ctrl">
+        <div class="grupo" role="group" aria-label="Lugar"><span class="k">Dónde</span>
+          <button class="chip" data-dom="mx" aria-pressed="true">México</button><button class="chip" data-dom="gto" aria-pressed="false">Guanajuato</button></div>
+        <div class="grupo" role="group" aria-label="Qué compras"><span class="k">Qué</span>
+          <button class="chip" data-tema="canal" aria-pressed="true">Todas las compras</button><button class="chip" data-tema="comida" aria-pressed="false">Comida para la casa</button></div>
+        <div class="grupo" role="group" aria-label="Año"><span class="k">Año</span>
+          <button class="chip" data-anio="2020" aria-pressed="false">2020<small>pandemia</small></button><button class="chip" data-anio="2022" aria-pressed="false">2022<small>reapertura</small></button><button class="chip" data-anio="2024" aria-pressed="true">2024<small>último dato</small></button>
+          <button class="chip play" id="play" aria-label="Ver el cambio de la pandemia a 2024">▶ Ver el cambio</button></div>
+      </div>
+      <div class="monedas">
+        <figure class="chart"><p class="anio-grande" id="mon-anio"></p><div id="mon"></div></figure>
+        <div><ul class="reparto" id="reparto" aria-live="polite"></ul></div>
+      </div>
+      <p class="lectura" id="lectura" aria-live="polite"></p>
+    </div>
+    <p class="note">Las cifras llevan su margen de error al 90%: la ENIGH es una encuesta, no un censo. En Guanajuato entrevistan a unos 3,100 hogares por edición.</p>
+    <details class="more"><summary>Ver todos los lugares de compra, con su margen de error</summary><div class="tscroll" id="tabla"></div></details>
+  </section>
+
+  <section class="wrap">
+    <h2>Quién se fue de la tiendita</h2>
+    <p class="sub" id="dec-t-sub"></p>
+    <figure class="card chart"><div class="legend" id="dec-t-legend"></div><div id="dec-t"></div></figure>
+    <div class="prose" id="dec-t-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <h2>El efectivo cede de la mitad para arriba</h2>
+    <p class="sub" id="dec-e-sub"></p>
+    <figure class="card chart"><div class="legend" id="dec-e-legend"></div><div id="dec-e"></div></figure>
+    <div class="prose" id="dec-e-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <h2>¿Y los hogares como el tuyo?</h2>
+    <p class="sub">Escribe lo que entra a tu hogar al mes, sumando a todos los que viven ahí: sueldos, negocio, pensiones, apoyos y remesas. La página te dice en qué grupo de ingreso quedas y cómo gastan los hogares de ese grupo en todo el país.</p>
+    <div class="ingreso">
+      <label for="ing">Ingreso mensual del hogar</label>
+      <div class="campo"><span>$</span><input id="ing" inputmode="numeric" autocomplete="off" value="20,000" aria-describedby="ing-nota"></div>
+      <div class="presets" id="presets"></div>
+    </div>
+    <div class="panel card" id="panel" aria-live="polite"></div>
+    <p class="note" id="ing-nota"></p>
+  </section>
+
+  <section class="wrap">
+    <h2>«El internet se está comiendo al comercio»</h2>
+    <p class="sub">Se oye mucho. Esto dicen las compras de los hogares.</p>
+    <div class="mito" id="mito"></div>
+  </section>
+
+  <section class="wrap">
+    <h2>Si tienes un negocio, tres lecturas</h2>
+    <ol class="lecturas" id="lecturas"></ol>
+  </section>
+
+  <section class="wrap">
+    <div class="uso">
+      <h2>Para qué sirve, y para qué no</h2>
+      <p>Sirve para ver hacia dónde se mueve el gasto de los hogares del país y de Guanajuato: en qué tipo de lugar compran y con qué pagan, y cómo cambia según el ingreso.</p>
+      <p>No sirve para hablar de una colonia, de León o de un municipio: la ENIGH representa al país y a cada estado, no más abajo. Tampoco cuenta visitas ni clientes, solo pesos: una tiendita puede recibir a mucha gente con compras chicas.</p>
+      <p>«Tiendita» es como el hogar describió el lugar. Un Oxxo puede quedar anotado como tienda de conveniencia o como abarrotes, según quien conteste; por eso la conveniencia sale tan baja y por eso junto súper, clubes, departamentales y conveniencia en «súper y cadenas».</p>
+      <p>Los datos llegan a 2024: no dicen qué pasó en 2025 ni en 2026. Y 2020 fue año de pandemia: la encuesta se levantó de agosto a noviembre de 2020, con restaurantes a medio cerrar; por eso el cambio que más pesa en esta pieza es el de 2022 a 2024, ya con todo abierto. Lo que tumbaría esta lectura: que la ENIGH 2026 muestre a la tiendita de vuelta arriba de 16 de cada 100 pesos en el país.</p>
+    </div>
+    <details class="metodo card">
+      <summary>Cómo lo hice</summary>
+      <ul id="notas"></ul>
+    </details>
+  </section>
+
+  <section class="wrap">
+    <div class="cierre">
+      <p>¿Quieres ver esto para tu giro, tu ciudad o tus clientes? Platiquemos.</p>
+      <a class="btn" href="mailto:__EMAIL__?subject=Tus%20100%20pesos">Escríbeme</a>
+      <span class="correo">__EMAIL__</span>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p id="fuentes"></p>
+  <p>Hecho por __AUTOR__ en León | Cifra Pública</p>
+</footer>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script id="meta" type="application/json">__META__</script>
+<script>
+(() => {
+  const M = JSON.parse(document.getElementById("meta").textContent);
+  const Z = M.z90;
+
+  // ---------- formato ----------
+  const nf = new Intl.NumberFormat("es-MX");
+  const f1 = (v) => new Intl.NumberFormat("es-MX", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v);
+  const pesos = (v) => "$" + nf.format(Math.round(v));
+  const mas = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + f1(Math.abs(v));
+  const svgEl = (tag, attrs = {}) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+  const txt = (svg, x, y, s, attrs = {}) => { const t = svgEl("text", { x, y, "font-size": 11, fill: "var(--ink-muted)", ...attrs }); t.textContent = s; svg.append(t); return t; };
+  const sig = (a, b) => Math.abs(b[0] - a[0]) / Math.hypot(a[1], b[1]) > Z;  // diferencia distinta de cero al 90%
+  const mg = (e) => f1(Z * e);
+
+  // ---------- tooltip ----------
+  const tip = document.getElementById("tip");
+  function showTip(e, lines) {
+    tip.replaceChildren(...lines.map((t, i) => { const n = document.createElement(i ? "span" : "b"); n.textContent = t; return n; }));
+    tip.classList.add("on");
+    const r = e.target.getBoundingClientRect();
+    const x = e.clientX ?? (r.left + r.width / 2), y = e.clientY ?? r.top;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, x - w / 2)) + "px";
+    tip.style.top = (y - h - 14 < 8 ? y + 18 : y - h - 14) + "px";
+  }
+  const hideTip = () => tip.classList.remove("on");
+  function bindTip(el, f) {
+    el.addEventListener("pointermove", (e) => showTip(e, f()));
+    el.addEventListener("pointerleave", hideTip);
+    el.addEventListener("focus", (e) => showTip({ target: e.target }, f()));
+    el.addEventListener("blur", hideTip);
+  }
+
+  // ---------- datos de apoyo ----------
+  const MON = M.monedas, DEC = M.deciles, PAGO = M.pago, C = M.cambios;
+  const t = (dom, anio, tema = "canal") => MON[dom][tema][anio][0][0];
+  const dec = (k, anio) => DEC[k][anio];
+  const nHog = M.anios.reduce((s, a) => s + M.n.mx[a], 0);
+
+  // ---------- entradilla y hallazgos ----------
+  document.getElementById("dek").textContent =
+    `Revisé dónde compraron y cómo pagaron los ${nf.format(Math.round(nHog / 1000))} mil hogares que entrevistó el INEGI en la Encuesta Nacional de Ingresos y Gastos de los Hogares (ENIGH) de 2020, 2022 y 2024. ` +
+    `En todo el país la tiendita sigue siendo de los lugares donde más se gasta, pero se lleva cada vez menos. En Guanajuato, donde pesa más, cae más rápido: de ${f1(t("gto", "2020"))} a ${f1(t("gto", "2024"))} de cada 100 pesos. ` +
+    `Y no fue solo el rebote de la pandemia: de 2022 a 2024, ya con todo abierto, la tiendita siguió bajando y el efectivo cedió más rápido que antes. ` +
+    `Abajo puedes ver a dónde se van 100 pesos, en el país o en Guanajuato, y qué hacen los hogares con un ingreso como el tuyo.`;
+  const e10 = dec("pago_efectivo", "2024")[9], e10a = dec("pago_efectivo", "2020")[9], e1 = dec("pago_efectivo", "2024")[0];
+  document.getElementById("findings").innerHTML = `
+    <div class="card"><div class="big">${f1(t("mx", "2024"))} <small>de cada 100 pesos</small></div>
+      <p>de las compras de los hogares del país fueron a la tiendita en 2024 (± ${mg(MON.mx.canal["2024"][0][1])}). En la pandemia eran ${f1(t("mx", "2020"))} y en 2022, ${f1(t("mx", "2022"))}. En Guanajuato: ${f1(t("gto", "2020"))}, ${f1(t("gto", "2022"))} y ${f1(t("gto", "2024"))}.</p></div>
+    <div class="card"><div class="big">${Math.round(e10[0])}<small>%</small></div>
+      <p>del gasto del 10% de hogares con más ingreso se pagó en efectivo en 2024; en 2022, ${Math.round(dec("pago_efectivo", "2022")[9][0])}% y en la pandemia, ${Math.round(e10a[0])}%. En el 10% con menos ingreso sigue en ${Math.round(e1[0])}%.</p></div>
+    <div class="card"><div class="big">${Math.round(M.tiendita_efectivo.mx["2024"])} <small>de cada 100</small></div>
+      <p>pesos que se gastan en la tiendita se pagan en efectivo (${f1(M.tiendita_efectivo.mx["2024"])}%). Ahí la tarjeta casi no ha entrado; en Guanajuato, ${f1(M.tiendita_efectivo.gto["2024"])}%.</p></div>
+    <div class="card"><div class="big">${f1(M.detalle.mx.canal.internet["2024"][0])} <small>de cada 100</small></div>
+      <p>pesos se gastaron por internet en 2024 en el país; en Guanajuato, ${f1(M.detalle.gto.canal.internet["2024"][0])}. Crece, pero sigue lejos de la tiendita, el mercado o el súper.</p></div>`;
+
+  // ---------- 100 monedas ----------
+  const GRUPOS = [
+    { k: "tiendita", n: "Tiendita", d: "tiendas de abarrotes", col: "var(--cat2)" },
+    { k: "cadenas", n: "Súper y cadenas", d: "súper, clubes, departamentales, conveniencia", col: "var(--cat1)" },
+    { k: "calle", n: "Mercado y calle", d: "mercado, tianguis, ambulantes", col: "var(--cat3)" },
+    { k: "especializada", n: "Tiendas del ramo", d: "carnicería, tortillería, farmacia, ferretería, zapatería…", col: "var(--gris-claro)" },
+    { k: "resto", n: "Todo lo demás", d: "restaurantes y fondas, otras personas, internet", col: "var(--gris)" },
+  ];
+  const estado = { dom: "mx", tema: "canal", anio: "2024" };
+  function reparto(dom, tema, anio) {
+    const v = MON[dom][tema][anio].map((x) => x[0]);
+    v.push(Math.max(0, 100 - v.reduce((a, b) => a + b, 0)));
+    // redondeo de mayor residuo: siempre suman 100 monedas
+    const base = v.map(Math.floor), falta = 100 - base.reduce((a, b) => a + b, 0);
+    v.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0]).slice(0, falta).forEach(([, i]) => base[i]++);
+    return { v, n: base };
+  }
+  const monBox = document.getElementById("mon");
+  const MS = 10, gap = 30, rad = 12.5;
+  const monSvg = svgEl("svg", { viewBox: `0 0 ${MS * gap} ${MS * gap}`, role: "img" });
+  const coins = [];
+  for (let i = 0; i < 100; i++) {
+    const c = svgEl("circle", { cx: (i % MS) * gap + gap / 2, cy: Math.floor(i / MS) * gap + gap / 2, r: rad, fill: "var(--rule)", tabindex: -1 });
+    bindTip(c, () => { const g = GRUPOS[c.dataset.g]; const r = reparto(estado.dom, estado.tema, estado.anio); return [g.n, `${f1(r.v[c.dataset.g])} de cada 100 pesos en ${estado.anio}`, g.d]; });
+    coins.push(c); monSvg.append(c);
+  }
+  monBox.append(monSvg);
+  const DOMN = { gto: "Guanajuato", mx: "México" }, TEMAN = { canal: "todas las compras", comida: "comida y bebida para la casa" };
+  function pintaMonedas() {
+    const { dom, tema, anio } = estado, r = reparto(dom, tema, anio);
+    let i = 0;
+    r.n.forEach((n, g) => { for (let j = 0; j < n; j++, i++) { coins[i].setAttribute("fill", GRUPOS[g].col); coins[i].dataset.g = g; } });
+    monSvg.setAttribute("aria-label", `${DOMN[dom]}, ${anio}, ${TEMAN[tema]}: ` + GRUPOS.map((g, k) => `${g.n} ${r.n[k]}`).join(", "));
+    document.getElementById("mon-anio").textContent = `${DOMN[dom]} | ${anio} | ${TEMAN[tema]}`;
+    const base = MON[dom][tema]["2020"];
+    document.getElementById("reparto").innerHTML = GRUPOS.map((g, k) => {
+      let extra = g.d;
+      if (k < 4) {
+        const now = MON[dom][tema][anio][k];
+        const b22 = MON[dom][tema]["2022"][k];
+        const dif = (x, y, et) => sig(x, y) ? `${mas(y[0] - x[0])} desde ${et}` : `sin cambio claro desde ${et}`;
+        extra = `± ${mg(now[1])}` + (anio === "2022" ? ` | ${dif(base[k], now, "2020")}` : anio === "2024" ? ` | ${dif(base[k], now, "2020")} | ${dif(b22, now, "2022")}` : "");
+      }
+      return `<li><i style="background:${g.col}"></i><span class="q">${g.n}<small>${extra}</small></span><span class="n">${f1(r.v[k])}</span></li>`;
+    }).join("");
+    // lectura
+    const a = MON[dom][tema]["2020"][0], b = MON[dom][tema][anio][0], ca = MON[dom][tema][anio][1], cb = MON[dom][tema]["2020"][1];
+    let s;
+    const m22 = MON[dom][tema]["2022"][0];
+    if (anio === "2020") s = `En 2020, en plena pandemia, la tiendita se llevaba ${f1(a[0])} de cada 100 pesos de ${TEMAN[tema]} en ${DOMN[dom]}. Mueve el año o toca «Ver el cambio».`;
+    else if (anio === "2024") s = `De la pandemia a 2024 la tiendita ${sig(a, b) ? `${b[0] < a[0] ? "perdió" : "ganó"} ${f1(Math.abs(b[0] - a[0]))} pesos de cada 100` : "no cambió más allá del margen de error"} en ${TEMAN[tema]} en ${DOMN[dom]}. ` +
+      (sig(m22, b) ? `${b[0] < m22[0] ? "Y siguió bajando después de la reapertura" : "Después de la reapertura recuperó algo"}: de ${f1(m22[0])} en 2022 a ${f1(b[0])} en 2024. ` : `De 2022 a 2024 ya no cambió más allá del margen de error. `) +
+      (sig(cb, ca) ? `Súper y cadenas ${ca[0] > cb[0] ? "subieron" : "bajaron"} ${f1(Math.abs(ca[0] - cb[0]))} desde la pandemia.` : `Súper y cadenas no cambiaron más allá del margen de error desde la pandemia.`);
+    else if (sig(a, b)) s = `De la pandemia a ${anio} la tiendita ${b[0] < a[0] ? "perdió" : "ganó"} ${f1(Math.abs(b[0] - a[0]))} pesos de cada 100 en ${TEMAN[tema]} en ${DOMN[dom]}. ` +
+      (sig(cb, ca) ? `Súper y cadenas ${ca[0] > cb[0] ? "subieron" : "bajaron"} ${f1(Math.abs(ca[0] - cb[0]))}.` : `Súper y cadenas no cambiaron más allá del margen de error; el resto se repartió entre varios lugares.`);
+    else s = `De la pandemia a ${anio} la tiendita no cambió más allá del margen de error en ${TEMAN[tema]} en ${DOMN[dom]}.`;
+    document.getElementById("lectura").textContent = s;
+    for (const b of document.querySelectorAll("[data-dom]")) b.setAttribute("aria-pressed", b.dataset.dom === dom);
+    for (const b of document.querySelectorAll("[data-tema]")) b.setAttribute("aria-pressed", b.dataset.tema === tema);
+    for (const b of document.querySelectorAll("[data-anio]")) b.setAttribute("aria-pressed", b.dataset.anio === anio);
+    tabla();
+  }
+  let animando = null;
+  const parar = () => { clearTimeout(animando); animando = null; document.getElementById("play").textContent = "▶ Ver el cambio"; };
+  document.querySelectorAll("[data-dom]").forEach((b) => b.addEventListener("click", () => { estado.dom = b.dataset.dom; pintaMonedas(); }));
+  document.querySelectorAll("[data-tema]").forEach((b) => b.addEventListener("click", () => { estado.tema = b.dataset.tema; pintaMonedas(); }));
+  document.querySelectorAll("[data-anio]").forEach((b) => b.addEventListener("click", () => { parar(); estado.anio = b.dataset.anio; pintaMonedas(); }));
+  document.getElementById("play").addEventListener("click", () => {
+    if (animando) return parar();
+    const seq = ["2020", "2022", "2024"]; let i = 0;
+    document.getElementById("play").textContent = "■ Detener";
+    const paso = () => { estado.anio = seq[i]; pintaMonedas(); i++; animando = i < seq.length ? setTimeout(paso, 1400) : (parar(), null); };
+    paso();
+  });
+
+  // Tabla de detalle
+  const NOMBRES = { tiendita: "Tienda de abarrotes", super: "Supermercado", conveniencia: "Tienda de conveniencia", club: "Club de precios", departamental: "Tienda departamental",
+    mercado: "Mercado", tianguis: "Tianguis o mercado sobre ruedas", ambulantes: "Vendedores ambulantes", especializada: "Tiendas del ramo",
+    fuera: "Restaurantes, fondas, cafeterías y bares", particular: "Otra persona (no un negocio)", internet: "Internet", otros: "Diconsa, Liconsa y compras en el extranjero" };
+  function tabla() {
+    const D = M.detalle[estado.dom][estado.tema];
+    const filas = Object.keys(D).sort((a, b) => D[b]["2024"][0] - D[a]["2024"][0]);
+    document.getElementById("tabla").innerHTML = `<table class="t"><thead><tr><th>${DOMN[estado.dom]}, ${TEMAN[estado.tema]}</th>${M.anios.map((a) => `<th>${a}${a === 2020 ? " <small>pandemia</small>" : ""}</th>`).join("")}<th>Cambio 2020-2024</th><th>Cambio 2022-2024</th></tr></thead><tbody>${
+      filas.map((k) => { const r = D[k], a = r["2020"], m = r["2022"], b = r["2024"];
+        return `<tr><td>${NOMBRES[k]}</td>${M.anios.map((y) => `<td>${f1(r[y][0])} <small>± ${mg(r[y][1])}</small></td>`).join("")}<td>${sig(a, b) ? mas(b[0] - a[0]) : "<small>sin cambio claro</small>"}</td><td>${sig(m, b) ? mas(b[0] - m[0]) : "<small>sin cambio claro</small>"}</td></tr>`; }).join("")
+    }</tbody></table><p class="note">Pesos de cada 100 con lugar de compra. «Sin cambio claro»: la diferencia cabe en el margen de error al 90%.</p>`;
+  }
+
+  // ---------- deciles: gráfica de mancuernas ----------
+  const ancho = (box) => Math.max(300, Math.min(680, box.clientWidth || 680));
+  function mancuernas(box, clave, { minX = 0, maxX, paso = 10, unidad = "" }) {
+    const W = ancho(box), angosto = W < 480, H = 10 * 30 + 44;
+    const m = { t: 26, r: 16, b: 18, l: angosto ? 62 : 120 };
+    const x = (v) => m.l + (W - m.l - m.r) * (v - minX) / (maxX - minX);
+    const y = (k) => m.t + 15 + k * 30;
+    const a = dec(clave, "2020"), mid = dec(clave, "2022"), b = dec(clave, "2024");
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
+      "aria-label": `Por decil de ingreso, 2020, 2022 y 2024: ` + a.map((v, k) => `decil ${k + 1}, ${f1(v[0])}, ${f1(mid[k][0])} y ${f1(b[k][0])}`).join("; ") });
+    for (let v = minX; v <= maxX; v += paso) {
+      svg.append(svgEl("line", { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b, stroke: "var(--rule)" }));
+      txt(svg, x(v), m.t - 8, `${v}${unidad}`, { "text-anchor": "middle" });
+    }
+    a.forEach((va, k) => {
+      const vb = b[k], yy = y(k);
+      txt(svg, 0, yy + 4, angosto ? `Decil ${k + 1}` : (k === 0 ? "10% más pobre" : k === 9 ? "10% más rico" : `Decil ${k + 1}`), { fill: "var(--ink)" });
+      svg.append(svgEl("line", { x1: x(va[0]), x2: x(vb[0]), y1: yy, y2: yy, stroke: "var(--gris)", "stroke-width": 2 }));
+      const p1 = svgEl("circle", { cx: x(va[0]), cy: yy, r: 6, fill: "var(--surface)", stroke: "var(--gris)", "stroke-width": 2, class: "bar", tabindex: 0 });
+      const vm = mid[k];
+      const pm = svgEl("circle", { cx: x(vm[0]), cy: yy, r: 4, fill: "var(--gris)", class: "bar", tabindex: 0 });
+      const p2 = svgEl("circle", { cx: x(vb[0]), cy: yy, r: 6.5, fill: "var(--enf)", class: "bar", tabindex: 0 });
+      const lines = () => [`Decil ${k + 1}`, `2020 (pandemia): ${f1(va[0])} ± ${mg(va[1])}`, `2022: ${f1(vm[0])} ± ${mg(vm[1])}`, `2024: ${f1(vb[0])} ± ${mg(vb[1])}`,
+        sig(vm, vb) ? `De 2022 a 2024: ${mas(vb[0] - vm[0])}` : "De 2022 a 2024: sin cambio claro"];
+      bindTip(p1, lines); bindTip(pm, lines); bindTip(p2, lines);
+      svg.append(p1, pm, p2);
+    });
+    box.replaceChildren(svg);
+  }
+  const leyendaDec = `<span><i style="background:var(--surface);border:2px solid var(--gris);width:12px;height:12px"></i>2020, pandemia</span><span><i style="background:var(--gris);width:8px;height:8px"></i>2022</span><span><i style="background:var(--enf)"></i>2024, último dato</span>`;
+  document.getElementById("dec-t-legend").innerHTML = leyendaDec;
+  document.getElementById("dec-e-legend").innerHTML = leyendaDec;
+  const td20 = dec("canal_tiendita", "2020"), td22 = dec("canal_tiendita", "2022"), td24 = dec("canal_tiendita", "2024");
+  const caidas = td20.map((v, k) => v[0] - td24[k][0]), kmax = caidas.indexOf(Math.max(...caidas));
+  document.getElementById("dec-t-sub").textContent = `Pesos de cada 100 que se gastan en la tiendita, por grupo de ingreso del hogar. Todo el país: la muestra de Guanajuato no alcanza para partirla en diez.`;
+  document.getElementById("dec-t-prose").innerHTML = `
+    <p>Entre más ingreso, menos tiendita: el 10% más pobre gasta ahí ${f1(td24[0][0])} de cada 100 pesos y el 10% más rico, ${f1(td24[9][0])}. Eso no es nuevo. Lo nuevo es que de la pandemia a 2024 la tiendita perdió con casi todos, y más en medio: la caída más grande fue en el decil ${kmax + 1}, de ${f1(td20[kmax][0])} a ${f1(td24[kmax][0])}. Y no fue solo el rebote: de 2022 a 2024 siguió bajando en ${td22.filter((v, k) => sig(v, td24[k]) && td24[k][0] < v[0]).length} de los 10 grupos.</p>
+    <p>¿A dónde se fueron esos pesos? En el país, sobre todo a comer fuera: restaurantes, fondas y cafeterías pasaron de ${f1(M.detalle.mx.canal.fuera["2020"][0])} en la pandemia a ${f1(M.detalle.mx.canal.fuera["2022"][0])} en 2022 y ${f1(M.detalle.mx.canal.fuera["2024"][0])} en 2024: casi todo es rebote de la reapertura. Y en la comida para la casa, al súper y las cadenas: de ${f1(MON.mx.comida["2020"][1][0])} a ${f1(MON.mx.comida["2024"][1][0])} de cada 100 pesos.</p>`;
+  const ed20 = dec("pago_efectivo", "2020"), ed24 = dec("pago_efectivo", "2024"), tj20 = dec("pago_tarjeta", "2020"), tj24 = dec("pago_tarjeta", "2024");
+  document.getElementById("dec-e-sub").textContent = `Pesos de cada 100 que se pagan en efectivo, por grupo de ingreso del hogar, en todo el país. Ojo: la escala empieza en 50%.`;
+  document.getElementById("dec-e-prose").innerHTML = `
+    <p>En los hogares de menos ingreso casi todo sigue siendo en efectivo: ${f1(ed24[0][0])}% en el decil 1, igual que en 2020. En el decil 10 pasó de ${f1(ed20[9][0])}% en la pandemia a ${f1(dec("pago_efectivo", "2022")[9][0])}% en 2022 y ${f1(ed24[9][0])}% en 2024, y la tarjeta subió de ${f1(tj20[9][0])}% a ${f1(tj24[9][0])}%. El cambio se aceleró después de la reapertura: en todo el país el efectivo bajó ${f1(PAGO.mx.efectivo["2020"][0] - PAGO.mx.efectivo["2022"][0])} puntos de 2020 a 2022 y ${f1(PAGO.mx.efectivo["2022"][0] - PAGO.mx.efectivo["2024"][0])} de 2022 a 2024. En todo el país, la tarjeta de débito explica la mayor parte del cambio: pasó de ${f1(PAGO.mx.debito["2020"][0])}% a ${f1(PAGO.mx.debito["2024"][0])}% del gasto.</p>
+    <p>Guanajuato va más lento que el país: ${f1(PAGO.gto.efectivo["2024"][0])}% del gasto en efectivo en 2024 (± ${mg(PAGO.gto.efectivo["2024"][1])}), contra ${f1(PAGO.mx.efectivo["2024"][0])}% en México. En la pandemia eran ${f1(PAGO.gto.efectivo["2020"][0])}% y ${f1(PAGO.mx.efectivo["2020"][0])}%.</p>`;
+
+  // ---------- hogares como el tuyo ----------
+  const CORTES = M.cortes;
+  const decilDe = (v) => CORTES.filter((c) => v > c).length + 1;
+  const presets = [8000, 15000, 25000, 40000, 80000];
+  document.getElementById("presets").innerHTML = presets.map((p) => `<button class="chip" data-p="${p}" aria-pressed="false">${pesos(p)}</button>`).join("");
+  const inp = document.getElementById("ing");
+  const leer = () => Number(String(inp.value).replace(/[^\d]/g, "")) || 0;
+  const TILES = [
+    ["canal_tiendita", "En la tiendita", "de cada 100 pesos"], ["canal_cadenas", "En súper y cadenas", "de cada 100 pesos"], ["canal_fuera", "Comiendo fuera", "de cada 100 pesos"],
+    ["pago_efectivo", "Pagado en efectivo", "%"], ["pago_tarjeta", "Pagado con tarjeta", "%"], ["canal_internet", "Por internet", "de cada 100 pesos"],
+  ];
+  function panel() {
+    const v = leer(), k = decilDe(v) - 1;
+    document.querySelectorAll("[data-p]").forEach((b) => b.setAttribute("aria-pressed", Number(b.dataset.p) === v));
+    if (!v) { document.getElementById("panel").innerHTML = `<p class="lugar">Escribe un ingreso mensual o toca uno de los montos.</p>`; return; }
+    const rango = k === 0 ? `hasta ${pesos(CORTES[0])}` : k === 9 ? `más de ${pesos(CORTES[8])}` : `de ${pesos(CORTES[k - 1] + 1)} a ${pesos(CORTES[k])}`;
+    const quien = k === 0 ? "el 10% de hogares con menos ingreso" : k === 9 ? "el 10% de hogares con más ingreso" : `el decil ${k + 1}: hay ${k * 10}% de hogares con menos ingreso que el tuyo y ${90 - k * 10}% con más`;
+    document.getElementById("panel").innerHTML = `
+      <h3>Tu hogar queda en el decil ${k + 1} de 10</h3>
+      <p class="lugar">Es ${quien}. Ingreso del grupo: ${rango} al mes.</p>
+      <div class="tiles">${TILES.map(([key, nom, u]) => {
+        const a = dec(key, "2020")[k], m = dec(key, "2022")[k], b = dec(key, "2024")[k];
+        const d = (x, et) => sig(x, b) ? `<b>${mas(b[0] - x[0])}</b> desde ${et}` : `= desde ${et}`;
+        const c = `${d(a, "2020")} | ${d(m, "2022")}`;
+        return `<div class="tile"><div class="k">${nom}</div><div class="v">${f1(b[0])} <small>${u === "%" ? "%" : ""}</small></div><div class="c">${c}</div></div>`;
+      }).join("")}</div>
+      <p class="note" style="margin-top:12px">Cifras de 2024 para todo el país. «=»: sin cambio fuera del margen de error. Súper y cadenas incluye clubes de precio, tiendas departamentales y de conveniencia.</p>`;
+  }
+  inp.addEventListener("input", () => { const v = leer(); inp.value = v ? nf.format(v) : ""; panel(); });
+  document.getElementById("presets").addEventListener("click", (e) => { const b = e.target.closest("[data-p]"); if (!b) return; inp.value = nf.format(Number(b.dataset.p)); panel(); });
+  document.getElementById("ing-nota").textContent = `Los cortes son los deciles de hogares por ingreso corriente de la ENIGH 2024, llevados a pesos de diciembre de 2025 con el INPC (+${f1((M.cortes[4] / M.cortes_ago2024[4] - 1) * 100)}%). Es una guía: tu ingreso de hoy no es exactamente comparable con el de 2024. El número que escribes no sale de tu navegador.`;
+  panel();
+
+  // ---------- mito ----------
+  const it = M.detalle, i10 = dec("canal_internet", "2024")[9];
+  document.getElementById("mito").innerHTML = `
+    <div class="card"><div class="tag">Lo que se oye</div><div class="big">Todo se compra en línea</div><p>Las ventas por internet crecen cada año y las tiendas físicas van de salida.</p></div>
+    <div class="card"><div class="tag">Lo que dicen los hogares</div><div class="big">${f1(it.mx.canal.internet["2024"][0])} de cada 100 pesos</div>
+      <p>se gastaron por internet en 2024 en el país (${f1(it.mx.canal.internet["2020"][0])} en 2020, en plena pandemia). En Guanajuato, ${f1(it.gto.canal.internet["2024"][0])}. En el 10% de hogares con más ingreso es apenas ${f1(i10[0])}. La tiendita sola se lleva ${f1(t("mx", "2024") / it.mx.canal.internet["2024"][0])} veces más.</p></div>`;
+
+  // ---------- lecturas ----------
+  const tj = dec("pago_tarjeta", "2024"), tj0 = dec("pago_tarjeta", "2020");
+  document.getElementById("lecturas").innerHTML = `
+    <li><b>Tu competencia está a dos cuadras, no en línea.</b> En el país, los pesos que dejó la tiendita se fueron sobre todo a fondas y restaurantes y, en la comida para la casa, al súper. En Guanajuato se repartieron entre varios: fondas, departamentales, clubes de precio y compras a otras personas. Por internet se va ${f1(it.mx.canal.internet["2024"][0])} de cada 100.</li>
+    <li><b>Cobrar con tarjeta empieza a pesar de la mitad para arriba.</b> En el decil 7 la tarjeta pasó de ${f1(tj0[6][0])}% a ${f1(tj[6][0])}% del gasto; en el 10, de ${f1(tj0[9][0])}% a ${f1(tj[9][0])}%. Si tus clientes están ahí, la terminal ya no es un lujo.</li>
+    <li><b>La tiendita no se va: se queda con quien menos tiene.</b> En el 10% de hogares con menos ingreso todavía se lleva ${f1(td24[0][0])} de cada 100 pesos, casi todo en efectivo. Lo que se está yendo es el cliente de en medio.</li>`;
+
+  // ---------- dibujo y redibujo ----------
+  function dibuja() {
+    mancuernas(document.getElementById("dec-t"), "canal_tiendita", { maxX: 40 });
+    mancuernas(document.getElementById("dec-e"), "pago_efectivo", { minX: 50, maxX: 100, unidad: "%" });
+  }
+  let ultimoAncho = innerWidth, espera;
+  addEventListener("resize", () => { if (innerWidth === ultimoAncho) return; ultimoAncho = innerWidth; clearTimeout(espera); espera = setTimeout(dibuja, 150); });
+  pintaMonedas();
+  dibuja();
+
+  // ---------- método y fuentes ----------
+  document.getElementById("notas").innerHTML = [
+    `Fuente: microdatos de la ENIGH, Nueva serie, del INEGI, ediciones 2020, 2022 y 2024 (${nf.format(M.n.mx["2020"])}, ${nf.format(M.n.mx["2022"])} y ${nf.format(M.n.mx["2024"])} hogares; en Guanajuato, ${nf.format(M.n.gto["2020"])}, ${nf.format(M.n.gto["2022"])} y ${nf.format(M.n.gto["2024"])}). Uso la tabla de gastos del hogar y solo el gasto monetario del hogar; dejo fuera autoconsumo, regalos, pagos en especie y la renta imputada.`,
+    `«De cada 100 pesos» quiere decir: del gasto trimestral con lugar de compra (los 18 lugares del catálogo de la ENIGH, de mercado a internet), cuánto se fue a cada uno, con los factores de expansión. Cerca de un tercio del gasto monetario no tiene lugar de compra (luz, renta, colegiaturas, transporte) y no entra; esa proporción es casi la misma en los tres años.`,
+    `Los catálogos de lugar de compra y forma de pago son idénticos en las tres ediciones. En 2024 el INEGI cambió las claves de los productos a la clasificación internacional de consumo (de 4 a 6 caracteres); eso solo afecta al corte «comida para la casa», que armé con criterios equivalentes: alimentos y bebidas sin alcohol, sin comida preparada para llevar (pizzas, pollo rostizado, carnitas), sin despensas regaladas ni alimento para animales.`,
+    `Forma de pago: la primera que anotó el hogar para cada compra. Tarjeta es débito más crédito; transferencia incluye pago móvil.`,
+    `Márgenes de error al 90%, por linealización de Taylor con el diseño de la encuesta (estratos y unidades primarias de muestreo). Un cambio es «claro» si la diferencia entre dos ediciones no cabe en su margen de error, tratando las ediciones como muestras independientes.`,
+    `Deciles: hogares ordenados por ingreso corriente trimestral y cortados en diez grupos del mismo tamaño, por edición. En el buscador, los cortes de 2024 se llevan de pesos de agosto de 2024 a diciembre de 2025 con el INPC.`,
+    `El código está en el repositorio de Cifra Pública, en scripts/compras/.`,
+  ].map((s) => `<li>${s}</li>`).join("");
+  document.getElementById("fuentes").textContent =
+    "Fuentes: INEGI, Encuesta Nacional de Ingresos y Gastos de los Hogares (ENIGH) 2020, 2022 y 2024, Nueva serie, microdatos | INEGI, Índice Nacional de Precios al Consumidor. Consultadas el 18 de noviembre de 2026.";
+})();
+</script>
+</body>
+</html>
