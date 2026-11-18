@@ -2,7 +2,7 @@
 Paso 5: arma la página del gasto de León desde las salidas de los pasos 1 a 4.
 
 Uso:
-    python -I scripts/gasto/build_page.py --autor "Rodrigo Méndez Hernández" \
+    python -I scripts/gasto/build_page.py --autor "Rodrigo Méndez" \
         --correo cifrapublicamx@gmail.com --fecha "9 de noviembre de 2026"
 Salida:
     gasto-leon/index.html (usa assets/ para fuentes, logotipo y favicon)
@@ -162,7 +162,7 @@ def main(args) -> None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--autor", default="Rodrigo Méndez Hernández")
+    ap.add_argument("--autor", default="Rodrigo Méndez")
     ap.add_argument("--correo", default="cifrapublicamx@gmail.com")
     ap.add_argument("--fecha", required=True)
     main(ap.parse_args())

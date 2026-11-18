@@ -20,7 +20,7 @@ python scripts/compara.py 2019-11 2024-11
 python scripts/compara.py 2024-11 2025-05
 python scripts/extras.py 2019-11 2024-11
 python scripts/build_page.py --base 2019-11 --final 2024-11 --reciente 2025-05 \
-  --autor "Rodrigo Méndez Hernández" --correo cifrapublicamx@gmail.com --fecha "5 de noviembre de 2026"
+  --autor "Rodrigo Méndez" --correo cifrapublicamx@gmail.com --fecha "5 de noviembre de 2026"
 ```
 
 `mapa-leon/index.html` trae los datos y Leaflet adentro; las fuentes (Bricolage Grotesque y Figtree, licencia OFL), el logotipo y el favicon viven en `assets/` y los comparten todas las páginas.
@@ -63,7 +63,7 @@ python scripts/gasto/validar.py
 python scripts/gasto/reales.py
 python scripts/gasto/control_efipem.py
 python scripts/gasto/ingresos_y_ciudades.py
-python scripts/gasto/build_page.py --autor "Rodrigo Méndez Hernández" \
+python scripts/gasto/build_page.py --autor "Rodrigo Méndez" \
   --correo cifrapublicamx@gmail.com --fecha "9 de noviembre de 2026"
 ```
 

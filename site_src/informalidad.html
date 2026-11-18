@@ -190,7 +190,7 @@
 </head>
 <body>
 <header class="wrap top">
-  <div class="brand"><a href="../" aria-label="Cifra Pública, inicio"><img src="../assets/cifra-publica-logotipo.svg" alt="Cifra Pública" width="139" height="26"></a><span class="folio">Folio 003</span></div>
+  <div class="brand"><a href="../" aria-label="Cifra Pública, inicio"><img src="../assets/cifra-publica-logotipo.svg" alt="Cifra Pública" width="139" height="26"></a><span class="folio">Análisis 003</span></div>
   <div class="dbl"></div>
   <div class="label">Trabajo | México</div>
   <h1>__TITULO__</h1>
@@ -573,7 +573,7 @@
     casos.push(`<div class="card"><div class="kicker">León, Guanajuato</div><h3>La ciudad con más gente trabajando o buscando trabajo</h3>
       <p>En León, ${Math.round(Le.ultimo.participacion)} de cada 100 personas de 15 años o más trabajan o buscan trabajo. Es la cifra más alta de las ${LE.n_ciudades} ciudades en las estimaciones del INEGI desde el ${TRIM(LE.primer_trimestre_racha)}${LE.racha_participacion > 1 ? `, ${LE.racha_participacion} trimestres seguidos` : ""}${LE.segundo && !LE.segundo.distingue ? `, aunque con ${esc(LE.segundo.nombre)} (${p1(LE.segundo.valor)}) la diferencia cabe en el margen de error` : ""}.</p>
       ${mu && mu.v === "sube" && ho && ho.v === "igual" ? `<p>La subida desde 2019 es de las mujeres: de ${Math.round(mu.antes)} a ${Math.round(mu.ahora)} de cada 100. La de los hombres no cambió (${Math.round(ho.ahora)}).</p>` : ""}
-      <p>Su informalidad ${Le.cambio.informalidad.v === "igual" ? `no cambió: ${p1(Le.cambio.informalidad.antes)}% en 2019 y ${p1(Le.cambio.informalidad.ahora)}% en el último año, mientras el conjunto de las ciudades bajó` : `pasó de ${p1(Le.cambio.informalidad.antes)}% a ${p1(Le.cambio.informalidad.ahora)}%`}. Los folios <a href="../mapa-leon/">001</a> y <a href="../gasto-leon/">002</a> son sobre León.</p></div>`);
+      <p>Su informalidad ${Le.cambio.informalidad.v === "igual" ? `no cambió: ${p1(Le.cambio.informalidad.antes)}% en 2019 y ${p1(Le.cambio.informalidad.ahora)}% en el último año, mientras el conjunto de las ciudades bajó` : `pasó de ${p1(Le.cambio.informalidad.antes)}% a ${p1(Le.cambio.informalidad.ahora)}%`}. Los análisis <a href="../mapa-leon/">001</a> y <a href="../gasto-leon/">002</a> son sobre León.</p></div>`);
   }
   const subeC = M.ciudades.filter((c) => c.desde2019 && c.cambio.informalidad.v === "sube");
   const subeEnt = ENT.filter((e) => e.cambio.informalidad.v === "sube");

@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <title>Cifra Pública | Datos públicos para decidir</title>
 <meta name="description" content="Cifra Pública: análisis de datos públicos sociales, económicos, comerciales y de política pública, convertidos en mapas, tableros y piezas para decidir.">
-<meta name="author" content="Rodrigo Méndez Hernández">
+<meta name="author" content="Rodrigo Méndez">
 <meta property="og:title" content="Cifra Pública">
 <meta property="og:description" content="Datos públicos para decidir.">
 <meta property="og:type" content="website">
@@ -74,9 +74,12 @@
   .pieza .ir { font-size: 15px; font-weight: 700; color: var(--rosa); }
 
   /* Qué hago */
-  .que { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s1); }
-  .que li { background: var(--surface-alt); border-radius: var(--r); padding: var(--s2) 18px; font-size: 15px; }
-  .que b { display: block; font-family: var(--display); font-stretch: 92%; font-size: 17px; letter-spacing: -0.01em; margin-bottom: 2px; }
+  .sub { margin: 0 0 var(--s2); font-size: 16px; }
+  .preguntas { list-style: none; padding: 0; margin: 0 0 var(--s3); display: grid; gap: var(--s1); }
+  .preguntas li { background: var(--surface-alt); border-radius: var(--r); padding: var(--s2) 18px; font-size: 15px; color: var(--ink-muted); }
+  .preguntas b { display: block; font-family: var(--display); font-stretch: 92%; font-size: 17px; letter-spacing: -0.01em; line-height: 1.25; color: var(--ink); margin-bottom: 4px; }
+  .preguntas a { font-weight: 700; }
+  .aviso { margin: 0; font-size: 15px; font-weight: 700; }
 
   .lead { font-size: 18px; margin: 0 0 var(--s2); }
   @media (min-width: 720px) { .lead { font-size: 19px; } }
@@ -113,6 +116,7 @@
   <h1>Datos públicos para decidir</h1>
   <p class="lead">Cifra Pública es un espacio de análisis de datos públicos: sociales, económicos, comerciales y de política pública. Tomo lo que publican el INEGI, los gobiernos y otras fuentes abiertas, lo cruzo y lo convierto en mapas, tableros y piezas que se pueden usar.</p>
   <p class="lead">Empiezo por León y Guanajuato, que es donde vivo y donde mejor sé leer los datos. Las preguntas pueden ser de cualquier lugar.</p>
+  <p class="aviso"><a href="#servicios">¿Quieres algo así para tu negocio o tu equipo? Mira cómo podemos trabajar</a></p>
 </header>
 
 <main>
@@ -328,7 +332,7 @@
         </svg>
       </div>
       <div class="txt">
-        <div class="meta">Folio 005 | Consumo | México y Guanajuato</div>
+        <div class="meta">Análisis 005 | Consumo | México y Guanajuato</div>
         <h3>¿A dónde se van tus 100 pesos?</h3>
         <p>De la pandemia a 2024, la tiendita pasó de 17.5 a 14.3 de cada 100 pesos que gastan los hogares en México, y siguió bajando después de la reapertura; en Guanajuato, más rápido. Mira qué hacen los hogares con un ingreso como el tuyo.</p>
         <span class="ir">Ver la pieza</span>
@@ -542,7 +546,7 @@
         </svg>
       </div>
       <div class="txt">
-        <div class="meta">Folio 004 | Sol y reloj | México</div>
+        <div class="meta">Análisis 004 | Sol y reloj | México</div>
         <h3>Mismo reloj, otro sol</h3>
         <p>Con la misma hora, en Nuevo Casas Grandes amanece 98 minutos después que en Valladolid. Calculé el amanecer de cada localidad del país para cada día del ciclo escolar 2026-2027; busca el de tu municipio.</p>
         <span class="ir">Ver la pieza</span>
@@ -621,7 +625,7 @@
         </svg>
       </div>
       <div class="txt">
-        <div class="meta">Folio 003 | Trabajo | México</div>
+        <div class="meta">Análisis 003 | Trabajo | México</div>
         <h3>Menos desempleo, casi la misma informalidad</h3>
         <p>El desempleo bajó en casi todo el país desde 2019; la informalidad apenas se movió. Por estado, por tamaño de localidad y en 39 ciudades, con la encuesta de empleo del INEGI y su margen de error. Se actualiza cada trimestre.</p>
         <span class="ir">Ver la pieza</span>
@@ -648,7 +652,7 @@
         </svg>
       </div>
       <div class="txt">
-        <div class="meta">Folio 002 | Gasto público | León</div>
+        <div class="meta">Análisis 002 | Gasto público | León</div>
         <h3>León gasta más por habitante desde 2023</h3>
         <p>Diez años de la cuenta pública del municipio, en pesos de 2025: cuánto se gastó por habitante, para qué, en qué y de dónde salió el dinero, con Querétaro, Puebla y Tijuana como referencia. Y tres maneras de contar el gasto en seguridad.</p>
         <span class="ir">Ver la pieza</span>
@@ -670,13 +674,27 @@
         </svg>
       </div>
       <div class="txt">
-        <div class="meta">Folio 001 | Negocios | León</div>
+        <div class="meta">Análisis 001 | Negocios | León</div>
         <h3>León crece desde las orillas</h3>
         <p>Comparé el directorio de negocios del INEGI de 2019 y 2024: el centro perdió negocios y las orillas ganaron hasta 47.5%. Mapa por zona y por giro, con el Coecillo y el calzado de por medio.</p>
         <span class="ir">Ver el mapa</span>
       </div>
     </a>
     </div>
+  </section>
+
+  <section class="wrap" id="servicios">
+    <h2>¿Qué quieres saber tú?</h2>
+    <p class="sub">Cada pieza de aquí empezó con una pregunta. Algunas de las que puedo contestar contigo:</p>
+    <ul class="preguntas">
+      <li><b>¿En qué zona abro, o dónde ya hay demasiados negocios como el mío?</b>Como en <a href="mapa-leon/">León crece desde las orillas</a>.</li>
+      <li><b>¿La gente compra menos de lo que vendo, o lo compra en otro lado?</b>Como en <a href="compras/">¿A dónde se van tus 100 pesos?</a></li>
+      <li><b>¿Hay una cifra que alguien de mi equipo actualiza a mano cada mes?</b>Puede llegar sola, como en <a href="informalidad/">Menos desempleo, casi la misma informalidad</a>, que se actualiza cada trimestre.</li>
+      <li><b>¿En qué se va el presupuesto de mi municipio y cómo se compara con otros?</b>Como en <a href="gasto-leon/">León gasta más por habitante desde 2023</a>.</li>
+    </ul>
+    <p class="sub">Puede ser un análisis que te entrego y listo, o un acompañamiento de varios meses en el que reviso contigo los números cada vez que toca decidir algo.</p>
+    <p class="sub">También hago la parte de datos para consultoras y agencias, escribo análisis para medios y trabajo con equipos de gobierno, campañas y organizaciones civiles, de cualquier partido y con las mismas reglas: la cifra antes que el adjetivo y los límites a la vista.</p>
+    <p class="sub">La primera plática es gratis. Me cuentas qué tienes que decidir y te digo con franqueza si los datos públicos alcanzan para contestarlo. <a href="mailto:cifrapublicamx@gmail.com?subject=Platiquemos">Escríbeme</a>.</p>
   </section>
 
   <section class="wrap">
@@ -689,27 +707,10 @@
   </section>
 
   <section class="wrap">
-    <h2>De qué escribo</h2>
-    <ul class="temas">
-      <li>Negocios y mercado</li><li>Ciudad y territorio</li><li>Empleo e ingreso</li>
-      <li>Gasto público</li><li>Sociedad</li><li>Política pública</li>
-    </ul>
-  </section>
-
-  <section class="wrap">
-    <h2>Lo que puedo hacer contigo</h2>
-    <ul class="que">
-      <li><b>Mapas de mercado por zona y giro</b>Dónde hay competencia, dónde está creciendo la ciudad y dónde conviene buscar, con tus sucursales o tus clientes encima.</li>
-      <li><b>Tableros que se actualizan solos</b>Datos públicos que llegan cada mes o cada semestre, ya limpios y en un tablero que tu equipo puede consultar sin pedírmelo.</li>
-      <li><b>Gasto público, en claro</b>Presupuestos y cuentas municipales ordenados por rubro y por año, listos para revisar o para publicar.</li>
-    </ul>
-  </section>
-
-  <section class="wrap">
     <h2>Sobre el autor</h2>
     <div class="autor">
       <div class="dbl"></div>
-      <p>Soy Rodrigo Méndez Hernández. Estudié física y he trabajado con datos de mercado en sectores muy distintos: aviación, seguros y finanzas, educación y energía.</p>
+      <p>Soy Rodrigo Méndez. Estudié física y he trabajado con datos de mercado en sectores muy distintos: aviación, seguros y finanzas, educación y energía.</p>
       <p>Me apasiona convertir datos en descubrimientos, y mis intereses van de la economía a la cultura, las ciencias y la música. Hago Cifra Pública desde León, de punta a punta: bajo los datos, los limpio, los cruzo, armo la herramienta y la publico.</p>
       <p class="michi">Michi, mi gata, es directora adjunta de Cifra Pública. Su principal aportación es sentarse en el teclado.</p>
     </div>
@@ -726,7 +727,7 @@
 
 <footer class="wrap">
   <p>Código y datos de cada pieza: <a href="https://github.com/cifrapublicamx">github.com/cifrapublicamx</a>.</p>
-  <p>Hecho por Rodrigo Méndez Hernández en León | Cifra Pública</p>
+  <p>Hecho por Rodrigo Méndez en León | Cifra Pública</p>
 </footer>
 </body>
 </html>

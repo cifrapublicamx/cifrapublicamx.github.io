@@ -133,7 +133,7 @@ def main(args) -> int:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--autor", default="Rodrigo Méndez Hernández")
+    ap.add_argument("--autor", default="Rodrigo Méndez")
     ap.add_argument("--correo", default="cifrapublicamx@gmail.com")
     ap.add_argument("--fecha", default=FECHA)
     sys.exit(main(ap.parse_args()))
