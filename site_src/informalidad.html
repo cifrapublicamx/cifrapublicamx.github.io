@@ -393,7 +393,7 @@
   document.getElementById("map-table").innerHTML = `<table class="t"><thead><tr><th>Estado</th><th>Desempleo 2019</th><th>Último año</th><th>Cambio</th><th>Informalidad 2019</th><th>Último año</th><th>Cambio</th></tr></thead><tbody>${
     ENT.map((e) => { const d = e.cambio.desocupacion, i = e.cambio.informalidad;
       return `<tr><td>${esc(e.nombre)}</td><td>${p1(d.antes)}</td><td>${p1(d.ahora)}</td><td>${sg(d.dif)} ± ${pf.format(d.margen)} ${tag(d.v)}</td><td>${p1(i.antes)}</td><td>${p1(i.ahora)}</td><td>${sg(i.dif)} ± ${pf.format(i.margen)} ${tag(i.v)}</td></tr>`; }).join("")
-  }</tbody></table><p class="note">Porcentajes. Desempleo: desocupados entre la población económicamente activa. Informalidad: ocupados en la informalidad entre los ocupados. Promedios de 2019 y de ${M.ventana}.</p>`;
+  }</tbody></table><p class="note">Porcentajes. Desempleo: desocupados entre la población económicamente activa. Informalidad: ocupados en la informalidad entre los ocupados. Promedios de 2019 y del último año (${M.ventana}).</p>`;
 
   // ---------- series nacionales ----------
   const idx = (t) => { const [a, q] = t.split("-T").map(Number); return (a - 2019) * 4 + q - 1; };
@@ -469,7 +469,7 @@
     linea(box, 0, "Informalidad laboral", "var(--cant)");
   }
   document.getElementById("ser-sub").textContent = `Porcentaje por trimestre, de ${TRIM(T[0])} a ${TRIM(M.U)}. La franja de color es el margen de error de 90%; la línea punteada, el promedio de 2019.`;
-  document.getElementById("ser-note").textContent = "Del tercer trimestre de 2020 al cuarto de 2022 la encuesta se levantó en parte por teléfono (ENOE Nueva Edición). El segundo trimestre de 2020 no aparece: por la pandemia, el INEGI levantó otra encuesta, solo por teléfono.";
+  document.getElementById("ser-note").textContent = "Del tercer trimestre de 2020 al cuarto de 2022 la encuesta se levantó en parte por teléfono (ENOE Nueva Edición). El segundo trimestre de 2020 no aparece porque, por la pandemia, el INEGI levantó otra encuesta, solo por teléfono.";
 
   // ---------- mancuernas ----------
   function dumbbell(el, rows, lo, hi, ejes) {
@@ -498,7 +498,7 @@
   document.getElementById("loc-title").textContent = M.solo_grandes
     ? "La informalidad solo bajó en las ciudades de 100 mil habitantes o más"
     : "La informalidad por tamaño de localidad";
-  document.getElementById("loc-sub").textContent = `De cada 100 personas que trabajan, cuántas lo hacen en la informalidad: promedio de 2019 contra ${M.ventana}.`;
+  document.getElementById("loc-sub").textContent = `De cada 100 personas que trabajan, cuántas lo hacen en la informalidad. Promedio de 2019 contra el del último año (${M.ventana}).`;
   document.getElementById("loc-legend").innerHTML = legDumb;
   const nombreLoc = { 1: "100 mil o más habitantes", 2: "15 mil a 99,999", 3: "2,500 a 14,999", 4: "Menos de 2,500" };
   const filasLoc = [{ nombre: "Todo el país", label: "<b>Todo el país</b>", c: ni }]
@@ -508,7 +508,7 @@
   const L4d = L4.cambio.desocupacion;
   document.getElementById("loc-prose").innerHTML =
     `<p>En las localidades de menos de 2,500 habitantes, ${Math.round(L4.cambio.informalidad.ahora)} de cada 100 personas que trabajan lo hacen en la informalidad, igual que en 2019. ` +
-    `Ahí el desempleo también bajó, de ${p1(L4d.antes)}% a ${p1(L4d.ahora)}%: hay menos gente buscando trabajo sin encontrarlo, pero el trabajo que hay sigue siendo informal.</p>` +
+    `Ahí el desempleo también bajó, de ${p1(L4d.antes)}% a ${p1(L4d.ahora)}%. Hay menos gente buscando trabajo sin encontrarlo, pero el trabajo que hay sigue siendo informal.</p>` +
     (loc.every((l) => l.cambio.desocupacion.v === "baja")
       ? `<p>El desempleo bajó en los cuatro tamaños de localidad. La informalidad, ${M.solo_grandes ? "solo en las ciudades de 100 mil habitantes o más" : "no en todos"}.</p>` : "");
 
@@ -516,7 +516,7 @@
   const CI = M.ciudades.filter((c) => c.desde2019).sort((a, b) => a.cambio.informalidad.dif - b.cambio.informalidad.dif);
   const nuevas = M.ciudades.filter((c) => !c.desde2019).map((c) => c.nombre);
   document.getElementById("ciu-title").textContent = `En ${C.informalidad.igual.length} de ${nC} ciudades la informalidad no cambió más allá del margen de error`;
-  document.getElementById("ciu-sub").textContent = `Cambio en puntos entre 2019 y ${M.ventana}, en las ${nC} ciudades que la encuesta mide desde 2019. La raya es el margen de error de 90%: si cruza el cero, el cambio no se distingue.`;
+  document.getElementById("ciu-sub").textContent = `Cambio en puntos entre 2019 y el último año (${M.ventana}), en las ${nC} ciudades que la encuesta mide desde 2019. La raya es el margen de error de 90%: si cruza el cero, el cambio no se distingue.`;
   document.getElementById("ciu-legend").innerHTML = `<span><i class="dot" style="background:var(--baja)"></i>Bajó</span><span><i class="dot" style="background:var(--gris)"></i>Sin cambio que se distinga</span><span><i class="dot" style="background:var(--sube)"></i>Subió</span>`;
   function drawCities() {
     const g = document.getElementById("ciu");
@@ -545,7 +545,7 @@
     g.replaceChildren(...kids);
   }
   document.getElementById("ciu-note").textContent =
-    `Ordenadas de la que más bajó su informalidad a la que más subió. ${lista(nuevas)} entraron a la encuesta en 2020: están en el buscador, pero no tienen comparación con 2019. Cada ciudad es como la define el INEGI y puede abarcar más de un municipio.`;
+    `Ordenadas de la que más bajó su informalidad a la que más subió. ${lista(nuevas)} entraron a la encuesta en 2020; están en el buscador, pero no tienen comparación con 2019. Cada ciudad es como la define el INEGI y puede abarcar más de un municipio.`;
   document.getElementById("ciu-table").innerHTML = `<table class="t"><thead><tr><th>Ciudad</th><th>Desempleo 2019</th><th>Último año</th><th>Cambio</th><th>Informalidad 2019</th><th>Último año</th><th>Cambio</th></tr></thead><tbody>${
     [...CI].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")).map((c) => { const d = c.cambio.desocupacion, i = c.cambio.informalidad;
       return `<tr><td>${esc(c.nombre)}</td><td>${p1(d.antes)}</td><td>${p1(d.ahora)}</td><td>${sg(d.dif)} ± ${pf.format(d.margen)} ${tag(d.v)}</td><td>${p1(i.antes)}</td><td>${p1(i.ahora)}</td><td>${sg(i.dif)} ± ${pf.format(i.margen)} ${tag(i.v)}</td></tr>`; }).join("")
@@ -557,7 +557,7 @@
   document.getElementById("cdmx-title").textContent = A35.v === "baja"
     ? `Sin la Ciudad de México, la informalidad de las ciudades bajó ${pf.format(Math.abs(A35.dif))} puntos y no ${pf.format(Math.abs(A36.dif))}`
     : `Sin la Ciudad de México, la informalidad de las ciudades no cambió`;
-  document.getElementById("cdmx-sub").textContent = `Informalidad en el conjunto de las ${nC} ciudades, con y sin la Ciudad de México: promedio de 2019 contra ${M.ventana}.`;
+  document.getElementById("cdmx-sub").textContent = `Informalidad en el conjunto de las ${nC} ciudades, con y sin la Ciudad de México. Promedio de 2019 contra el del último año (${M.ventana}).`;
   dumbbell(document.getElementById("cdmx"), [
     { nombre: `Las ${nC} ciudades`, label: `<b>Las ${nC} ciudades</b>`, c: A36 },
     { nombre: `Las ${nC} ciudades sin la Ciudad de México`, label: `Sin la Ciudad de México`, c: A35 },
@@ -565,7 +565,7 @@
   ], 35, 55);
   document.getElementById("cdmx-prose").innerHTML =
     `<p>La Ciudad de México tiene ${Math.round(M.peso_cdmx)} de cada 100 personas que trabajan en estas ${nC} ciudades, y su informalidad bajó de ${p1(CDMX.antes)}% a ${p1(CDMX.ahora)}%. ` +
-    `Por eso pesa tanto en el promedio: buena parte de lo que bajó la informalidad urbana es lo que bajó en la capital.</p>`;
+    `Por eso pesa tanto en el promedio, y buena parte de lo que bajó la informalidad urbana es lo que bajó en la capital.</p>`;
 
   // ---------- casos ----------
   const Le = M.ciudades.find((c) => c.cd === "5"), LE = M.leon, mu = LE.sexo.Mujeres, ho = LE.sexo.Hombres;
@@ -573,8 +573,8 @@
   if (LE.racha_participacion > 0) {
     casos.push(`<div class="card"><div class="kicker">León, Guanajuato</div><h3>La ciudad con más gente trabajando o buscando trabajo</h3>
       <p>En León, ${Math.round(Le.ultimo.participacion)} de cada 100 personas de 15 años o más trabajan o buscan trabajo. Es la cifra más alta de las ${LE.n_ciudades} ciudades en las estimaciones del INEGI desde el ${TRIM(LE.primer_trimestre_racha)}${LE.racha_participacion > 1 ? `, ${LE.racha_participacion} trimestres seguidos` : ""}${LE.segundo && !LE.segundo.distingue ? `, aunque con ${esc(LE.segundo.nombre)} (${p1(LE.segundo.valor)}) la diferencia cabe en el margen de error` : ""}.</p>
-      ${mu && mu.v === "sube" && ho && ho.v === "igual" ? `<p>La subida desde 2019 es de las mujeres: de ${Math.round(mu.antes)} a ${Math.round(mu.ahora)} de cada 100. La de los hombres no cambió (${Math.round(ho.ahora)}).</p>` : ""}
-      <p>Su informalidad ${Le.cambio.informalidad.v === "igual" ? `no cambió: ${p1(Le.cambio.informalidad.antes)}% en 2019 y ${p1(Le.cambio.informalidad.ahora)}% en el último año, mientras el conjunto de las ciudades bajó` : `pasó de ${p1(Le.cambio.informalidad.antes)}% a ${p1(Le.cambio.informalidad.ahora)}%`}. Los análisis <a href="../mapa-leon/">001</a> y <a href="../gasto-leon/">002</a> son sobre León.</p></div>`);
+      ${mu && mu.v === "sube" && ho && ho.v === "igual" ? `<p>La subida desde 2019 viene de las mujeres, que pasaron de ${Math.round(mu.antes)} a ${Math.round(mu.ahora)} de cada 100. La de los hombres no cambió (${Math.round(ho.ahora)}).</p>` : ""}
+      <p>Su informalidad ${Le.cambio.informalidad.v === "igual" ? `no cambió (${p1(Le.cambio.informalidad.antes)}% en 2019 y ${p1(Le.cambio.informalidad.ahora)}% en el último año), mientras el conjunto de las ciudades bajó` : `pasó de ${p1(Le.cambio.informalidad.antes)}% a ${p1(Le.cambio.informalidad.ahora)}%`}. Los análisis <a href="../mapa-leon/">001</a> y <a href="../gasto-leon/">002</a> son sobre León.</p></div>`);
   }
   const subeC = M.ciudades.filter((c) => c.desde2019 && c.cambio.informalidad.v === "sube");
   const subeEnt = ENT.filter((e) => e.cambio.informalidad.v === "sube");
@@ -583,8 +583,8 @@
     const titulo = subeEnt.length === 1 ? `${e0.nombre}: el único estado donde la informalidad subió` : `Donde la informalidad subió`;
     casos.push(`<div class="card"><div class="kicker">${subeEnt.length === 1 ? esc(e0.nombre) : "Contra la tendencia"}</div><h3>${esc(titulo)}</h3>
       ${subeEnt.map((e) => `<p>En el estado de ${esc(e.nombre)} la informalidad pasó de ${p1(e.cambio.informalidad.antes)}% a ${p1(e.cambio.informalidad.ahora)}% (${sg(e.cambio.informalidad.dif)} ± ${pf.format(e.cambio.informalidad.margen)} puntos).</p>`).join("")}
-      ${subeC.map((c) => `<p>En la ciudad de ${esc(c.nombre)}, de ${p1(c.cambio.informalidad.antes)}% a ${p1(c.cambio.informalidad.ahora)}%${c0 && c.cd === c0.cd && subeC.length === 1 ? ": es la única de las " + nC + " ciudades donde subió" : ""}.</p>`).join("")}
-      <p>${c0 ? "La ciudad es parte del estado, así que no son dos pruebas independientes. " : ""}Con ${nE} estados y ${nC} ciudades, uno puede salir por azar: conviene ver los siguientes trimestres antes de sacar conclusiones.</p></div>`);
+      ${subeC.map((c) => `<p>En la ciudad de ${esc(c.nombre)}, de ${p1(c.cambio.informalidad.antes)}% a ${p1(c.cambio.informalidad.ahora)}%${c0 && c.cd === c0.cd && subeC.length === 1 ? ", la única de las " + nC + " ciudades donde subió" : ""}.</p>`).join("")}
+      <p>${c0 ? "La ciudad es parte del estado, así que no son dos pruebas independientes. " : ""}Con ${nE} estados y ${nC} ciudades, uno puede salir por azar. Conviene ver los siguientes trimestres antes de sacar conclusiones.</p></div>`);
   }
   document.getElementById("casos").innerHTML = casos.join("");
 
@@ -637,7 +637,7 @@
   const es = N.este, ei = es.informalidad, ed = es.desocupacion;
   const frase = (x, nombre) => Math.abs(x.dif) < 0.05
     ? `${nombre} fue de ${p1(x.ahora)}%, igual que un año antes.`
-    : `${nombre} fue de ${p1(x.ahora)}%, contra ${p1(x.antes)}% un año antes: ${x.distingue ? `una diferencia de ${sg(x.dif)} puntos, mayor que su margen de error (± ${pf.format(x.margen)})` : `la diferencia (${sg(x.dif)} puntos) no supera el margen de error (± ${pf.format(x.margen)})`}.`;
+    : `${nombre} fue de ${p1(x.ahora)}%, contra ${p1(x.antes)}% un año antes; ${x.distingue ? `una diferencia de ${sg(x.dif)} puntos, mayor que su margen de error (± ${pf.format(x.margen)})` : `la diferencia (${sg(x.dif)} puntos) no supera el margen de error (± ${pf.format(x.margen)})`}.`;
   document.getElementById("trim-title").textContent = `El ${TRIM(M.U)}`;
   document.getElementById("trim-body").innerHTML =
     `<p>En el país, la informalidad laboral ${frase(ei, "").replace(/^ fue/, "fue")}</p>` +
@@ -649,7 +649,7 @@
     `Usé los microdatos de la Encuesta Nacional de Ocupación y Empleo (ENOE) del INEGI, tabla sociodemográfica, del ${TRIM(T[0])} al ${TRIM(M.U)}: ${T.length} trimestres. Cuento a las personas de 15 años o más, residentes de la vivienda, con entrevista completa, que es el criterio del INEGI.`,
     `Desempleo es la tasa de desocupación: personas que no trabajaron y buscaron trabajo, entre la población económicamente activa (las que trabajan o buscan). Informalidad es la tasa de informalidad laboral 1 del INEGI: personas ocupadas en la informalidad (sin la seguridad social de un empleo formal, o en un negocio o actividad sin registro, entre otras) entre todas las ocupadas. Participación: población económicamente activa entre la de 15 años o más.`,
     `Cada cifra trae su margen de error de 90%, calculado con el diseño de la encuesta (estratos y unidades primarias de muestreo).`,
-    `Para comparar con 2019 promedié los cuatro trimestres de 2019 y los últimos cuatro publicados (${M.ventana}): así los dos lados tienen todas las estaciones del año. Un cambio cuenta solo si es mayor que su margen de error. Calculé ese margen como si los trimestres de cada lado estuvieran totalmente relacionados entre sí, porque la encuesta repite viviendas de un trimestre a otro; es un criterio conservador.`,
+    `Para comparar con 2019 promedié los cuatro trimestres de 2019 y los últimos cuatro publicados (${M.ventana}); así los dos lados tienen todas las estaciones del año. Un cambio cuenta solo si es mayor que su margen de error. Calculé ese margen como si los trimestres de cada lado estuvieran totalmente relacionados entre sí, porque la encuesta repite viviendas de un trimestre a otro; es un criterio conservador.`,
     `El cálculo reproduce lo que publica el INEGI: en el ${TRIM("2026-T2")} coincide con su boletín en el total nacional y en los estados y ciudades que revisé, con diferencias de 0.0 a 0.1 puntos.`,
     `Del tercer trimestre de 2020 al cuarto de 2022 la encuesta fue la ENOE Nueva Edición, levantada en parte por teléfono. El segundo trimestre de 2020 no existe en esta serie.`,
     `En el cuarto trimestre de 2024 el INEGI actualizó la población de las ciudades, y algunas cambian mucho de un trimestre a otro. Por eso uso tasas y no número de personas.`,

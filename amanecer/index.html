@@ -177,7 +177,7 @@
 
   <section class="wrap">
     <h2>Lo que le falta a la mañana le sobra a la tarde</h2>
-    <p class="sub">El reloj no quita luz: la mueve. Donde amanece tarde, también oscurece tarde.</p>
+    <p class="sub">El reloj no quita luz. Donde amanece tarde, también oscurece tarde.</p>
     <div class="tscroll card" id="tarde"></div>
     <p class="note">Amanecer: el más tardío en día de clase del ciclo 2026-2027. Atardeceres: el más temprano y el más tardío de 2027.</p>
   </section>
@@ -312,15 +312,15 @@
   const s7 = R.sensibilidad["420"]["420"];
   document.getElementById("dek").textContent =
     `Calculé a qué hora sale el sol en cada una de las ${nf.format(R.localidades)} localidades del país, en cada día del ciclo escolar 2026-2027. ` +
-    `Casi todo México usa la misma hora todo el año, pero el sol sale primero en el oriente: en la mañana más oscura del ciclo, ` +
+    `Casi todo México usa la misma hora todo el año, pero el sol sale primero en el oriente. En la mañana más oscura del ciclo, ` +
     `en Valladolid, Yucatán, amanece a las ${hm(vall.am_max)} y en Nuevo Casas Grandes, Chihuahua, a las ${hm(ncg.am_max)}. Abajo puedes buscar tu municipio.`;
   document.getElementById("findings").innerHTML = `
     <div class="card"><div class="big">${dif} <small>minutos</small></div>
       <p>de diferencia en la mañana más oscura del ciclo entre Nuevo Casas Grandes (${hm(ncg.am_max)}) y Valladolid (${hm(vall.am_max)}). Las dos usan la hora del Centro.</p></div>
     <div class="card"><div class="big">${hm(chi.am_max)}</div>
-      <p>amanece en la ciudad de Chihuahua en las mañanas más oscuras de enero. Es la ciudad grande donde más tarde sale el sol: ${chi.dias_am_450} días de clase amanece después de las 7:30.</p></div>
+      <p>amanece en la ciudad de Chihuahua en las mañanas más oscuras de enero. Es la ciudad grande donde más tarde sale el sol, con ${chi.dias_am_450} días de clase en que amanece después de las 7:30.</p></div>
     <div class="card"><div class="big">8 <small>de cada 10</small></div>
-      <p>personas viven donde al menos un día de clase amanece después de las 7:00: ${millones(s7.pob)}, entre ellas ${millones(s7.ninos)} de niñas y niños de 3 a 14 años.</p></div>
+      <p>personas viven donde al menos un día de clase amanece después de las 7:00. Son ${millones(s7.pob)} (entre ${millones(R.sensibilidad["420"]["422"].pob)} y ${millones(R.sensibilidad["420"]["418"].pob)} con dos minutos de margen), entre ellas ${millones(s7.ninos)} de niñas y niños de 3 a 14 años.</p></div>
     <div class="card"><div class="big">${fecha(nl.am_max_dia)}</div>
       <p>es la mañana más oscura del ciclo en Nuevo Laredo, Reynosa y Matamoros. Ahí el reloj se adelanta en marzo y el amanecer llega hasta las ${hm(nl.am_max)}.</p></div>`;
 
@@ -385,7 +385,7 @@
     `Personas según la hora del amanecer en la mañana más oscura del ciclo escolar, en tramos de 5 minutos. ${millones(R.poblacion - s7.pob)} viven donde ningún día de clase amanece después de las 7:00.`;
   const s730 = R.sensibilidad["450"];
   document.getElementById("dist-note").textContent =
-    `¿Cuánta gente vive donde amanece después de las 7:30? Aquí no doy una sola cifra: con esa línea son ${millones(s730["450"].pob)}, pero un error de dos minutos en el cálculo la movería entre ${millones(s730["452"].pob)} y ${millones(s730["448"].pob)}. ` +
+    `¿Cuánta gente vive donde amanece después de las 7:30? Aquí no doy una sola cifra. Con esa línea son ${millones(s730["450"].pob)}, pero un error de dos minutos en el cálculo la movería entre ${millones(s730["452"].pob)} y ${millones(s730["448"].pob)}. ` +
     `Monterrey (${hm(L.monterrey.am_max)}), Aguascalientes (${hm(L.aguascalientes.am_max)}), Saltillo (${hm(L.saltillo.am_max)}) y Guadalajara (${hm(L.guadalajara.am_max)}) quedan justo en el corte. ` +
     `La de las 7:00 sí aguanta: con dos minutos de margen queda entre ${millones(R.sensibilidad["420"]["422"].pob)} y ${millones(R.sensibilidad["420"]["418"].pob)}.`;
 
@@ -441,8 +441,8 @@
   const sCmp = cmp.map((c) => ({ nombre: c.nombre, corto: c.corto, v: serie(c.p), color: c.color }));
   document.getElementById("cmp-sub").textContent = `Hora del amanecer, cada día del ciclo escolar 2026-2027. Las tres ciudades usan la hora del Centro.`;
   document.getElementById("cmp-prose").innerHTML = `
-    <p>La Tierra gira un grado cada cuatro minutos. El horario del Centro va de la sierra de Chihuahua, a más de 108 grados al oeste de Greenwich, hasta la península de Yucatán, a unos 87: más de 20 grados con la misma hora en el reloj. Eso da casi hora y media de diferencia; la latitud pone el resto, porque en invierno los días son más cortos en el norte.</p>
-    <p>Nuevo Casas Grandes está a ${mf(Math.abs(ncg.lng))} grados oeste y a ${mf(ncg.lat)} de latitud norte; Valladolid, a ${mf(Math.abs(vall.lng))} oeste y ${mf(vall.lat)} norte. En Nuevo Casas Grandes, ${L.ncg.dias_am_480} días de clase amanece después de las 8:00. León queda en medio: su mañana más oscura es el ${fecha(L.leon.am_max_dia)}, a las ${hm(L.leon.am_max)}.</p>
+    <p>La Tierra gira un grado cada cuatro minutos. El horario del Centro va de la sierra de Chihuahua, a más de 108 grados al oeste de Greenwich, hasta la península de Yucatán, a unos 87; son más de 20 grados con la misma hora en el reloj. Eso da casi hora y media de diferencia; la latitud pone el resto, porque en invierno los días son más cortos en el norte.</p>
+    <p>Nuevo Casas Grandes está a ${mf(Math.abs(ncg.lng))} grados oeste y a ${mf(ncg.lat)} de latitud norte; Valladolid, a ${mf(Math.abs(vall.lng))} oeste y ${mf(vall.lat)} norte. En Nuevo Casas Grandes, ${L.ncg.dias_am_480} días de clase amanece después de las 8:00. León queda en medio, con su mañana más oscura el ${fecha(L.leon.am_max_dia)}, a las ${hm(L.leon.am_max)}.</p>
     <p>Desde octubre de 2022 casi todo el país dejó el horario de verano, y desde finales de noviembre de ese año Chihuahua usa la hora del Centro; antes usaba la del Pacífico, una hora menos.</p>`;
 
   // Frontera
@@ -452,7 +452,7 @@
   const sFr = fr.map((c) => ({ nombre: c.nombre, v: serie(c.p), color: c.color, ancho: c.nombre === "Nuevo Laredo" ? 2.4 : 1.8 }));
   document.getElementById("fr-legend").innerHTML = `<span><i class="ln" style="background:var(--ink-muted);opacity:.6"></i>Líneas punteadas: 7:00, 7:30 y 8:00</span>`;
   document.getElementById("fr-prose").innerHTML = `
-    <p>Baja California y 30 municipios de la frontera norte cambian de hora con Estados Unidos: adelantan el reloj el segundo domingo de marzo y lo atrasan el primero de noviembre. En Nuevo Laredo, Reynosa y Matamoros eso pone la mañana más oscura del ciclo el ${fecha(nl.am_max_dia)}, no en enero: ese día amanece a las ${hm(nl.am_max)} en Nuevo Laredo, a las ${hm(L.reynosa.am_max)} en Reynosa y a las ${hm(L.matamoros.am_max)} en Matamoros.</p>`;
+    <p>Baja California y 30 municipios de la frontera norte cambian de hora con Estados Unidos: adelantan el reloj el segundo domingo de marzo y lo atrasan el primero de noviembre. En Nuevo Laredo, Reynosa y Matamoros eso pone la mañana más oscura del ciclo el ${fecha(nl.am_max_dia)}, no en enero. Ese día amanece a las ${hm(nl.am_max)} en Nuevo Laredo, a las ${hm(L.reynosa.am_max)} en Reynosa y a las ${hm(L.matamoros.am_max)} en Matamoros.</p>`;
 
   // Tarde
   (() => {

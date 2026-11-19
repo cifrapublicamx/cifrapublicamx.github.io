@@ -892,7 +892,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
   <section class="wrap">
     <h2>Arma una sección de Guanajuato</h2>
-    <p class="sub">Mueve los seis datos y mira qué participación predice el modelo. Empieza con la sección típica del estado: la mediana de cada dato.</p>
+    <p class="sub">Mueve los seis datos y mira qué participación predice el modelo. Empieza con la sección típica del estado, que tiene la mediana de cada dato.</p>
     <div class="card">
       <div class="grupo" role="group" aria-label="Perfiles" style="margin-bottom:var(--s2)" id="presets"></div>
       <div class="sim">
@@ -1027,7 +1027,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     `Puse a competir una regla simple y tres modelos de aprendizaje automático, con ${M.n_vars} datos de cada sección electoral del país (casi todos del Censo 2020), para adivinar en cuáles votó menos de la mitad de la lista nominal en la elección presidencial de 2024. ` +
     `Al azar le atinarías a ${E.azar.v} de cada 100. El mejor llegó a ${E.boosting.v}, prediciendo cada municipio sin haber visto ninguna de sus secciones. ` +
     `Abajo puedes ver qué datos pesan más, armar una sección y buscar la tuya en León, donde se votó ${f1(leonM.r - leonM.p)} puntos más de lo que predice su censo.`;
-  document.getElementById("aviso").innerHTML = `<b>Hasta dónde llegan los datos.</b> La elección federal más reciente fue el 2 de junio de 2024; la siguiente, la intermedia, será en junio de 2027. El censo más reciente con datos por sección es el de 2020: lo que el modelo sabe de cada sección es cuatro años más viejo que la elección. Y hablo de participación, no de por quién se votó: los modelos no usan ningún resultado por partido.`;
+  document.getElementById("aviso").innerHTML = `<b>Hasta dónde llegan los datos.</b> La elección federal más reciente fue el 2 de junio de 2024; la siguiente, la intermedia, será en junio de 2027. El censo más reciente con datos por sección es el de 2020, así que lo que el modelo sabe de cada sección es cuatro años más viejo que la elección. Y hablo de participación, no de por quién se votó: los modelos no usan ningún resultado por partido.`;
   document.getElementById("findings").innerHTML = `
     <div class="card"><div class="big">${E.boosting.v} <small>de cada 100</small></div>
       <p>secciones que el mejor modelo marcó como las más probables votaron, en efecto, menos de la mitad en 2024. Al azar serían ${E.azar.v}; sabiendo solo el estado, ${E.estado.v}.</p></div>
@@ -1036,7 +1036,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <div class="card"><div class="big">${pts(leonM.r - leonM.p)} <small>puntos</small></div>
       <p>votó León por encima de lo que predice su censo: ${f1(leonM.r)}% contra ${f1(leonM.p)}%. Irapuato votó ${f1(ira.p - ira.r)} puntos por debajo (${f1(ira.r)}% contra ${f1(ira.p)}%).</p></div>
     <div class="card"><div class="big">${E.historia.v} <small>de cada 100</small></div>
-      <p>si además el modelo sabe cuánto votó cada sección en 2018 y en 2021. Lo que una sección votó antes predice mejor que todo su censo: solo con eso, sin censo ni estado, llega a ${M.solo_historia}.</p></div>`;
+      <p>si además el modelo sabe cuánto votó cada sección en 2018 y en 2021. Lo que una sección votó antes predice mejor que todo su censo. Solo con eso, sin censo ni estado, llega a ${M.solo_historia}.</p></div>`;
 
   // ---------- barras horizontales ----------
   const COL = { base: "var(--gris-claro)", modelo: "var(--gris)", mejor: "var(--enf)", historia: "var(--gris)" };
@@ -1073,8 +1073,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   const tipEsc = (r) => [r.n, `${r.v} de cada 100 señaladas votaron menos de la mitad`, r.k === "azar" ? "Es el porcentaje de secciones que votó menos de la mitad" : `De las que votaron menos de la mitad, encuentra ${r.rec} de cada 100`, `AUC: ${r.auc.toFixed(2)} (1 es perfecto, 0.5 es el azar)`];
   const svmT = M.svm_t || {};
   document.getElementById("esc-prose").innerHTML = `
-    <p>La regla más obvia, una sola variable, apenas pasa de ${E.azar.v} a ${E.regla.v}. Saber el estado ayuda más (${E.estado.v}): en ${M.estados[0].e} votó menos de la mitad en ${f1(M.estados[0].b)}% de las secciones y en ${M.estados[M.estados.length - 1].e}, en ${f1(M.estados[M.estados.length - 1].b)}%. Pero el censo solo, sin decirle al modelo de qué estado es cada sección, llega a ${E.censo.v}. Juntos, ${E.boosting.v}.</p>
-    <p>De los tres modelos ganó el gradient boosting. El SVM, el que yo tenía más curiosidad por probar, quedó en medio con ${E.svm.v}${svmT["32000"] ? `, y no fue por falta de datos: con el doble de secciones para entrenar llegó a ${svmT["32000"].v}` : ""}. La regresión logística, la más sencilla, se quedó a ${E.boosting.v - E.logistica.v} del primero. Y con la historia de cada sección (lo que votó en 2018 y 2021), el boosting sube a ${E.historia.v}.</p>`;
+    <p>La regla más obvia, una sola variable, apenas pasa de ${E.azar.v} a ${E.regla.v}. Saber el estado ayuda más (${E.estado.v}). En ${M.estados[0].e} votó menos de la mitad en ${f1(M.estados[0].b)}% de las secciones y en ${M.estados[M.estados.length - 1].e}, en ${f1(M.estados[M.estados.length - 1].b)}%. Pero el censo solo, sin decirle al modelo de qué estado es cada sección, llega a ${E.censo.v}. Juntos, ${E.boosting.v}.</p>
+    <p>De los tres modelos ganó el gradient boosting. El SVM, el que yo tenía más curiosidad por probar, quedó en medio con ${E.svm.v}${svmT["32000"] ? `, y no fue por falta de datos, porque con el doble de secciones para entrenar llegó a ${svmT["32000"].v}` : ""}. La regresión logística, la más sencilla, se quedó a ${E.boosting.v - E.logistica.v} del primero. Y con la historia de cada sección (lo que votó en 2018 y 2021), el boosting sube a ${E.historia.v}.</p>`;
   document.getElementById("tabla-modelos").innerHTML = `<table class="t"><thead><tr><th>Método</th><th>De 100 señaladas, votaron menos de la mitad</th><th>De 100 que votaron menos de la mitad, encuentra</th><th>AUC</th></tr></thead><tbody>${
     M.escalera.map((r) => `<tr><td>${r.n}<br><small>${r.d}</small></td><td>${r.v}</td><td>${r.rec}</td><td>${r.auc.toFixed(3)}</td></tr>`).join("")
   }</tbody></table><p class="note">«Encuentra»: si cada método marca tantas secciones como las que de verdad votaron menos de la mitad (${f1(100 * C.nacional.bajo)}%), cuántas de esas atrapa. AUC: la probabilidad de que, tomando una sección que votó menos de la mitad y otra que no, el modelo le dé más riesgo a la primera.</p>`;
@@ -1164,13 +1164,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
   }
   document.getElementById("sliders").addEventListener("input", (e) => { const k = e.target.dataset.k; if (!k) return; simState[k] = Number(e.target.value); document.querySelectorAll("[data-pre]").forEach((b) => b.setAttribute("aria-pressed", false)); pintaSim(); });
   document.getElementById("presets").addEventListener("click", (e) => { const b = e.target.closest("[data-pre]"); if (!b) return; Object.assign(simState, S.perfiles[b.dataset.pre]); document.querySelectorAll("[data-pre]").forEach((x) => x.setAttribute("aria-pressed", x === b)); pintaSim(); });
-  document.getElementById("sim-nota").textContent = `El simulador usa una versión simple del modelo, con solo estos seis datos y el estado, sumados por separado para que se pueda calcular en tu navegador. En Guanajuato se equivoca en promedio ${f1(S.mae_gto)} puntos por sección; el modelo completo, ${f1(M.gto.mae_puntos)}. Por eso los perfiles de León dan menos de lo que León votó: el modelo no sabe que es León.`;
+  document.getElementById("sim-nota").textContent = `El simulador usa una versión simple del modelo, con solo estos seis datos y el estado, sumados por separado para que se pueda calcular en tu navegador. En Guanajuato se equivoca en promedio ${f1(S.mae_gto)} puntos por sección; el modelo completo, ${f1(M.gto.mae_puntos)}. Por eso los perfiles de León dan menos de lo que León votó, porque el modelo no sabe que es León.`;
   pintaSim();
 
   // ---------- mapa de León ----------
   const L_ = M.leon;
   document.getElementById("mapa-h2").textContent = `León votó ${f1(leonM.r - leonM.p)} puntos más de lo que dice su censo`;
-  document.getElementById("mapa-sub").textContent = `Cada hexágono junta las secciones de León cuyas casillas caen ahí (unos 0.7 km²). El modelo predijo León sin haber visto ninguna de sus ${nf.format(C.leon.secciones)} secciones. En el orden le fue bien: de las ${L_.k} secciones de León donde votó menos de la mitad, ${L_.hits} estaban entre las ${L_.k} que marcó como más probables. Pero se quedó corto en el nivel: León votó ${f1(leonM.r)}% y el modelo esperaba ${f1(leonM.p)}%.`;
+  document.getElementById("mapa-sub").textContent = `Cada hexágono junta las secciones de León cuyas casillas caen ahí (unos 0.7 km²). El modelo predijo León sin haber visto ninguna de sus ${nf.format(C.leon.secciones)} secciones. En el orden le fue bien. De las ${L_.k} secciones de León donde votó menos de la mitad, ${L_.hits} estaban entre las ${L_.k} que marcó como más probables. Pero se quedó corto en el nivel. León votó ${f1(leonM.r)}% y el modelo esperaba ${f1(leonM.p)}%.`;
   const SC = M.secs_cols, SECS = M.secs.map((a) => Object.fromEntries(SC.map((c, i) => [c, a[i]])));
   const SECIX = Object.fromEntries(SECS.map((s) => [s.seccion, s]));
   const CANT = ["--c1", "--c2", "--c3", "--c4", "--c5"].map(css), CANT_T = [0.4, 0.5, 0.6, 0.7];
@@ -1283,23 +1283,23 @@ svg.leaflet-image-layer.leaflet-interactive path {
   }
   document.getElementById("mun-prose").innerHTML = `
     <p>En 2024 todo Guanajuato votó el mismo día gobernadora, diputaciones locales y los 46 ayuntamientos, así que la elección local no explica estas diferencias entre municipios. León votó ${f1(leonM.r)}% cuando el modelo esperaba ${f1(leonM.p)}%. Irapuato, ${f1(ira.r)}% contra ${f1(ira.p)}%${pen ? `, y Pénjamo, ${f1(pen.r)}% contra ${f1(pen.p)}%` : ""}.</p>
-    <p>El modelo no sabe por qué y yo tampoco lo voy a adivinar: el censo no mide la competencia de cada elección municipal, la seguridad, el trabajo de los partidos para llevar gente a las urnas ni qué tan lejos queda la casilla. Lo que sí dice es dónde buscar.</p>`;
+    <p>El modelo no sabe por qué y yo tampoco lo voy a adivinar. El censo no mide la competencia de cada elección municipal, la seguridad, el trabajo de los partidos para llevar gente a las urnas ni qué tan lejos queda la casilla. Lo que sí dice es dónde buscar.</p>`;
   document.getElementById("tabla-mun").innerHTML = `<table class="t"><thead><tr><th>Municipio</th><th>Lista nominal</th><th>Votó</th><th>Predicho</th><th>Diferencia</th><th>Secciones bajo la mitad</th></tr></thead><tbody>${
     M.mun.map((r) => `<tr><td>${r.n}</td><td>${nf.format(r.l)}</td><td>${f1(r.r)}%</td><td>${f1(r.p)}%</td><td>${pts(r.r - r.p)}</td><td>${f1(r.b)}%</td></tr>`).join("")
   }</tbody></table><p class="note">Participación en la elección presidencial de 2024, sin casillas especiales. Ordenados por lista nominal.</p>`;
 
   // ---------- Guanajuato a ciegas ----------
-  document.getElementById("ciegas-sub").textContent = `La prueba más dura: entrené los modelos con los otros 31 estados, sin decirles de qué estado es cada sección, y les pedí las secciones de Guanajuato. De cada 100 que cada uno marcó como más probables, en cuántas votó menos de la mitad.`;
+  document.getElementById("ciegas-sub").textContent = `Esta es la prueba más dura. Entrené los modelos con los otros 31 estados, sin decirles de qué estado es cada sección, y les pedí las secciones de Guanajuato. De cada 100 que cada uno marcó como más probables, en cuántas votó menos de la mitad.`;
   document.getElementById("ciegas-prose").innerHTML = `
-    <p>Aquí ganó la regresión logística, con ${CI.logistica.v} de cada 100; al azar serían ${CI.azar.v}, porque en Guanajuato votó menos de la mitad en una de cada cuatro secciones. El gradient boosting, que ganó en todo el país, quedó último con ${CI.boosting.v}: aprendió detalles de otros estados que en Guanajuato no se cumplen. Y la regla más simple (más afiliados al ISSSTE, más votos) llegó a ${CI.regla.v}.</p>
-    <p>La lección sirve para cualquier modelo: lo que funciona donde lo entrenaste no siempre funciona en un lugar que nunca vio. Por eso la prueba principal predice cada municipio con un modelo que no lo conoce, y por eso la reporto completa, aunque aquí el ganador del país quede último.</p>`;
+    <p>Aquí ganó la regresión logística, con ${CI.logistica.v} de cada 100; al azar serían ${CI.azar.v}, porque en Guanajuato votó menos de la mitad en una de cada cuatro secciones. El gradient boosting, que ganó en todo el país, quedó último con ${CI.boosting.v}; lo más probable es que aprendiera detalles de otros estados que en Guanajuato no se cumplen. Y la regla más simple (más afiliados al ISSSTE, más votos) llegó a ${CI.regla.v}.</p>
+    <p>Lo que funciona donde entrenaste un modelo no siempre funciona en un lugar que nunca vio. Por eso la prueba principal predice cada municipio con un modelo que no lo conoce, y por eso la reporto completa, aunque aquí el ganador del país quede último.</p>`;
 
   // ---------- para qué sirve ----------
   document.getElementById("uso").innerHTML = `
     <p>Sirve para saber dónde es más probable que se vote poco y para ordenar el trabajo: a un instituto electoral, una organización o una campaña de cualquier partido que quiera promover el voto, le dice por dónde empezar. Y sirve para ver qué rasgos acompañan a la participación baja.</p>
     <p>No sirve para explicar por qué una sección vota poco: el modelo encuentra patrones, no causas. No dice nada de por quién se vota. Y no sirve para las ${nf.format(M.base.ine_2024_sin_censo)} secciones de 2024 que se crearon o redibujaron después del censo y no tienen datos de él.</p>
     <p>«Menos de la mitad» se mide contra la lista nominal. En secciones con mucha migración, la lista incluye a gente que ya no vive ahí y no va a votar; el modelo lo detecta en parte con el número de inscritos por adulto que vive en la sección, pero esas secciones se ven peor de lo que son.</p>
-    <p>El modelo aprendió de una elección presidencial, y las intermedias votan menos: en 2021 votó ${f1(M.oficial["2021"])}% del país y en 2024, ${f1(M.oficial["2024"])}%. Aun así, el modelo entrenado con 2024 ordena bien a las secciones de 2021: si tomas una sección que en 2021 votó menos de la mitad y otra que no, le da más riesgo a la primera ${Math.round(100 * M.p2021.auc_2021)} de cada 100 veces. Lo que tumbaría esta lectura: que en la intermedia de 2027 las secciones que el modelo marca como de más riesgo no voten menos que las demás.</p>`;
+    <p>El modelo aprendió de una elección presidencial, y las intermedias votan menos. En 2021 votó ${f1(M.oficial["2021"])}% del país y en 2024, ${f1(M.oficial["2024"])}%. Aun así, el modelo entrenado con 2024 ordena bien a las secciones de 2021: si tomas una sección que en 2021 votó menos de la mitad y otra que no, le da más riesgo a la primera ${Math.round(100 * M.p2021.auc_2021)} de cada 100 veces. Lo que tumbaría esta lectura: que en la intermedia de 2027 las secciones que el modelo marca como de más riesgo no voten menos que las demás.</p>`;
 
   // ---------- método y fuentes ----------
   const R = M.regresion;

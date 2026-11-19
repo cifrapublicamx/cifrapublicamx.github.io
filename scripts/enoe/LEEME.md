@@ -4,7 +4,7 @@ Participación, desocupación, informalidad laboral y ocupación en el sector in
 
 El cálculo reproduce lo que publica el INEGI: en 2026-T2 coincide en las seis ciudades y en el agregado; el total nacional y cinco entidades se cuadran en `control.md` contra el boletín del trimestre.
 
-Título del folio (17 nov 2026): «Menos desempleo, la misma informalidad: así cambió el trabajo en las ciudades desde 2019». `control.md` revisa en cada corrida si los datos lo siguen sosteniendo.
+Título del folio (19 nov 2026): «Menos desempleo que en 2019, pero casi la misma informalidad» (antes: «Menos desempleo, la misma informalidad: así cambió el trabajo en las ciudades desde 2019»). `control.md` revisa en cada corrida si los datos lo siguen sosteniendo.
 
 ## Orden
 

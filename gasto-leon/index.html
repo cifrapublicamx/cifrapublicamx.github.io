@@ -244,7 +244,7 @@
       <h2>Para qué sirve, y para qué no</h2>
       <p>Sirve para ver cuánto gasta el municipio, para qué, cómo cambió en diez años y cuánto se aparta de lo que se aprueba.</p>
       <p id="uso-no"></p>
-      <p>Qué tumbaría esta lectura: que el aumento desde 2023 venga de obras o compras de una sola vez y no se sostenga. La cuenta pública de 2026 lo dirá.</p>
+      <p>Qué tumbaría esta lectura: que el aumento desde 2023 venga de obras o compras de una sola vez y no se sostenga. La cuenta pública de 2026 permitirá revisarlo.</p>
     </div>
     <details class="metodo card">
       <summary>Cómo lo hice</summary>
@@ -467,7 +467,7 @@
     <h2>Según cómo se cuente, a seguridad se van entre ${lo} y ${hi} de cada 100 pesos</h2>
     <div class="prose">
       <p>Hay tres formas de medir cuánto destina León a seguridad. Dan resultados distintos porque no cuentan lo mismo.</p>
-      <p><b>Por función.</b> La cuenta pública clasifica cada peso según para qué se usa, con el clasificador del CONAC que usan todos los municipios. En ${U}, seguridad pública fue ${pf.format(S.aprobado_pct)}% de lo aprobado y ${pf.format(S.devengado_pct)}% de lo gastado: ${mdp(S.devengado_mdp)} de pesos, ${nf.format(S.pc)} por habitante.</p>
+      <p><b>Por función.</b> La cuenta pública clasifica cada peso según para qué se usa, con el clasificador del CONAC que usan todos los municipios. En ${U}, seguridad pública fue ${pf.format(S.aprobado_pct)}% de lo aprobado y ${pf.format(S.devengado_pct)}% de lo gastado, ${mdp(S.devengado_mdp)} de pesos (${nf.format(S.pc)} por habitante).</p>
       <p><b>Por dependencia.</b> El presupuesto ciudadano ${S.dependencia.anio} asigna ${S.dependencia.pct}% a la Secretaría de Seguridad Pública, Prevención y Protección Ciudadana.</p>
       <p><b>Seguridad y prevención.</b> Al difundir los presupuestos y el informe de gobierno se han publicado cifras más amplias: ${pub(1).cifra_pct}% para el presupuesto de 2023 y cerca de ${pub(2).cifra_pct}% para el de 2025, en ambos casos como «seguridad pública y prevención de la violencia», y ${pub(3).cifra_pct}% en el primer informe de 2024–2027, como «seguridad». No encontré publicado qué programas forman esas cifras, así que no pude reproducirlas.</p>
       <p>Para comparar entre años o con otros municipios, la medida que se calcula igual en todos lados es la primera.</p>
@@ -512,7 +512,7 @@
     `La nómina, que es ${Math.round(nm.pct_ult)} de cada 100 pesos del gasto, creció ${pf.format(nm.cambio)}%.</p>`;
   const obr = ob.pc.slice(i17);
   document.getElementById("gru-note").textContent =
-    `Comparo contra 2017 porque ${Y[0]} tuvo poca obra. La obra pública sube y baja mucho: desde 2017 ha estado entre ${nf.format(Math.min(...obr))} y ${nf.format(Math.max(...obr))} pesos por habitante, así que su cambio depende del año que se tome.`;
+    `Comparo contra 2017 porque ${Y[0]} tuvo poca obra. La obra pública sube y baja mucho; desde 2017 ha estado entre ${nf.format(Math.min(...obr))} y ${nf.format(Math.max(...obr))} pesos por habitante, así que su cambio depende del año que se tome.`;
   document.getElementById("gru-table").innerHTML = `<table class="t"><thead><tr><th>Tipo de gasto</th>${Y.map((y) => `<th>${y}</th>`).join("")}</tr></thead><tbody>${
     G.map((g) => `<tr><td>${esc(g.nombre)}</td>${g.pc.map((v) => `<td>${nf.format(v)}</td>`).join("")}</tr>`).join("")
   }</tbody></table><p class="note">Pesos de ${U} por habitante, gasto ejercido (devengado), clasificación por objeto del gasto.</p>`;
@@ -538,7 +538,7 @@
   const lista = (a) => a.join(", ").replace(/, ([^,]+)$/, " y $1");
   const cambio = (a, b) => pct(100 * (b / a - 1));
   document.getElementById("ing-prose").innerHTML =
-    `<p>El resto llegó de la Federación y del estado: ${Math.round(sh("participaciones"))} de cada 100 pesos fueron participaciones, que el municipio usa con libertad, y ${Math.round(sh("aportaciones"))} aportaciones, que llegan etiquetadas para fines específicos.</p>` +
+    `<p>El resto llegó de la Federación y del estado. De cada 100 pesos, ${Math.round(sh("participaciones"))} fueron participaciones, que el municipio usa con libertad, y ${Math.round(sh("aportaciones"))} aportaciones, que llegan etiquetadas para fines específicos.</p>` +
     `<p>Lo que recauda León por su cuenta (impuestos, derechos y otros cobros) pasó de ${Math.round(sh("propios", i0))} de cada 100 pesos en ${i0.anio} a ${Math.round(sh("propios"))} en ${iu.anio}. Por habitante, en pesos de ${U}, subió de ${nf.format(Math.round(ii17.propios_real_pc))} en 2017 a ${nf.format(Math.round(iu.propios_real_pc))} (${cambio(ii17.propios_real_pc, iu.propios_real_pc)}); los impuestos a la propiedad, como el predial, de ${nf.format(Math.round(ii17.patrimonio_real_pc))} a ${nf.format(Math.round(iu.patrimonio_real_pc))} (${cambio(ii17.patrimonio_real_pc, iu.patrimonio_real_pc)}).</p>` +
     (finAnios.length ? `<p>En algunos años una parte vino de financiamiento: ${lista(finAnios.map((r) => `${nf.format(Math.round(r.financiamiento / 1e6))} millones en ${r.anio}`))}. El de ${fmax.anio}, el año con más gasto de la serie, fue de ${nf.format(Math.round(fmax.emprestitos / 1e6))} millones en préstamos y ${nf.format(Math.round(fmax.deficit / 1e6))} que el INEGI registra como déficit.</p>` : "");
   document.getElementById("ing-table").innerHTML = `<table class="t"><thead><tr><th>Año</th><th>Ingresos, millones</th><th>Recaudación propia</th><th>Participaciones</th><th>Aportaciones</th><th>Financiamiento, millones</th><th>Recaudación propia por habitante*</th><th>Impuestos a la propiedad por habitante*</th></tr></thead><tbody>${
@@ -571,7 +571,7 @@
     `En Querétaro ${Math.round(Qr.propios_pct)} de cada 100 pesos de ingreso los recauda el municipio; en León, ${Math.round(Le.propios_pct)}.</p>` +
     `<p>También cambia en qué se va el gasto. La nómina es ${lista(orden.map((c) => `${Math.round(c.nomina_pct)}% en ${c.ciudad}`))}; la obra pública, ${lista(orden.map((c) => `${Math.round(c.obra_pct)}% en ${c.ciudad}`))}.</p>`;
   document.getElementById("ciu-note").textContent =
-    `Cada ciudad organiza distinto sus servicios: lo que en una paga el municipio, en otra lo paga un organismo aparte o el estado. Esto sirve para ubicar a León, no para calificar a nadie. ` +
+    `Cada ciudad organiza distinto sus servicios. Lo que en una paga el municipio, en otra lo paga un organismo aparte o el estado. Esto sirve para ubicar a León, no para calificar a nadie. ` +
     `Comparo el gasto sin el pago de deuda porque en ${ca} Tijuana registró pagos de deuda por ${mdp(Tj.deuda_mdp)} de pesos y financiamiento por ${mdp(Tj.financiamiento_mdp)}.`;
   document.getElementById("ciu-table").innerHTML = `<table class="t"><thead><tr><th>Ciudad</th><th>Población ${ca}</th><th>Gasto sin deuda*</th><th>Recaudación propia*</th><th>Impuestos a la propiedad*</th><th>Recaudación propia, % del ingreso</th><th>Nómina, % del gasto</th><th>Obra pública, % del gasto</th></tr></thead><tbody>${
     orden.map((c) => `<tr><td>${c.ciudad}</td><td>${nf.format(c.poblacion)}</td><td>${nf.format(Math.round(c.gasto_sin_deuda_pc))}</td><td>${nf.format(Math.round(c.propios_pc))}</td><td>${nf.format(Math.round(c.patrimonio_pc))}</td><td>${pf.format(c.propios_pct)}</td><td>${pf.format(c.nomina_pct)}</td><td>${pf.format(c.obra_pct)}</td></tr>`).join("")

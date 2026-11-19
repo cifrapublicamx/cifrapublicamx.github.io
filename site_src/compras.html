@@ -206,7 +206,7 @@
       </div>
       <p class="lectura" id="lectura" aria-live="polite"></p>
     </div>
-    <p class="note">Las cifras llevan su margen de error al 90%: la ENIGH es una encuesta, no un censo. En Guanajuato entrevistan a unos 3,100 hogares por edición.</p>
+    <p class="note">Las cifras llevan su margen de error al 90% porque la ENIGH es una encuesta, no un censo. En Guanajuato entrevistan a unos 3,100 hogares por edición.</p>
     <details class="more"><summary>Ver todos los lugares de compra, con su margen de error</summary><div class="tscroll" id="tabla"></div></details>
   </section>
 
@@ -251,9 +251,9 @@
     <div class="uso">
       <h2>Para qué sirve, y para qué no</h2>
       <p>Sirve para ver hacia dónde se mueve el gasto de los hogares del país y de Guanajuato: en qué tipo de lugar compran y con qué pagan, y cómo cambia según el ingreso.</p>
-      <p>No sirve para hablar de una colonia, de León o de un municipio: la ENIGH representa al país y a cada estado, no más abajo. Tampoco cuenta visitas ni clientes, solo pesos: una tiendita puede recibir a mucha gente con compras chicas.</p>
-      <p>«Tiendita» es como el hogar describió el lugar. Un Oxxo puede quedar anotado como tienda de conveniencia o como abarrotes, según quien conteste; por eso la conveniencia sale tan baja y por eso junto súper, clubes, departamentales y conveniencia en «súper y cadenas».</p>
-      <p>Los datos llegan a 2024: no dicen qué pasó en 2025 ni en 2026. Y 2020 fue año de pandemia: la encuesta se levantó de agosto a noviembre de 2020, con restaurantes a medio cerrar; por eso el cambio que más pesa en esta pieza es el de 2022 a 2024, ya con todo abierto. Lo que tumbaría esta lectura: que la ENIGH 2026 muestre a la tiendita de vuelta arriba de 16 de cada 100 pesos en el país.</p>
+      <p>No sirve para hablar de una colonia, de León o de un municipio, porque la ENIGH representa al país y a cada estado, no más abajo. Tampoco cuenta visitas ni clientes, solo pesos, y una tiendita puede recibir a mucha gente con compras chicas.</p>
+      <p>«Tiendita» es como el hogar describió el lugar. Un Oxxo puede quedar anotado como tienda de conveniencia o como abarrotes, según quien conteste. Eso puede explicar por qué la conveniencia sale tan baja, y por eso junto súper, clubes, departamentales y conveniencia en «súper y cadenas».</p>
+      <p>Los datos llegan a 2024 y no dicen qué pasó en 2025 ni en 2026. La encuesta de 2020 se levantó de agosto a noviembre, en plena pandemia y con restaurantes a medio cerrar; por eso el cambio que más pesa en esta pieza es el de 2022 a 2024, ya con todo abierto. Lo que tumbaría esta lectura: que la ENIGH 2026 muestre a la tiendita de vuelta arriba de 16 de cada 100 pesos en el país.</p>
     </div>
     <details class="metodo card">
       <summary>Cómo lo hice</summary>
@@ -321,19 +321,19 @@
   // ---------- entradilla y hallazgos ----------
   document.getElementById("dek").textContent =
     `Revisé dónde compraron y cómo pagaron los ${nf.format(Math.round(nHog / 1000))} mil hogares que entrevistó el INEGI en la Encuesta Nacional de Ingresos y Gastos de los Hogares (ENIGH) de 2020, 2022 y 2024. ` +
-    `En todo el país la tiendita sigue siendo de los lugares donde más se gasta, pero se lleva cada vez menos. En Guanajuato, donde pesa más, cae más rápido: de ${f1(t("gto", "2020"))} a ${f1(t("gto", "2024"))} de cada 100 pesos. ` +
-    `Y no fue solo el rebote de la pandemia: de 2022 a 2024, ya con todo abierto, la tiendita siguió bajando y el efectivo cedió más rápido que antes. ` +
+    `En todo el país la tiendita sigue siendo de los lugares donde más se gasta, pero se lleva cada vez menos. En Guanajuato, donde pesa más, cae más rápido, de ${f1(t("gto", "2020"))} a ${f1(t("gto", "2024"))} de cada 100 pesos. ` +
+    `De 2022 a 2024, ya con todo abierto, la tiendita siguió bajando y el efectivo cedió más rápido que antes. ` +
     `Abajo puedes ver a dónde se van 100 pesos, en el país o en Guanajuato, y qué hacen los hogares con un ingreso como el tuyo.`;
   const e10 = dec("pago_efectivo", "2024")[9], e10a = dec("pago_efectivo", "2020")[9], e1 = dec("pago_efectivo", "2024")[0];
   document.getElementById("findings").innerHTML = `
     <div class="card"><div class="big">${f1(t("mx", "2024"))} <small>de cada 100 pesos</small></div>
-      <p>de las compras de los hogares del país fueron a la tiendita en 2024 (± ${mg(MON.mx.canal["2024"][0][1])}). En la pandemia eran ${f1(t("mx", "2020"))} y en 2022, ${f1(t("mx", "2022"))}. En Guanajuato: ${f1(t("gto", "2020"))}, ${f1(t("gto", "2022"))} y ${f1(t("gto", "2024"))}.</p></div>
+      <p>de las compras de los hogares del país fueron a la tiendita en 2024 (± ${mg(MON.mx.canal["2024"][0][1])}). En la pandemia eran ${f1(t("mx", "2020"))} y en 2022, ${f1(t("mx", "2022"))}. En Guanajuato fueron ${f1(t("gto", "2020"))}, ${f1(t("gto", "2022"))} y ${f1(t("gto", "2024"))} (± ${mg(MON.gto.canal["2024"][0][1])}).</p></div>
     <div class="card"><div class="big">${Math.round(e10[0])}<small>%</small></div>
-      <p>del gasto del 10% de hogares con más ingreso se pagó en efectivo en 2024; en 2022, ${Math.round(dec("pago_efectivo", "2022")[9][0])}% y en la pandemia, ${Math.round(e10a[0])}%. En el 10% con menos ingreso sigue en ${Math.round(e1[0])}%.</p></div>
+      <p>del gasto del 10% de hogares con más ingreso se pagó en efectivo en 2024 (± ${mg(e10[1])}); en 2022, ${Math.round(dec("pago_efectivo", "2022")[9][0])}% y en la pandemia, ${Math.round(e10a[0])}%. En el 10% con menos ingreso sigue en ${Math.round(e1[0])}%.</p></div>
     <div class="card"><div class="big">${Math.round(M.tiendita_efectivo.mx["2024"])} <small>de cada 100</small></div>
-      <p>pesos que se gastan en la tiendita se pagan en efectivo (${f1(M.tiendita_efectivo.mx["2024"])}%). Ahí la tarjeta casi no ha entrado; en Guanajuato, ${f1(M.tiendita_efectivo.gto["2024"])}%.</p></div>
+      <p>pesos que se gastan en la tiendita se pagan en efectivo (${f1(M.tiendita_efectivo.mx["2024"])}% ± ${mg(M.tiendita_efectivo_ee.mx["2024"])}). Ahí la tarjeta casi no ha entrado; en Guanajuato, ${f1(M.tiendita_efectivo.gto["2024"])}% (± ${mg(M.tiendita_efectivo_ee.gto["2024"])}).</p></div>
     <div class="card"><div class="big">${f1(M.detalle.mx.canal.internet["2024"][0])} <small>de cada 100</small></div>
-      <p>pesos se gastaron por internet en 2024 en el país; en Guanajuato, ${f1(M.detalle.gto.canal.internet["2024"][0])}. Crece, pero sigue lejos de la tiendita, el mercado o el súper.</p></div>`;
+      <p>pesos se gastaron por internet en 2024 en el país; en Guanajuato, ${f1(M.detalle.gto.canal.internet["2024"][0])}. Subió en 2024, pero sigue lejos de la tiendita, el mercado o el súper.</p></div>`;
 
   // ---------- 100 monedas ----------
   const GRUPOS = [
@@ -386,7 +386,7 @@
     const m22 = MON[dom][tema]["2022"][0];
     if (anio === "2020") s = `En 2020, en plena pandemia, la tiendita se llevaba ${f1(a[0])} de cada 100 pesos de ${TEMAN[tema]} en ${DOMN[dom]}. Mueve el año o toca «Ver el cambio».`;
     else if (anio === "2024") s = `De la pandemia a 2024 la tiendita ${sig(a, b) ? `${b[0] < a[0] ? "perdió" : "ganó"} ${f1(Math.abs(b[0] - a[0]))} pesos de cada 100` : "no cambió más allá del margen de error"} en ${TEMAN[tema]} en ${DOMN[dom]}. ` +
-      (sig(m22, b) ? `${b[0] < m22[0] ? "Y siguió bajando después de la reapertura" : "Después de la reapertura recuperó algo"}: de ${f1(m22[0])} en 2022 a ${f1(b[0])} en 2024. ` : `De 2022 a 2024 ya no cambió más allá del margen de error. `) +
+      (sig(m22, b) ? `Después de la reapertura ${b[0] < m22[0] ? "siguió bajando" : "recuperó algo"}, de ${f1(m22[0])} en 2022 a ${f1(b[0])} en 2024. ` : `De 2022 a 2024 ya no cambió más allá del margen de error. `) +
       (sig(cb, ca) ? `Súper y cadenas ${ca[0] > cb[0] ? "subieron" : "bajaron"} ${f1(Math.abs(ca[0] - cb[0]))} desde la pandemia.` : `Súper y cadenas no cambiaron más allá del margen de error desde la pandemia.`);
     else if (sig(a, b)) s = `De la pandemia a ${anio} la tiendita ${b[0] < a[0] ? "perdió" : "ganó"} ${f1(Math.abs(b[0] - a[0]))} pesos de cada 100 en ${TEMAN[tema]} en ${DOMN[dom]}. ` +
       (sig(cb, ca) ? `Súper y cadenas ${ca[0] > cb[0] ? "subieron" : "bajaron"} ${f1(Math.abs(ca[0] - cb[0]))}.` : `Súper y cadenas no cambiaron más allá del margen de error; el resto se repartió entre varios lugares.`);
@@ -457,15 +457,15 @@
   document.getElementById("dec-e-legend").innerHTML = leyendaDec;
   const td20 = dec("canal_tiendita", "2020"), td22 = dec("canal_tiendita", "2022"), td24 = dec("canal_tiendita", "2024");
   const caidas = td20.map((v, k) => v[0] - td24[k][0]), kmax = caidas.indexOf(Math.max(...caidas));
-  document.getElementById("dec-t-sub").textContent = `Pesos de cada 100 que se gastan en la tiendita, por grupo de ingreso del hogar. Todo el país: la muestra de Guanajuato no alcanza para partirla en diez.`;
+  document.getElementById("dec-t-sub").textContent = `Pesos de cada 100 que se gastan en la tiendita, por grupo de ingreso del hogar, en todo el país. La muestra de Guanajuato no alcanza para partirla en diez grupos.`;
   document.getElementById("dec-t-prose").innerHTML = `
-    <p>Entre más ingreso, menos tiendita: el 10% más pobre gasta ahí ${f1(td24[0][0])} de cada 100 pesos y el 10% más rico, ${f1(td24[9][0])}. Eso no es nuevo. Lo nuevo es que de la pandemia a 2024 la tiendita perdió con casi todos, y más en medio: la caída más grande fue en el decil ${kmax + 1}, de ${f1(td20[kmax][0])} a ${f1(td24[kmax][0])}. Y no fue solo el rebote: de 2022 a 2024 siguió bajando en ${td22.filter((v, k) => sig(v, td24[k]) && td24[k][0] < v[0]).length} de los 10 grupos.</p>
-    <p>¿A dónde se fueron esos pesos? En el país, sobre todo a comer fuera: restaurantes, fondas y cafeterías pasaron de ${f1(M.detalle.mx.canal.fuera["2020"][0])} en la pandemia a ${f1(M.detalle.mx.canal.fuera["2022"][0])} en 2022 y ${f1(M.detalle.mx.canal.fuera["2024"][0])} en 2024: casi todo es rebote de la reapertura. Y en la comida para la casa, al súper y las cadenas: de ${f1(MON.mx.comida["2020"][1][0])} a ${f1(MON.mx.comida["2024"][1][0])} de cada 100 pesos.</p>`;
+    <p>Entre más ingreso, menos tiendita. El 10% más pobre gasta ahí ${f1(td24[0][0])} de cada 100 pesos y el 10% más rico, ${f1(td24[9][0])}. De la pandemia a 2024 la tiendita perdió en casi todos los grupos, y más en los de en medio; la caída más grande fue en el decil ${kmax + 1}, de ${f1(td20[kmax][0])} a ${f1(td24[kmax][0])}. De 2022 a 2024, ya sin el rebote de la reapertura, siguió bajando en ${td22.filter((v, k) => sig(v, td24[k]) && td24[k][0] < v[0]).length} de los 10 grupos.</p>
+    <p>¿A dónde se fueron esos pesos? En el país, sobre todo a comer fuera. Restaurantes, fondas y cafeterías pasaron de ${f1(M.detalle.mx.canal.fuera["2020"][0])} en la pandemia a ${f1(M.detalle.mx.canal.fuera["2022"][0])} en 2022 y ${f1(M.detalle.mx.canal.fuera["2024"][0])} en 2024; la mayor parte de esa subida llegó con la reapertura, de 2020 a 2022. En la comida para la casa, los pesos se fueron al súper y las cadenas, que pasaron de ${f1(MON.mx.comida["2020"][1][0])} a ${f1(MON.mx.comida["2024"][1][0])} de cada 100.</p>`;
   const ed20 = dec("pago_efectivo", "2020"), ed24 = dec("pago_efectivo", "2024"), tj20 = dec("pago_tarjeta", "2020"), tj24 = dec("pago_tarjeta", "2024");
   document.getElementById("dec-e-sub").textContent = `Pesos de cada 100 que se pagan en efectivo, por grupo de ingreso del hogar, en todo el país. Ojo: la escala empieza en 50%.`;
   document.getElementById("dec-e-prose").innerHTML = `
-    <p>En los hogares de menos ingreso casi todo sigue siendo en efectivo: ${f1(ed24[0][0])}% en el decil 1, igual que en 2020. En el decil 10 pasó de ${f1(ed20[9][0])}% en la pandemia a ${f1(dec("pago_efectivo", "2022")[9][0])}% en 2022 y ${f1(ed24[9][0])}% en 2024, y la tarjeta subió de ${f1(tj20[9][0])}% a ${f1(tj24[9][0])}%. El cambio se aceleró después de la reapertura: en todo el país el efectivo bajó ${f1(PAGO.mx.efectivo["2020"][0] - PAGO.mx.efectivo["2022"][0])} puntos de 2020 a 2022 y ${f1(PAGO.mx.efectivo["2022"][0] - PAGO.mx.efectivo["2024"][0])} de 2022 a 2024. En todo el país, la tarjeta de débito explica la mayor parte del cambio: pasó de ${f1(PAGO.mx.debito["2020"][0])}% a ${f1(PAGO.mx.debito["2024"][0])}% del gasto.</p>
-    <p>Guanajuato va más lento que el país: ${f1(PAGO.gto.efectivo["2024"][0])}% del gasto en efectivo en 2024 (± ${mg(PAGO.gto.efectivo["2024"][1])}), contra ${f1(PAGO.mx.efectivo["2024"][0])}% en México. En la pandemia eran ${f1(PAGO.gto.efectivo["2020"][0])}% y ${f1(PAGO.mx.efectivo["2020"][0])}%.</p>`;
+    <p>En el 10% más pobre casi todo se sigue pagando en efectivo, ${f1(ed24[0][0])}% del gasto, igual que en 2020. En el 10% más rico el efectivo pasó de ${f1(ed20[9][0])}% en la pandemia a ${f1(dec("pago_efectivo", "2022")[9][0])}% en 2022 y ${f1(ed24[9][0])}% en 2024 (± ${mg(ed24[9][1])}), y la tarjeta subió de ${f1(tj20[9][0])}% a ${f1(tj24[9][0])}%. En todo el país el cambio se aceleró después de la reapertura. El efectivo bajó ${f1(PAGO.mx.efectivo["2020"][0] - PAGO.mx.efectivo["2022"][0])} puntos de 2020 a 2022 y ${f1(PAGO.mx.efectivo["2022"][0] - PAGO.mx.efectivo["2024"][0])} de 2022 a 2024, y la mayor parte de lo que ganó la tarjeta fue débito, que pasó de ${f1(PAGO.mx.debito["2020"][0])}% a ${f1(PAGO.mx.debito["2024"][0])}% del gasto.</p>
+    <p>Guanajuato va más lento que el país. En 2024 pagó en efectivo ${f1(PAGO.gto.efectivo["2024"][0])}% del gasto (± ${mg(PAGO.gto.efectivo["2024"][1])}), contra ${f1(PAGO.mx.efectivo["2024"][0])}% en México; en la pandemia eran ${f1(PAGO.gto.efectivo["2020"][0])}% y ${f1(PAGO.mx.efectivo["2020"][0])}%.</p>`;
 
   // ---------- hogares como el tuyo ----------
   const CORTES = M.cortes;
@@ -483,7 +483,7 @@
     document.querySelectorAll("[data-p]").forEach((b) => b.setAttribute("aria-pressed", Number(b.dataset.p) === v));
     if (!v) { document.getElementById("panel").innerHTML = `<p class="lugar">Escribe un ingreso mensual o toca uno de los montos.</p>`; return; }
     const rango = k === 0 ? `hasta ${pesos(CORTES[0])}` : k === 9 ? `más de ${pesos(CORTES[8])}` : `de ${pesos(CORTES[k - 1] + 1)} a ${pesos(CORTES[k])}`;
-    const quien = k === 0 ? "el 10% de hogares con menos ingreso" : k === 9 ? "el 10% de hogares con más ingreso" : `el decil ${k + 1}: hay ${k * 10}% de hogares con menos ingreso que el tuyo y ${90 - k * 10}% con más`;
+    const quien = k === 0 ? "el 10% de hogares con menos ingreso" : k === 9 ? "el 10% de hogares con más ingreso" : `el decil ${k + 1}. Hay ${k * 10}% de hogares con menos ingreso que el tuyo y ${90 - k * 10}% con más`;
     document.getElementById("panel").innerHTML = `
       <h3>Tu hogar queda en el decil ${k + 1} de 10</h3>
       <p class="lugar">Es ${quien}. Ingreso del grupo: ${rango} al mes.</p>
@@ -497,7 +497,7 @@
   }
   inp.addEventListener("input", () => { const v = leer(); inp.value = v ? nf.format(v) : ""; panel(); });
   document.getElementById("presets").addEventListener("click", (e) => { const b = e.target.closest("[data-p]"); if (!b) return; inp.value = nf.format(Number(b.dataset.p)); panel(); });
-  document.getElementById("ing-nota").textContent = `Los cortes son los deciles de hogares por ingreso corriente de la ENIGH 2024, llevados a pesos de diciembre de 2025 con el INPC (+${f1((M.cortes[4] / M.cortes_ago2024[4] - 1) * 100)}%). Es una guía: tu ingreso de hoy no es exactamente comparable con el de 2024. El número que escribes no sale de tu navegador.`;
+  document.getElementById("ing-nota").textContent = `Los cortes son los deciles de hogares por ingreso corriente de la ENIGH 2024, llevados a pesos de diciembre de 2025 con el INPC (+${f1((M.cortes[4] / M.cortes_ago2024[4] - 1) * 100)}%). Tómalo como guía, porque tu ingreso de hoy no es exactamente comparable con el de 2024. El número que escribes no sale de tu navegador.`;
   panel();
 
   // ---------- mito ----------
@@ -505,14 +505,14 @@
   document.getElementById("mito").innerHTML = `
     <div class="card"><div class="tag">Lo que se oye</div><div class="big">Todo se compra en línea</div><p>Las ventas por internet crecen cada año y las tiendas físicas van de salida.</p></div>
     <div class="card"><div class="tag">Lo que dicen los hogares</div><div class="big">${f1(it.mx.canal.internet["2024"][0])} de cada 100 pesos</div>
-      <p>se gastaron por internet en 2024 en el país (${f1(it.mx.canal.internet["2020"][0])} en 2020, en plena pandemia). En Guanajuato, ${f1(it.gto.canal.internet["2024"][0])}. En el 10% de hogares con más ingreso es apenas ${f1(i10[0])}. La tiendita sola se lleva ${f1(t("mx", "2024") / it.mx.canal.internet["2024"][0])} veces más.</p></div>`;
+      <p>se gastaron por internet en 2024 en el país (${f1(it.mx.canal.internet["2020"][0])} en 2020, en plena pandemia). En Guanajuato, ${f1(it.gto.canal.internet["2024"][0])}. En el 10% de hogares con más ingreso es apenas ${f1(i10[0])}. La tiendita sola se lleva unas ${Math.round(t("mx", "2024") / it.mx.canal.internet["2024"][0])} veces más.</p></div>`;
 
   // ---------- lecturas ----------
   const tj = dec("pago_tarjeta", "2024"), tj0 = dec("pago_tarjeta", "2020");
   document.getElementById("lecturas").innerHTML = `
     <li><b>Tu competencia está a dos cuadras, no en línea.</b> En el país, los pesos que dejó la tiendita se fueron sobre todo a fondas y restaurantes y, en la comida para la casa, al súper. En Guanajuato se repartieron entre varios: fondas, departamentales, clubes de precio y compras a otras personas. Por internet se va ${f1(it.mx.canal.internet["2024"][0])} de cada 100.</li>
-    <li><b>Cobrar con tarjeta empieza a pesar de la mitad para arriba.</b> En el decil 7 la tarjeta pasó de ${f1(tj0[6][0])}% a ${f1(tj[6][0])}% del gasto; en el 10, de ${f1(tj0[9][0])}% a ${f1(tj[9][0])}%. Si tus clientes están ahí, la terminal ya no es un lujo.</li>
-    <li><b>La tiendita no se va: se queda con quien menos tiene.</b> En el 10% de hogares con menos ingreso todavía se lleva ${f1(td24[0][0])} de cada 100 pesos, casi todo en efectivo. Lo que se está yendo es el cliente de en medio.</li>`;
+    <li><b>Cobrar con tarjeta empieza a pesar de la mitad para arriba.</b> En el decil 7 la tarjeta pasó de ${f1(tj0[6][0])}% a ${f1(tj[6][0])}% del gasto; en el 10% más rico, de ${f1(tj0[9][0])}% a ${f1(tj[9][0])}%. Si tus clientes están ahí, la terminal ya no es un lujo.</li>
+    <li><b>La tiendita se queda con los hogares de menos ingreso.</b> En el 10% más pobre todavía se lleva ${f1(td24[0][0])} de cada 100 pesos, casi todo en efectivo. Donde más terreno pierde es con los hogares de en medio.</li>`;
 
   // ---------- dibujo y redibujo ----------
   function dibuja() {
@@ -529,7 +529,7 @@
     `Fuente: microdatos de la ENIGH, Nueva serie, del INEGI, ediciones 2020, 2022 y 2024 (${nf.format(M.n.mx["2020"])}, ${nf.format(M.n.mx["2022"])} y ${nf.format(M.n.mx["2024"])} hogares; en Guanajuato, ${nf.format(M.n.gto["2020"])}, ${nf.format(M.n.gto["2022"])} y ${nf.format(M.n.gto["2024"])}). Uso la tabla de gastos del hogar y solo el gasto monetario del hogar; dejo fuera autoconsumo, regalos, pagos en especie y la renta imputada.`,
     `«De cada 100 pesos» quiere decir: del gasto trimestral con lugar de compra (los 18 lugares del catálogo de la ENIGH, de mercado a internet), cuánto se fue a cada uno, con los factores de expansión. Cerca de un tercio del gasto monetario no tiene lugar de compra (luz, renta, colegiaturas, transporte) y no entra; esa proporción es casi la misma en los tres años.`,
     `Los catálogos de lugar de compra y forma de pago son idénticos en las tres ediciones. En 2024 el INEGI cambió las claves de los productos a la clasificación internacional de consumo (de 4 a 6 caracteres); eso solo afecta al corte «comida para la casa», que armé con criterios equivalentes: alimentos y bebidas sin alcohol, sin comida preparada para llevar (pizzas, pollo rostizado, carnitas), sin despensas regaladas ni alimento para animales.`,
-    `Forma de pago: la primera que anotó el hogar para cada compra. Tarjeta es débito más crédito; transferencia incluye pago móvil.`,
+    `Forma de pago: la primera que anotó el hogar para cada compra. Tarjeta es débito más crédito; transferencia incluye lo que el INEGI llama «pago móvil».`,
     `Márgenes de error al 90%, por linealización de Taylor con el diseño de la encuesta (estratos y unidades primarias de muestreo). Un cambio es «claro» si la diferencia entre dos ediciones no cabe en su margen de error, tratando las ediciones como muestras independientes.`,
     `Deciles: hogares ordenados por ingreso corriente trimestral y cortados en diez grupos del mismo tamaño, por edición. En el buscador, los cortes de 2024 se llevan de pesos de agosto de 2024 a diciembre de 2025 con el INPC.`,
     `El código está en el repositorio de Cifra Pública, en scripts/compras/.`,

@@ -74,6 +74,7 @@ def meta(ind, cam, dec):
     M["pago"] = {dom: {g: {str(a): [r1(p), r1(e)] for a in ANIOS for p, e in [valor(ind, a, dom, "pago", g)]}
                        for g in ("efectivo", "tarjeta", "debito", "credito", "transferencia", "fiado")} for dom in ("gto", "mx")}
     M["tiendita_efectivo"] = {dom: {str(a): r1(valor(ind, a, dom, "tiendita_pago", "efectivo")[0]) for a in ANIOS} for dom in ("gto", "mx")}
+    M["tiendita_efectivo_ee"] = {dom: {str(a): r1(valor(ind, a, dom, "tiendita_pago", "efectivo")[1]) for a in ANIOS} for dom in ("gto", "mx")}
     M["n"] = {dom: {str(a): int(ind[(ind.anio == a) & (ind.dominio == dom) & (ind.tema == "contexto")].n.iloc[0]) for a in ANIOS}
               for dom in ("gto", "mx")}
     M["gasto_hogar"] = {dom: {str(a): round(float(ind[(ind.anio == a) & (ind.dominio == dom) & (ind.tema == "contexto")].p.iloc[0]))
@@ -97,6 +98,12 @@ def revisar(M, cam):
     # «lo que tumbaría la lectura»: 2022 queda abajo de 16
     ok(M["monedas"]["mx"]["canal"]["2022"][0][0] < 16, "la tiendita en 2022 ya estaba arriba de 16")
     ok(M["cambios"]["gto_canal_tiendita"][2], "la caída de la tiendita en Gto no es significativa")
+    # «Subió en 2024» (internet, país): sube de 2022 a 2024 fuera del margen
+    i22, i24 = M["detalle"]["mx"]["canal"]["internet"]["2022"], M["detalle"]["mx"]["canal"]["internet"]["2024"]
+    ok(i24[0] > i22[0] and (i24[0] - i22[0]) / ((i22[1] ** 2 + i24[1] ** 2) ** 0.5) > Z90, "internet no sube de 2022 a 2024 en el país")
+    # «Guanajuato va más lento que el país» en efectivo: cae menos que México, fuera del margen
+    ge, me = M["cambios"]["gto_pago_efectivo"], M["cambios"]["mx_pago_efectivo"]
+    ok(ge[0] - me[0] > Z90 * (ge[1] ** 2 + me[1] ** 2) ** 0.5, "el efectivo no cae más lento en Gto que en el país")
     ok(M["cambios"]["mx_canal_tiendita"][2], "la caída de la tiendita en México no es significativa")
     ok(M["cambios"]["gto_pago_efectivo"][2], "la caída del efectivo en Gto no es significativa")
     # «pierde con casi todos»: cae en 9 o 10 deciles con significancia

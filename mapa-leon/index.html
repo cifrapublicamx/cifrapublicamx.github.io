@@ -985,13 +985,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
     sec.innerHTML = `
       <h2>El Coecillo perdió casi un tercio de sus talleres de calzado</h2>
       <div class="prose">
-        <p>Busqué qué había detrás de lo que perdió el centro, y una parte está en el calzado. En los ${["", "un", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"][co.hexagonos] || co.hexagonos} hexágonos que llevan el nombre del Coecillo, los talleres y fábricas de calzado pasaron de ${nf.format(co.calzado_a)} a ${nf.format(co.calzado_b)}: son ${nf.format(co.calzado_a - co.calzado_b)} de los ${nf.format(co.total_a - co.total_b)} negocios que perdió esa zona.</p>
-        <p>En toda la ciudad, la fabricación de calzado bajó ${pf.format(Math.abs(100 * (c.b - c.a) / c.a))}%, de ${nf.format(c.a)} a ${nf.format(c.b)} establecimientos, y se movió mucho: de los talleres de ${VA}, solo ${Math.round(c.siguen_pct)} de cada 100 siguen en ${VB} (en el total de negocios son ${Math.round(c.siguen_pct_todos)}). Lo que más cambió fue el tamaño.</p>
+        <p>Busqué qué había detrás de lo que perdió el centro, y una parte está en el calzado. En los ${["", "un", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"][co.hexagonos] || co.hexagonos} hexágonos que llevan el nombre del Coecillo, los talleres y fábricas de calzado pasaron de ${nf.format(co.calzado_a)} a ${nf.format(co.calzado_b)}, y son ${nf.format(co.calzado_a - co.calzado_b)} de los ${nf.format(co.total_a - co.total_b)} negocios que perdió esa zona.</p>
+        <p>En toda la ciudad, la fabricación de calzado bajó ${pf.format(Math.abs(100 * (c.b - c.a) / c.a))}%, de ${nf.format(c.a)} a ${nf.format(c.b)} establecimientos, y se movió mucho. De los talleres de ${VA}, solo ${Math.round(c.siguen_pct)} de cada 100 siguen en ${VB} (en el total de negocios son ${Math.round(c.siguen_pct_todos)}). Lo que más cambió fue el tamaño.</p>
       </div>
       <h2 style="font-size:17px;margin-top:4px">Menos talleres medianos, más fábricas grandes</h2>
       <p class="sub">Talleres y fábricas de calzado en León según cuántas personas trabajan ahí, cambio entre ${VA} y ${VB}.</p>
       <figure class="card" id="calzado-chart" style="margin:0" aria-label="Gráfica de barras: cambio en talleres de calzado por tamaño"></figure>
-      <p class="note">Las zapaterías, en cambio, crecieron ${pf.format(zapPct)}%: de ${nf.format(c.zapaterias_a)} a ${nf.format(c.zapaterias_b)}. El tamaño es el rango de personas que reporta el INEGI; un taller puede cambiar de rango entre ediciones.</p>`;
+      <p class="note">Las zapaterías, en cambio, crecieron ${pf.format(zapPct)}%, de ${nf.format(c.zapaterias_a)} a ${nf.format(c.zapaterias_b)}. El tamaño es el rango de personas que reporta el INEGI; un taller puede cambiar de rango entre ediciones.</p>`;
     barras(document.getElementById("calzado-chart"), z.map((r) => ({ ...r, label: r.tamano })), "Tamaño");
   }
 
@@ -1003,8 +1003,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
     sec.innerHTML = `
       <h2>¿Y en ${REC.version.slice(0, 4)}? El INEGI solo volvió a revisar a los grandes</h2>
       <div class="prose">
-        <p>En ${edicion(REC.version)} salió otra edición del directorio, cinco años después de 2020. Ahí León tiene ${nf.format(rr.b)} negocios, ${nf.format(rr.b - rr.a)} más que en ${edicion(META.version_b)} (${pct(rr.pct)}), y el aumento es parejo: entre ${pct(mins)} y ${pct(maxs)} en cada anillo.</p>
-        <p>Pero esa edición se actualizó «fundamentalmente en el segmento de los establecimientos grandes», según el propio INEGI. Se nota: de los negocios que dejaron de aparecer, ${pf.format(REC.grandes_pct_ya_no)} de cada 100 tenían más de 50 trabajadores; en toda la ciudad son ${pf.format(REC.grandes_pct_todos)} de cada 100. Por eso no la uso para decir si lo de las orillas sigue o se frenó. Para eso hace falta la siguiente foto completa, la de los próximos Censos Económicos.</p>
+        <p>En ${edicion(REC.version)} salió otra edición del directorio, seis meses después de la de ${edicion(META.version_b)}. Ahí León tiene ${nf.format(rr.b)} negocios, ${nf.format(rr.b - rr.a)} más que en ${edicion(META.version_b)} (${pct(rr.pct)}), y el aumento es parejo: entre ${pct(mins)} y ${pct(maxs)} en cada anillo.</p>
+        <p>Pero esa edición se actualizó «fundamentalmente en el segmento de los establecimientos grandes», según el propio INEGI. Se nota en los que dejaron de aparecer: ${pf.format(REC.grandes_pct_ya_no)} de cada 100 tenían más de 50 trabajadores, contra ${pf.format(REC.grandes_pct_todos)} de cada 100 en toda la ciudad. Por eso no la uso para decir si lo de las orillas sigue o se frenó. Para eso hace falta la siguiente foto completa, la de los próximos Censos Económicos.</p>
       </div>
       <div class="card"><table class="t">
         <thead><tr><th>Distancia</th><th>${VA} → ${VB}<br><span style="font-weight:400">foto completa</span></th><th>${edicion(META.version_b).replace(" de ", " ")} → ${edicion(REC.version).replace(" de ", " ")}<br><span style="font-weight:400">edición parcial</span></th></tr></thead>
@@ -1022,7 +1022,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       <div class="curios">
         ${tile(pct(k.ciber.pct), `Cibercafés: de ${nf.format(k.ciber.a)} a ${nf.format(k.ciber.b)}. Si todavía conoces uno abierto, cuídalo.`)}
         ${tile(pct(k.limpieza.pct), `Tiendas de artículos de limpieza: de ${nf.format(k.limpieza.a)} a ${nf.format(k.limpieza.b)}.${EX.limpieza_es_el_que_mas_crecio_500 ? ` Ningún giro con más de 500 negocios en ${VA} creció tanto.` : ""}`)}
-        ${tile(pct(k.consultorios.pct), `Consultorios de psicología, nutrición y quiropráctica: de ${nf.format(k.consultorios.a)} a ${nf.format(k.consultorios.b)}. Los de quiropráctica más que se duplicaron: de ${nf.format(k.quiro.a)} a ${nf.format(k.quiro.b)}.`)}
+        ${tile(pct(k.consultorios.pct), `Consultorios de psicología, nutrición y quiropráctica: de ${nf.format(k.consultorios.a)} a ${nf.format(k.consultorios.b)}. Los de quiropráctica más que se duplicaron, de ${nf.format(k.quiro.a)} a ${nf.format(k.quiro.b)}.`)}
         ${tile(pct(k.mascotas.pct), `Tiendas de mascotas y veterinarias: de ${nf.format(k.mascotas.a)} a ${nf.format(k.mascotas.b)}.`)}
       </div>
       <p class="note">Cuentan establecimientos, no lo que venden.</p>`;

@@ -33,7 +33,7 @@ from extraer import TRIMESTRAL, hechos  # noqa: E402
 
 import pandas as pd  # noqa: E402
 
-TITULO = "Menos desempleo, casi la misma informalidad: así cambió el trabajo en México desde 2019"
+TITULO = "Menos desempleo que en 2019, pero casi la misma informalidad"
 BASE = [f"2019-T{t}" for t in (1, 2, 3, 4)]
 INDICADORES = (("informalidad", "Informalidad"), ("desocupacion", "Desocupación"),
                ("participacion", "Participación"), ("sector_informal", "Sector informal"))
