@@ -52,8 +52,25 @@ MINUSCULAS = {"de", "del", "la", "las", "los", "el", "y", "e", "en", "a"}
 ROMANOS = re.compile(r"^(i{1,3}|iv|v|vi{0,3}|ix|x{1,3})$", re.I)
 
 
+# El DENUE escribe los asentamientos en mayúsculas y sin acentos ('NUEVO LEON').
+# Palabras que en León siempre llevan acento; la búsqueda del mapa ignora acentos, así que no se rompe.
+ACENTOS = {
+    "leon": "León", "mexico": "México", "jose": "José", "jesus": "Jesús", "maria": "María",
+    "paraiso": "Paraíso", "nicolas": "Nicolás", "obregon": "Obregón", "duran": "Durán",
+    "ecologico": "Ecológico", "lopez": "López", "alvaro": "Álvaro", "bajio": "Bajío",
+    "ramirez": "Ramírez", "jardin": "Jardín", "ampliacion": "Ampliación", "lucia": "Lucía",
+    "barcelo": "Barceló", "hernandez": "Hernández", "angeles": "Ángeles", "jeronimo": "Jerónimo",
+    "animas": "Ánimas", "agustin": "Agustín", "gonzalez": "González", "sandia": "Sandía",
+    "ursula": "Úrsula", "andres": "Andrés", "asis": "Asís", "cristobal": "Cristóbal",
+    "mision": "Misión", "martin": "Martín", "magon": "Magón", "alamos": "Álamos",
+    "seccion": "Sección", "napoles": "Nápoles", "americas": "Américas", "julian": "Julián",
+    "angel": "Ángel", "heroes": "Héroes", "satelite": "Satélite", "economicas": "Económicas",
+    "penon": "Peñón", "peñon": "Peñón", "sebastian": "Sebastián", "vertiz": "Vértiz", "ctm": "CTM",
+}
+
+
 def estilo_nombre(nombre: str) -> str:
-    """'VALLE DEL REAL II' -> 'Valle del Real II' (title case con conectores en minúscula)."""
+    """'VALLE DEL REAL II' -> 'Valle del Real II' (title case con conectores en minúscula y acentos)."""
     palabras = nombre.split()
     out = []
     for i, w in enumerate(palabras):
@@ -61,6 +78,8 @@ def estilo_nombre(nombre: str) -> str:
             out.append(w.upper())
         elif i > 0 and w.lower() in MINUSCULAS:
             out.append(w.lower())
+        elif w.lower() in ACENTOS:
+            out.append(ACENTOS[w.lower()])
         else:
             out.append(w[:1].upper() + w[1:].lower())
     return " ".join(out)

@@ -55,9 +55,9 @@
   .top { padding-top: 18px; }
   .brand { display: flex; justify-content: space-between; align-items: center; }
   .brand img { height: 26px; width: auto; display: block; }
-  .folio { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .folio { font-size: 12px; font-weight: 600; color: var(--ink-muted); }
   .dbl { height: 4px; border-top: 1.5px solid var(--ink); border-bottom: 0.75px solid var(--ink); margin-top: 10px; }
-  .label { margin-top: 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rosa); }
+  .label { margin-top: 28px; font-size: 13px; font-weight: 700; color: var(--rosa); }
   h1 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: clamp(32px, 6.4vw, 48px); line-height: 1.05; letter-spacing: -0.03em; margin: 10px 0 var(--s2); }
   .dek { font-size: 16px; margin: 0 0 var(--s2); }
   @media (min-width: 720px) { .dek { font-size: 17px; } }
@@ -71,6 +71,7 @@
   .findings p { margin: 8px 0 0; font-size: 15px; }
 
   h2 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; }
+  h1, h2, h3 { text-wrap: balance; }
   h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin: 0 0 8px; }
   .sub { font-size: 15px; color: var(--ink-muted); margin: 0 0 var(--s2); }
   .prose p { font-size: 16px; margin: 0 0 var(--s2); }
@@ -97,7 +98,7 @@
   table.t td small { display: block; font-size: 12px; color: var(--ink-muted); }
 
   /* Buscador */
-  .busca select { width: 100%; min-height: 48px; border: 1px solid var(--rule); border-radius: 10px; padding: 0 12px; font: 600 16px var(--body); color: var(--ink); background: var(--surface); }
+  .busca select { width: 100%; min-height: 48px; border: 1px solid var(--ink-muted); border-radius: 10px; padding: 0 12px; font: 600 16px var(--body); color: var(--ink); background: var(--surface); }
   .busca select:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
   .selects { display: grid; gap: var(--s1); }
   @media (min-width: 560px) { .selects { grid-template-columns: 1fr 1fr; } }
