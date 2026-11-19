@@ -248,6 +248,7 @@
 
 <script id="geo" type="application/json">__GEO__</script>
 <script id="meta" type="application/json">__META__</script>
+<script src="../assets/mapa-base.js"></script>
 <script>/*__LEAFLET_JS__*/</script>
 <script>
 (() => {
@@ -382,9 +383,16 @@
   map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
   document.getElementById("map-hint").textContent = touch ? "Usa dos dedos para acercar y mover el mapa." : "Usa + y − o doble clic para acercar; arrastra para moverte.";
   map.createPane("labels"); map.getPane("labels").style.zIndex = 450; map.getPane("labels").style.pointerEvents = "none";
-  const attr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", { attribution: attr, subdomains: "abcd", maxZoom: 18 }).addTo(map);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png", { pane: "labels", subdomains: "abcd", maxZoom: 18 }).addTo(map);
+  // Mapa base de CARTO: desde septiembre de 2026 pide clave (gratis). La clave vive en assets/mapa-base.js.
+  // Sin clave, el mapa sale sin calles en lugar de mosaicos marcados «API KEY REQUIRED».
+  const CARTO_KEY = window.CIFRA_CARTO_KEY || "";
+  if (CARTO_KEY) {
+    const attr = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+    const base = "https://basemaps.cartocdn.com/rastertiles";
+    const k = encodeURIComponent(CARTO_KEY);
+    L.tileLayer(`${base}/light_nolabels/{z}/{x}/{y}{r}.png?key=${k}`, { attribution: attr, maxZoom: 18 }).addTo(map);
+    L.tileLayer(`${base}/light_only_labels/{z}/{x}/{y}{r}.png?key=${k}`, { pane: "labels", maxZoom: 18 }).addTo(map);
+  }
 
   const style = (f) => {
     const a = P(f, "a"), b = P(f, "b"), empty = !a && !b;
@@ -517,7 +525,7 @@
   ].map((t) => `<li>${t}</li>`).join("");
   document.getElementById("fuentes").innerHTML =
     `Fuente: INEGI, Directorio Estadístico Nacional de Unidades Económicas (DENUE), ediciones de ${eds.slice(0, -1).join(", ")} y ${eds[eds.length - 1]}. ` +
-    `Consulta: ${esc(META.fecha)}. Cada hexágono mide unos 0.7 km². Mapa base: © OpenStreetMap y © CARTO. ` +
+    `Consulta: ${esc(META.fecha)}. Cada hexágono mide unos 0.7 km². ${CARTO_KEY ? "Mapa base: © OpenStreetMap y © CARTO. " : ""}` +
     `Código y datos: <a href="https://github.com/cifrapublicamx">github.com/cifrapublicamx</a>.`;
 
   renderLegend(); renderTops(); renderFicha();
