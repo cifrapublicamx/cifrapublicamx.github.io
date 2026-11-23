@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>__TITULO__ | Cifra Pública</title>
+<meta name="description" content="Cuántos minutos de trabajo le cuestan la tortilla, el huevo, la leche y la renta a quien tiene de 25 a 35 años, en 1994 y en 2024, con los microdatos de la ENIGH del INEGI. La hora de trabajo rinde un poco más que hace 30 años, la tortilla cuesta el doble de minutos y casi el doble vive con sus papás.">
+<meta name="author" content="__AUTOR__">
+<meta property="og:title" content="__TITULO__">
+<meta property="og:description" content="Comparé a quienes tenían de 25 a 35 años en 1994 con quienes los tienen hoy: cuánto trabajo cuesta la canasta, la renta y la casa propia. Pon tu sueldo y mira cuántos minutos te cuesta la tortilla.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://cifrapublicamx.github.io/poder/">
+<meta property="og:site_name" content="Cifra Pública">
+<meta property="og:locale" content="es_MX">
+<meta property="og:image" content="https://cifrapublicamx.github.io/assets/og/poder.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dos relojes: un kilo de tortilla costaba 15 minutos de trabajo en 1994 y cuesta 29 en 2024.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../assets/cifra-publica-avatar-tinta.svg">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-standard-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-display: swap; font-weight: 200 800; font-stretch: 75% 100%;
+    src: url(../assets/fonts/bricolage-grotesque-latin-ext-standard-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-wght-normal.woff2) format("woff2");
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Figtree"; font-style: normal; font-display: swap; font-weight: 300 900;
+    src: url(../assets/fonts/figtree-latin-ext-wght-normal.woff2) format("woff2");
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF; }
+
+  :root {
+    --surface: #ffffff; --surface-alt: #f7f6f8; --surface-sunken: #edecef;
+    --ink: #17151b; --ink-muted: #5c5962; --rule: #e2e0e5;
+    --rosa: #b61066; --rosa-suave: #ffe7ef;
+    --cat1: #7750b1; --cat2: #d67523; --cat3: #009072; --enf: #c06100; --gris: #9a9aa3; --gris-claro: #cfced4;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: Figtree, system-ui, sans-serif;
+    --s1: 8px; --s2: 14px; --s3: 22px; --s4: 40px; --r: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--surface); color: var(--ink); font: 16px/1.5 var(--body); }
+  a { color: var(--rosa); text-underline-offset: 2px; }
+  .wrap { max-width: 720px; margin-inline: auto; padding: 0 var(--s3); }
+  section { margin-top: 56px; }
+
+  .top { padding-top: 18px; }
+  .brand { display: flex; justify-content: space-between; align-items: center; }
+  .brand img { height: 26px; width: auto; display: block; }
+  .folio { font-size: 12px; font-weight: 600; color: var(--ink-muted); }
+  .dbl { height: 4px; border-top: 1.5px solid var(--ink); border-bottom: 0.75px solid var(--ink); margin-top: 10px; }
+  .label { margin-top: 28px; font-size: 13px; font-weight: 700; color: var(--rosa); }
+  h1 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: clamp(30px, 6vw, 44px); line-height: 1.05; letter-spacing: -0.03em; margin: 10px 0 var(--s2); }
+  .dek { font-size: 16px; margin: 0 0 var(--s2); }
+  @media (min-width: 720px) { .dek { font-size: 17px; } }
+  .byline { font-size: 12px; color: var(--ink-muted); margin: 0; }
+
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: var(--s2); }
+  .findings { display: grid; gap: var(--s1); margin-top: var(--s3); }
+  @media (min-width: 560px) { .findings { grid-template-columns: repeat(2, 1fr); } }
+  .findings .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .findings .big small { font-size: 16px; letter-spacing: -0.01em; }
+  .findings p { margin: 8px 0 0; font-size: 15px; }
+
+  h2 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; }
+  h1, h2, h3 { text-wrap: balance; }
+  h3 { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .sub { font-size: 15px; color: var(--ink-muted); margin: 0 0 var(--s2); }
+  .prose p { font-size: 16px; margin: 0 0 var(--s2); }
+  .note { font-size: 12px; color: var(--ink-muted); margin: 10px 0 0; }
+  figure { margin: 0; }
+  svg text { font-family: var(--body); }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-muted); margin-bottom: 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+  .aviso { margin-top: var(--s2); background: var(--surface-alt); border-radius: var(--r); padding: 12px 16px; font-size: 14px; }
+  .aviso b { font-weight: 700; }
+  .chip small { font-weight: 500; font-size: 12px; opacity: .75; margin-left: 4px; }
+  /* Controles */
+  .ctrl { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); margin-bottom: var(--s2); }
+  .grupo { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .grupo .k { font-size: 12px; color: var(--ink-muted); width: 100%; }
+  .chip { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); font: 600 15px var(--body); cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .chip:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .chip.play { border-color: var(--ink); }
+
+  /* Tus 100 pesos */
+  .ingreso { display: grid; gap: var(--s1); }
+  .ingreso label { font-size: 12px; color: var(--ink-muted); }
+  .campo { display: flex; align-items: center; gap: 8px; border: 1px solid var(--ink-muted); border-radius: 10px; padding: 0 12px; min-height: 52px; max-width: 320px; }
+  .campo:focus-within { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  .campo span { font: 700 20px var(--display); color: var(--ink-muted); }
+  .campo input { border: 0; outline: 0; font: 700 22px var(--display); font-stretch: 92%; width: 100%; color: var(--ink); background: transparent; font-variant-numeric: tabular-nums; }
+  .presets { display: flex; flex-wrap: wrap; gap: 6px; }
+  .presets .chip { min-height: 40px; font-size: 14px; padding: 0 12px; }
+  .panel { margin-top: var(--s2); }
+  .panel h3 { font-size: 19px; margin: 0; }
+  .panel .lugar { font-size: 14px; color: var(--ink-muted); margin: 2px 0 0; }
+  .tiles { display: grid; gap: var(--s1); grid-template-columns: repeat(3, 1fr); margin-top: var(--s2); }
+  @media (max-width: 559px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+  .tile { border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; }
+  .tile .k { font-size: 12px; color: var(--ink-muted); font-weight: 600; }
+  .tile .v { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tile .v small { font-size: 14px; color: var(--ink-muted); font-weight: 600; }
+  .tile .c { font-size: 13px; margin-top: 4px; color: var(--ink-muted); }
+  .tile .c b { color: var(--ink); }
+
+  /* Mito */
+  .mito { display: grid; gap: var(--s2); }
+  @media (min-width: 560px) { .mito { grid-template-columns: 1fr 1fr; } }
+  .mito .card { background: var(--surface-alt); border-color: var(--surface-alt); }
+  .mito .tag { font-size: 12px; font-weight: 700; color: var(--ink-muted); }
+  .mito .big { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 30px; line-height: 1.05; letter-spacing: -0.02em; margin: 6px 0; }
+  .mito p { margin: 0; font-size: 15px; }
+
+  ol.lecturas { margin: 0; padding-left: 22px; }
+  ol.lecturas li { margin: 0 0 var(--s2); font-size: 16px; }
+  ol.lecturas li::marker { font-family: var(--display); font-weight: 700; }
+
+  .bar:hover, .bar:focus-visible { opacity: .8; outline: none; }
+  details.more summary { font-size: 13px; color: var(--ink-muted); cursor: pointer; margin-top: 10px; min-height: 24px; }
+  .tscroll { overflow-x: auto; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  table.t th { text-align: right; font-size: 12px; color: var(--ink-muted); font-weight: 600; padding: 6px; border-bottom: 1px solid var(--ink); vertical-align: bottom; }
+  table.t td { text-align: right; padding: 7px 6px; border-bottom: 1px solid var(--rule); vertical-align: top; white-space: nowrap; }
+  table.t th:first-child, table.t td:first-child { text-align: left; white-space: normal; }
+  table.t td small { font-size: 11px; color: var(--ink-muted); }
+
+  .tip { position: fixed; z-index: 10; pointer-events: none; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font-size: 13px; line-height: 1.35; max-width: 270px; opacity: 0; transition: opacity .08s; }
+  .tip.on { opacity: 1; }
+  .tip b { display: block; font-size: 15px; }
+  .tip span { display: block; color: var(--ink-muted); }
+
+  .uso { background: var(--rosa-suave); border-radius: var(--r); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .uso p { margin: 0; font-size: 15px; }
+  details.metodo { margin-top: var(--s3); }
+  details.metodo summary { font-weight: 600; cursor: pointer; min-height: 24px; }
+  details.metodo li { margin: 8px 0; font-size: 15px; }
+  .cierre { display: flex; flex-direction: column; gap: var(--s2); padding-top: 18px; border-top: 1px solid var(--rule); }
+  .cierre p { margin: 0; font-size: 16px; }
+  .btn { display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 999px; background: var(--rosa); color: #fff; font: 700 15px var(--body); text-decoration: none; }
+  .btn:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+  @media (min-width: 720px) { .btn { max-width: 320px; } }
+  .correo { font-size: 13px; color: var(--ink-muted); }
+  footer { padding: var(--s3) 0 48px; }
+  footer p { font-size: 12px; color: var(--ink-muted); margin: 0 0 6px; }
+  /* Relojes */
+  .relojes { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); margin-top: var(--s3); }
+  .reloj { text-align: center; }
+  .reloj svg { width: 100%; max-width: 210px; height: auto; display: block; margin-inline: auto; }
+  .reloj .anio { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 15px; color: var(--ink-muted); margin: 8px 0 0; }
+  .reloj .min { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .reloj .min small { font-size: 16px; }
+  .reloj p { font-size: 13px; color: var(--ink-muted); margin: 4px 0 0; }
+  .ico { width: 22px; height: 22px; flex: none; color: var(--ink-muted); }
+  .hero-k { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 600; margin-top: var(--s2); }
+  .hero-k .ico { color: var(--ink); }
+
+  /* Canasta */
+  .canasta { list-style: none; margin: 0; padding: 0; }
+  .canasta li { display: grid; grid-template-columns: 22px minmax(88px, 130px) 1fr 84px; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--rule); }
+  .canasta li:last-child { border-bottom: 0; }
+  .canasta .q { font-size: 14px; font-weight: 600; line-height: 1.15; }
+  .canasta .q small { display: block; font-size: 11px; color: var(--ink-muted); font-weight: 400; }
+  .canasta svg.dm { width: 100%; height: 26px; display: block; overflow: visible; }
+  .canasta .d { font-family: var(--display); font-stretch: 92%; font-weight: 700; font-size: 15px; text-align: right; font-variant-numeric: tabular-nums; }
+  .canasta .d small { display: block; font: 400 11px var(--body); color: var(--ink-muted); white-space: nowrap; }
+  .eje { display: grid; grid-template-columns: 22px minmax(88px, 130px) 1fr 84px; gap: 10px; font-size: 11px; color: var(--ink-muted); }
+  .eje svg { width: 100%; height: 16px; overflow: visible; }
+  @media (max-width: 559px) {
+    .canasta li { grid-template-columns: 22px 1fr auto; row-gap: 2px; }
+    .canasta svg.dm { grid-column: 1 / -1; grid-row: 2; }
+    .canasta .d { grid-column: 3; grid-row: 1; }
+    .eje { grid-template-columns: 1fr; } .eje span { display: none; }
+  }
+
+  /* Tenencia */
+  .tenencia svg { display: block; width: 100%; height: auto; }
+
+  /* Tu sueldo */
+  .dos { display: grid; gap: var(--s2); }
+  @media (min-width: 560px) { .dos { grid-template-columns: 1fr 1fr; } }
+  .campo.chico { max-width: 200px; }
+  .dos .ingreso { align-content: start; }
+  .tabla-min td .barra { display: inline-block; height: 8px; border-radius: 4px; vertical-align: middle; margin-right: 6px; }
+  .resumen { font-size: 16px; margin: 0 0 var(--s2); }
+  .resumen b { font-family: var(--display); font-stretch: 92%; font-size: 19px; }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div class="brand"><a href="../" aria-label="Cifra Pública, inicio"><img src="../assets/cifra-publica-logotipo.svg" alt="Cifra Pública" width="139" height="26"></a><span class="folio">Análisis 007</span></div>
+  <div class="dbl"></div>
+  <div class="label">Poder adquisitivo | México</div>
+  <h1>__TITULO__</h1>
+  <p class="dek" id="dek"></p>
+  <p class="byline">Por __AUTOR__ | __FECHA__ | Datos de 1994 a 2024, los más recientes del INEGI</p>
+  <div class="relojes" id="relojes" role="img"></div>
+  <p class="hero-k" id="hero-k"></p>
+  <p class="aviso"><b>Por qué 1994 y por qué 2024.</b> Treinta años es una generación. Quienes tenían de 25 a 35 años en 1994 nacieron entre 1959 y 1969, más o menos la edad de los papás de quienes hoy tienen de 25 a 35. La encuesta de 1994 se levantó de agosto a noviembre, antes de la devaluación de diciembre, así que retrata el último momento antes de la crisis, con el peso caro y lo importado barato. La de 2024 es la más reciente publicada; la de 2026 se levanta estos meses y saldrá a mediados de 2027.</p>
+</header>
+
+<main>
+  <div class="wrap"><div class="findings" id="findings"></div></div>
+
+  <section class="wrap">
+    <h2>La canasta, en minutos de trabajo</h2>
+    <p class="sub" id="can-sub"></p>
+    <div class="card">
+      <div class="legend" id="can-legend"></div>
+      <div class="eje" aria-hidden="true"><span></span><span></span><svg id="can-eje"></svg><span></span></div>
+      <ul class="canasta" id="canasta"></ul>
+    </div>
+    <div class="prose" id="can-prose" style="margin-top:var(--s2)"></div>
+    <details class="more"><summary>Ver precios, minutos y márgenes de error</summary><div class="tscroll" id="can-tabla"></div></details>
+  </section>
+
+  <section class="wrap">
+    <h2>Treinta años, edición por edición</h2>
+    <p class="sub">Ingreso por trabajo de una hora, en pesos de agosto de 2024. La línea es la persona de en medio entre quienes tienen de 25 a 35 años y trabajan; la franja va del 25% que gana menos al 25% que gana más.</p>
+    <figure class="card chart"><div id="serie-h"></div></figure>
+    <div class="prose" id="serie-h-prose" style="margin-top:var(--s2)"></div>
+    <figure class="card chart" style="margin-top:var(--s2)"><h3>Un kilo de tortilla, en minutos de trabajo</h3><div id="serie-t"></div></figure>
+    <div class="prose" id="serie-t-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <h2>Menos casa propia, más casa de los papás</h2>
+    <p class="sub">Hogares cuya jefa o jefe tiene de 25 a 35 años, según de quién es la vivienda.</p>
+    <figure class="card chart tenencia"><div class="legend" id="ten-legend"></div><div id="ten"></div></figure>
+    <div class="prose" id="ten-prose" style="margin-top:var(--s2)"></div>
+    <figure class="card chart" style="margin-top:var(--s2)"><h3>De cada 100 personas de 25 a 35 años, cuántas viven en casa de sus papás</h3><div id="serie-vp"></div></figure>
+    <div class="prose" id="vp-prose" style="margin-top:var(--s2)"></div>
+  </section>
+
+  <section class="wrap">
+    <h2>Tu sueldo, en minutos</h2>
+    <p class="sub">Escribe lo que ganas al mes por tu trabajo, ya con descuentos, y las horas que trabajas a la semana. La página calcula cuánto vale tu hora y cuántos minutos te cuesta cada cosa con los precios que pagaron los hogares en 2024.</p>
+    <div class="dos">
+      <div class="ingreso"><label for="ing">Lo que ganas al mes</label><div class="campo"><span>$</span><input id="ing" inputmode="numeric" autocomplete="off" value="12,000" aria-describedby="ing-nota"></div><div class="presets" id="presets"></div></div>
+      <div class="ingreso"><label for="hrs">Horas a la semana</label><div class="campo chico"><input id="hrs" inputmode="numeric" autocomplete="off" value="48"></div></div>
+    </div>
+    <div class="panel card" id="panel" aria-live="polite"></div>
+    <p class="note" id="ing-nota"></p>
+  </section>
+
+  <section class="wrap">
+    <h2>«Antes con un sueldo alcanzaba»</h2>
+    <p class="sub">Se oye mucho. Esto dicen las dos encuestas.</p>
+    <div class="mito" id="mito"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="uso">
+      <h2>Para qué sirve, y para qué no</h2>
+      <p>Sirve para comparar cuánto trabajo le cuestan algunas cosas de todos los días a la persona típica de 25 a 35 años que trabaja, hoy y hace 30 años, en todo el país.</p>
+      <p>No sirve para hablar de un estado, una ciudad o una persona en particular, porque es la mediana nacional y la ENIGH de 1994 entrevistó a unos 12,800 hogares. Tampoco cuenta los apoyos del gobierno, las remesas ni lo que aporta la familia; solo el ingreso por trabajo de quien trabaja.</p>
+      <p>En 1994 la tortilla tenía precio controlado y subsidio en muchas ciudades, y los controles terminaron en 1999. Una parte de la subida de la tortilla puede venir del fin de ese subsidio. Un producto con el mismo nombre tampoco es idéntico en 30 años; la leche de 1994 se compraba más en bolsa o a granel, y la de 2024 incluye la de caja. En 2016 el INEGI cambió la forma de preguntar el ingreso, y desde entonces la encuesta capta un poco más; la serie lo marca.</p>
+      <p>No medí lo que se fabrica en serie, como la tele, el celular o la ropa, porque la ENIGH no da su precio por pieza, ni el precio de comprar una casa, que no viene en ninguna de las dos encuestas. Lo que tumbaría esta lectura: que la ENIGH 2026 muestre la tortilla abajo de 20 minutos por kilo o la hora mediana de vuelta abajo de la de 1994.</p>
+    </div>
+    <details class="metodo card">
+      <summary>Cómo lo hice</summary>
+      <ul id="notas"></ul>
+    </details>
+  </section>
+
+  <section class="wrap">
+    <div class="cierre">
+      <p>¿Quieres ver esto para tu sector, tus empleados o tu ciudad? Platiquemos.</p>
+      <a class="btn" href="mailto:__EMAIL__?subject=Tu%20sueldo%20en%20minutos">Escríbeme</a>
+      <span class="correo">__EMAIL__</span>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p id="fuentes"></p>
+  <p>Hecho por __AUTOR__ en León | Cifra Pública</p>
+</footer>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script id="meta" type="application/json">__META__</script>
+<script>
+(() => {
+  const M = JSON.parse(document.getElementById("meta").textContent);
+  const Z = M.z90, A = M.r94, B = M.r24, F = M.factor;
+
+  // ---------- formato ----------
+  const nf = new Intl.NumberFormat("es-MX");
+  const f1 = (v) => new Intl.NumberFormat("es-MX", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v);
+  const f2 = (v) => new Intl.NumberFormat("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+  const r0 = (v) => nf.format(Math.round(v));
+  const pesos = (v) => "$" + nf.format(Math.round(v));
+  const pesos2 = (v) => "$" + f2(v);
+  const pct = (v) => Math.round(100 * v);
+  const svgEl = (tag, attrs = {}) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+  const txt = (svg, x, y, s, attrs = {}) => { const t = svgEl("text", { x, y, "font-size": 11, fill: "var(--ink-muted)", ...attrs }); t.textContent = s; svg.append(t); return t; };
+  const sig = (a, b) => Math.abs(b[0] - a[0]) / Math.hypot(a[1], b[1]) > Z;
+  const mg = (e, d = 1) => d ? f1(Z * e) : r0(Z * e);
+
+  // ---------- tooltip ----------
+  const tip = document.getElementById("tip");
+  function showTip(e, lines) {
+    tip.replaceChildren(...lines.map((t, i) => { const n = document.createElement(i ? "span" : "b"); n.textContent = t; return n; }));
+    tip.classList.add("on");
+    const r = e.target.getBoundingClientRect();
+    const x = e.clientX ?? (r.left + r.width / 2), y = e.clientY ?? r.top;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, x - w / 2)) + "px";
+    tip.style.top = (y - h - 14 < 8 ? y + 18 : y - h - 14) + "px";
+  }
+  const hideTip = () => tip.classList.remove("on");
+  function bindTip(el, f) {
+    el.addEventListener("pointermove", (e) => showTip(e, f()));
+    el.addEventListener("pointerleave", hideTip);
+    el.addEventListener("focus", (e) => showTip({ target: e.target }, f()));
+    el.addEventListener("blur", hideTip);
+  }
+
+  // ---------- íconos (línea, sin relleno) ----------
+  const ICO = {
+    tortilla: '<ellipse cx="11" cy="9" rx="8" ry="3"/><path d="M3 9v3c0 1.7 3.6 3 8 3s8-1.3 8-3V9"/><path d="M3 12v3c0 1.7 3.6 3 8 3s8-1.3 8-3v-3"/>',
+    huevo: '<path d="M11 3c3.2 0 6 5 6 9a6 6 0 0 1-12 0c0-4 2.8-9 6-9z"/>',
+    frijol: '<path d="M6 6.5c2.6-3 9-2.4 10.6 1.6 1.7 4.2-1.3 9.4-5.6 9.4-3 0-5.4-1.7-5.4-4.2 0-1.8 1.7-2.4 1.7-3.6 0-1-1.9-1.4-1.3-3.2z"/>',
+    arroz: '<path d="M3 11h16a8 7 0 0 1-16 0z"/><path d="M8 8.5l.6-1.5M11 8l.2-1.8M14 8.5l-.5-1.6"/>',
+    leche: '<path d="M7 8l2-4h4l2 4v11H7z"/><path d="M7 8h8M9 12h4"/>',
+    aceite: '<path d="M9.5 2.5h3v3l2.5 3V19H7V8.5l2.5-3z"/><path d="M7 12h8"/>',
+    azucar: '<rect x="3.5" y="10" width="7" height="7" rx="1"/><rect x="11.5" y="10" width="7" height="7" rx="1"/><rect x="7.5" y="3" width="7" height="7" rx="1"/>',
+    jitomate: '<circle cx="11" cy="12.5" r="6.5"/><path d="M8 6.5l3 1.5 3-1.5M11 8V4.5"/>',
+    papa: '<path d="M5 9c1-3.5 6-5 10-3s4 7 1 10-9 3-11-.5C4 13 4.3 11 5 9z"/><path d="M9 10h.01M13 9h.01M12 13h.01"/>',
+    pollo: '<path d="M13.5 3.5a5 5 0 0 1 3 8.6c-1.3 1.2-3 1.3-4.4 1.1L8.4 17a1.8 1.8 0 1 1-2.4-2.4l3.8-3.7c-.2-1.4-.1-3.1 1.1-4.4a5 5 0 0 1 2.6-3z"/>',
+    bistec: '<path d="M4 9c0-3 3.5-5 8-5s7 2.5 6.5 6.5c-.4 3.5-2.5 4.5-5.5 4.5-2 0-3 2.5-5.5 2.5S4 15 4 12.5z"/><circle cx="13" cy="9" r="1.6"/>',
+    refresco: '<path d="M9.5 2.5h3V5c0 1 1.5 1.8 1.5 3.5 0 1.3-1 1.8-1 3s1 1.7 1 3V19H8v-4.5c0-1.3 1-1.8 1-3s-1-1.7-1-3C8 6.8 9.5 6 9.5 5z"/>',
+    reloj: '<circle cx="11" cy="11" r="8"/><path d="M11 6.5V11l3 2"/>',
+  };
+  const icono = (k) => `<svg class="ico" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
+
+  // ---------- datos ----------
+  const I = Object.fromEntries(M.items.map((x) => [x.k, x]));
+  const S = M.serie;
+  const t94 = I.tortilla.m94[0], t24 = I.tortilla.m24[0];
+  const h94r = A.hora_med[0] * F, h24 = B.hora_med[0];
+  const s94 = S.find((s) => s.a === 1994), s22 = S.find((s) => s.a === 2022);
+  const maxPrev = Math.max(...S.filter((s) => s.a > 1994 && s.a < 2024).map((s) => s.h));
+
+  // ---------- entradilla ----------
+  document.getElementById("dek").textContent =
+    `Comparé a quienes tenían de 25 a 35 años en 1994 con quienes los tienen hoy, con los microdatos de la Encuesta Nacional de Ingresos y Gastos de los Hogares (ENIGH) del INEGI. ` +
+    `En lugar de pesos, que cambiaron de ceros y de valor, cuento minutos: cuánto tiene que trabajar la persona típica de esa edad para comprar un kilo de tortilla, un litro de leche o un mes de renta. ` +
+    `La hora de trabajo rinde un poco más que en 1994, la tortilla pide el doble de minutos y casi el doble vive en casa de sus papás. Abajo puedes poner tu sueldo y ver tus propios minutos.`;
+
+  // ---------- relojes ----------
+  function reloj(min, col, anio, pie) {
+    const s = svgEl("svg", { viewBox: "0 0 200 200", "aria-hidden": "true" });
+    s.append(svgEl("circle", { cx: 100, cy: 100, r: 92, fill: "var(--surface-alt)", stroke: "var(--ink)", "stroke-width": 1.5 }));
+    const a = (min / 60) * 2 * Math.PI, x = 100 + 86 * Math.sin(a), y = 100 - 86 * Math.cos(a);
+    s.append(svgEl("path", { d: `M100 100 L100 14 A86 86 0 ${min > 30 ? 1 : 0} 1 ${x} ${y} Z`, fill: col }));
+    for (let i = 0; i < 60; i++) {
+      const b = (i / 60) * 2 * Math.PI, r1 = i % 5 ? 84 : 78;
+      s.append(svgEl("line", { x1: 100 + r1 * Math.sin(b), y1: 100 - r1 * Math.cos(b), x2: 100 + 90 * Math.sin(b), y2: 100 - 90 * Math.cos(b), stroke: "var(--ink)", "stroke-width": i % 5 ? 0.8 : 1.6 }));
+    }
+    s.append(svgEl("circle", { cx: 100, cy: 100, r: 3, fill: "var(--ink)" }));
+    const d = document.createElement("div"); d.className = "reloj";
+    d.append(s);
+    d.insertAdjacentHTML("beforeend", `<p class="anio">${anio}</p><div class="min">${r0(min)} <small>minutos</small></div><p>${pie}</p>`);
+    return d;
+  }
+  const rel = document.getElementById("relojes");
+  rel.append(reloj(t94, "var(--gris)", "1994", `con un kilo a ${pesos2(I.tortilla.p94)} y la hora a ${pesos2(A.hora_med[0])}`),
+             reloj(t24, "var(--enf)", "2024", `con un kilo a ${pesos(I.tortilla.p24)} y la hora a ${pesos2(B.hora_med[0])}`));
+  rel.setAttribute("aria-label", `Un kilo de tortilla costaba ${r0(t94)} minutos de trabajo en 1994 y ${r0(t24)} en 2024.`);
+  document.getElementById("hero-k").innerHTML = `${icono("tortilla")}<span>Un kilo de tortilla de maíz, en minutos de trabajo de la persona típica de 25 a 35 años</span>`;
+
+  // ---------- hallazgos ----------
+  const cambioH = 100 * (h24 / h94r - 1);
+  const eRat = (h24 / h94r) * Math.hypot(A.hora_med[1] / A.hora_med[0], B.hora_med[1] / B.hora_med[0]);
+  document.getElementById("findings").innerHTML = `
+    <div class="card"><div class="big">${pesos2(h24)} <small>por hora</small></div>
+      <p>ganó en 2024 la persona de en medio entre quienes tienen de 25 a 35 años y trabajan (± ${f2(Z * B.hora_med[1])}). En 1994 eran ${pesos2(A.hora_med[0])} de entonces, que equivalen a ${pesos(h94r)} de 2024 (± ${f1(Z * A.hora_med[1] * F)}). La hora rinde ${Math.round(cambioH)}% más (± ${Math.round(100 * Z * eRat)} puntos). Hasta 2022 ninguna edición había superado el nivel de 1994.</p></div>
+    <div class="card"><div class="big">${r0(t24)} <small>minutos</small></div>
+      <p>de trabajo cuesta un kilo de tortilla (± ${mg(I.tortilla.m24[1])}). En 1994 costaba ${r0(t94)} (± ${mg(I.tortilla.m94[1])}). De ${M.items.length} alimentos básicos, ${M.items.filter((x) => sig(x.m94, x.m24) && x.m24[0] > x.m94[0]).length} cuestan más minutos que hace 30 años y ${M.items.filter((x) => sig(x.m94, x.m24) && x.m24[0] < x.m94[0]).length} cuestan menos.</p></div>
+    <div class="card"><div class="big">${pct(B.pct_hijo[0])} <small>de cada 100</small></div>
+      <p>personas de 25 a 35 años viven en casa de sus papás, como hijas o hijos (± ${mg(100 * B.pct_hijo[1])} puntos). En 1994 eran ${pct(A.pct_hijo[0])} (± ${mg(100 * A.pct_hijo[1])}).</p></div>
+    <div class="card"><div class="big">${pct(B.ten_propia[0] + B.ten_pagando[0])} <small>de cada 100</small></div>
+      <p>hogares con jefa o jefe de 25 a 35 años viven en casa propia, pagada o pagándose (± ${Math.max(1, Math.round(100 * Z * Math.hypot(B.ten_propia[1], B.ten_pagando[1])))}). En 1994 eran ${pct(A.ten_propia[0] + A.ten_pagando[0])} (± ${Math.round(100 * Z * Math.hypot(A.ten_propia[1], A.ten_pagando[1]))}). Los que rentan pasaron de ${pct(A.ten_renta[0])} a ${pct(B.ten_renta[0])}.</p></div>`;
+
+  // ---------- canasta: mancuernas ----------
+  const orden = [...M.items].sort((a, b) => (b.m24[0] / b.m94[0]) - (a.m24[0] / a.m94[0]));
+  const masMin = orden.filter((x) => sig(x.m94, x.m24) && x.m24[0] > x.m94[0]);
+  const menosMin = orden.filter((x) => sig(x.m94, x.m24) && x.m24[0] < x.m94[0]);
+  const igual = orden.filter((x) => !sig(x.m94, x.m24));
+  document.getElementById("can-sub").textContent = `Minutos de trabajo para comprar un kilo o un litro, con el precio que pagaron los hogares y la hora de la persona típica de 25 a 35 años. Ordenados del que más se encareció al que más se abarató. Escala logarítmica, para que quepan la tortilla y el bistec.`;
+  document.getElementById("can-legend").innerHTML = `<span><i style="background:var(--surface);border:2px solid var(--gris);width:12px;height:12px"></i>1994</span><span><i style="background:var(--enf)"></i>2024</span>`;
+  const LMIN = 10, LMAX = 300;
+  const lx = (v, W) => 6 + (W - 12) * (Math.log(v) - Math.log(LMIN)) / (Math.log(LMAX) - Math.log(LMIN));
+  function canasta() {
+    const ul = document.getElementById("canasta");
+    ul.innerHTML = orden.map((x) => {
+      const c = 100 * (x.m24[0] / x.m94[0] - 1), ok = sig(x.m94, x.m24);
+      return `<li data-k="${x.k}">${icono(x.k)}<span class="q">${x.nombre}<small>${x.u === "l" ? "un litro" : "un kilo"}</small></span><svg class="dm"></svg><span class="d">${ok ? (c > 0 ? "+" : "−") + Math.round(Math.abs(c)) + "%" : "="}<small>${ok ? "" : "sin cambio claro"}</small></span></li>`;
+    }).join("");
+    const W = ul.querySelector("svg.dm").getBoundingClientRect().width || 300;
+    const eje = document.getElementById("can-eje"); eje.replaceChildren(); eje.setAttribute("viewBox", `0 0 ${W} 16`);
+    for (const v of [10, 20, 30, 60, 120, 240]) txt(eje, lx(v, W), 12, v === 10 ? "10 min" : String(v), { "text-anchor": "middle" });
+    ul.querySelectorAll("li").forEach((li) => {
+      const x = I[li.dataset.k], s = li.querySelector("svg.dm"); s.setAttribute("viewBox", `0 0 ${W} 26`);
+      for (const v of [10, 20, 30, 60, 120, 240]) s.append(svgEl("line", { x1: lx(v, W), x2: lx(v, W), y1: 0, y2: 26, stroke: "var(--rule)" }));
+      const a = lx(x.m94[0], W), b = lx(x.m24[0], W);
+      s.append(svgEl("line", { x1: a, x2: b, y1: 13, y2: 13, stroke: "var(--gris)", "stroke-width": 2 }));
+      const p1 = svgEl("circle", { cx: a, cy: 13, r: 6, fill: "var(--surface)", stroke: "var(--gris)", "stroke-width": 2, class: "bar", tabindex: 0 });
+      const p2 = svgEl("circle", { cx: b, cy: 13, r: 6.5, fill: "var(--enf)", class: "bar", tabindex: 0 });
+      const lines = () => [`${x.nombre}, ${x.u === "l" ? "un litro" : "un kilo"}`, `1994: ${f1(x.m94[0])} min (± ${mg(x.m94[1])}) | ${pesos2(x.p94)}`, `2024: ${f1(x.m24[0])} min (± ${mg(x.m24[1])}) | ${pesos2(x.p24)}`];
+      bindTip(p1, lines); bindTip(p2, lines); s.append(p1, p2);
+      s.setAttribute("role", "img"); s.setAttribute("aria-label", `${x.nombre}: ${f1(x.m94[0])} minutos en 1994 y ${f1(x.m24[0])} en 2024`);
+    });
+  }
+  const nombres = (xs) => xs.map((x) => x.nombre.toLowerCase()).join(", ").replace(/, ([^,]*)$/, " y $1");
+  document.getElementById("can-prose").innerHTML = `
+    <p>Cuestan más minutos que en 1994: ${nombres(masMin)}. La tortilla encabeza la lista con el doble. La leche, el azúcar, el huevo y el aceite piden alrededor de una quinta parte más.</p>
+    <p>Cuestan menos: ${nombres(menosMin)}. El litro de refresco pasó de ${r0(I.refresco.m94[0])} a ${r0(I.refresco.m24[0])} minutos, de lo poco que se abarató. ${igual.length ? `${igual.length === 1 ? "Quedó" : "Quedaron"} sin cambio claro ${nombres(igual)}.` : ""}</p>
+    <p>Así que la respuesta a «¿alcanza más o menos que antes?» depende de qué compres. La tortilla es la compra que más se repite en la libreta de gastos de la ENIGH, y es la que más minutos ganó.</p>`;
+  document.getElementById("can-tabla").innerHTML = `<table class="t"><thead><tr><th>Alimento</th><th>Precio 1994</th><th>Precio 2024</th><th>Minutos 1994</th><th>Minutos 2024</th><th>Compras anotadas 1994 | 2024</th></tr></thead><tbody>${
+    orden.map((x) => `<tr><td>${x.nombre} <small>(${x.u})</small></td><td>${pesos2(x.p94)}</td><td>${pesos2(x.p24)}</td><td>${f1(x.m94[0])} <small>± ${mg(x.m94[1])}</small></td><td>${f1(x.m24[0])} <small>± ${mg(x.m24[1])}</small></td><td>${nf.format(x.n94)} | ${nf.format(x.n24)}</td></tr>`).join("")
+  }</tbody></table><p class="note">Precios de 1994 en pesos de entonces (ya sin los tres ceros que se quitaron en 1993). Mediana del precio por kilo o litro de cada compra anotada en la libreta de gastos de la ENIGH. Márgenes de error al 90%.</p>`;
+
+  // ---------- serie: gráfica de línea ----------
+  const ancho = (box) => Math.max(300, Math.min(680, box.clientWidth || 680));
+  function linea(box, { key, band, maxY, pasoY, fmtY, col = "var(--enf)", notas = [], etiqueta, refAbajo = false }) {
+    const W = ancho(box), H = 250, m = { t: 22, r: 18, b: 26, l: 38 };
+    const x = (a) => m.l + (W - m.l - m.r) * (a - 1994) / 30, y = (v) => m.t + (H - m.t - m.b) * (1 - v / maxY);
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
+      "aria-label": etiqueta + ": " + S.map((s) => `${s.a}, ${fmtY(s[key])}`).join("; ") });
+    for (let v = 0; v <= maxY + 1e-9; v += pasoY) {
+      svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: "var(--rule)" }));
+      txt(svg, m.l - 6, y(v) + 4, fmtY(v), { "text-anchor": "end" });
+    }
+    for (const a of [1994, 2000, 2006, 2012, 2018, 2024]) txt(svg, x(a), H - 6, String(a), { "text-anchor": "middle" });
+    // corte de 2016
+    svg.append(svgEl("line", { x1: x(2015), x2: x(2015), y1: m.t, y2: H - m.b, stroke: "var(--ink-muted)", "stroke-dasharray": "3 3" }));
+    txt(svg, x(2015) - 4, m.t + 8, "cambia el cuestionario", { "font-size": 10, "text-anchor": "end" });
+    if (band) {
+      const up = S.map((s) => `${x(s.a)},${y(s[band[1]])}`), dn = [...S].reverse().map((s) => `${x(s.a)},${y(s[band[0]])}`);
+      svg.append(svgEl("polygon", { points: up.concat(dn).join(" "), fill: "var(--enf)", opacity: 0.12 }));
+    }
+    const ref = S[0][key];
+    svg.append(svgEl("line", { x1: x(1994), x2: x(2024), y1: y(ref), y2: y(ref), stroke: "var(--gris)", "stroke-dasharray": "2 4" }));
+    txt(svg, x(1996.5), y(ref) + (refAbajo ? 13 : -5), "nivel de 1994", { "font-size": 10 });
+    svg.append(svgEl("polyline", { points: S.map((s) => `${x(s.a)},${y(s[key])}`).join(" "), fill: "none", stroke: col, "stroke-width": 2.5, "stroke-linejoin": "round" }));
+    for (const s of S) {
+      const c = svgEl("circle", { cx: x(s.a), cy: y(s[key]), r: s.a === 1994 || s.a === 2024 ? 5.5 : 3.5, fill: col, class: "bar", tabindex: 0 });
+      bindTip(c, () => [String(s.a), fmtY(s[key]) + (band ? ` | franja: ${fmtY(s[band[0]])} a ${fmtY(s[band[1]])}` : ""), `${nf.format(s.n)} personas de 25 a 35 con trabajo e ingreso en la muestra`]);
+      svg.append(c);
+    }
+    for (const n of notas) { const s = S.find((q) => q.a === n.a); txt(svg, x(n.a) + (n.dx || 6), y(s[key]) + (n.dy || 16), n.t, { "font-size": 10, fill: "var(--ink)" }); }
+    box.replaceChildren(svg);
+  }
+  const s96 = S.find((s) => s.a === 1996);
+  const s12 = S.reduce((m, s) => (s.a < 2016 && s.t > m.t ? s : m), S[0]);
+  document.getElementById("serie-h-prose").innerHTML = `
+    <p>Entre 1994 y 1996, con la crisis de por medio, la hora perdió casi un tercio, de ${pesos(s94.h)} a ${pesos(s96.h)} en pesos de 2024. Pasaron casi 30 años para volver. El punto más alto entre 1996 y 2022 fue de ${pesos(maxPrev)}, abajo de 1994, y eso que desde 2016 la encuesta capta algo más de ingreso por el cambio de cuestionario. En 2024 llegó a ${pesos(h24)}.</p>
+    <p>La franja se cerró. En el borde de abajo, el 25% que gana menos, la hora pasó de ${pesos(s94.p25)} a ${pesos(S.at(-1).p25)}; en el de arriba bajó, de ${pesos(s94.p75)} a ${pesos(S.at(-1).p75)}. Entre los jóvenes que trabajan, la distancia entre ganar poco y ganar bien se achicó.</p>`;
+  document.getElementById("serie-t-prose").innerHTML = `
+    <p>La tortilla subió casi sin pausa en minutos de 1994 a ${s12.a}, cuando llegó a ${r0(s12.t)} minutos por kilo. Volvió a ${r0(s22.t)} en 2022 y en 2024 bajó a ${r0(t24)}, porque el kilo casi no cambió (${pesos(s22.tp)} en 2022 y ${pesos(I.tortilla.p24)} en 2024, los dos en pesos de 2024) mientras el ingreso por hora subió.</p>`;
+
+  // ---------- tenencia: barras apiladas ----------
+  const TEN = [
+    { k: "propia", n: "Propia y pagada", col: "var(--cat1)" },
+    { k: "pagando", n: "Propia, pagándose", col: "#b59dd2" },
+    { k: "renta", n: "Rentada", col: "var(--cat2)" },
+    { k: "otra", n: "Prestada u otra", col: "var(--gris)" },
+  ];
+  document.getElementById("ten-legend").innerHTML = TEN.map((t) => `<span><i style="background:${t.col}"></i>${t.n}</span>`).join("");
+  function tenencia(box) {
+    const W = ancho(box), H = 120, m = { l: 44, r: 6 };
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
+      "aria-label": [["1994", A], ["2024", B]].map(([a, R]) => `${a}: ` + TEN.map((t) => `${t.n} ${pct(R["ten_" + t.k][0])}%`).join(", ")).join(". ") });
+    [["1994", A, 14], ["2024", B, 66]].forEach(([anio, R, y0]) => {
+      txt(svg, 0, y0 + 25, anio, { fill: "var(--ink)", "font-weight": 700, "font-size": 13 });
+      let x0 = m.l; const ww = W - m.l - m.r;
+      TEN.forEach((t) => {
+        const v = R["ten_" + t.k], w = ww * v[0];
+        const r = svgEl("rect", { x: x0 + 1, y: y0, width: Math.max(0, w - 2), height: 40, fill: t.col, class: "bar", tabindex: 0 });
+        bindTip(r, () => [`${t.n}, ${anio}`, `${f1(100 * v[0])}% de los hogares (± ${mg(100 * v[1])})`]);
+        svg.append(r);
+        if (w > 34) txt(svg, x0 + w / 2, y0 + 25, `${pct(v[0])}%`, { "text-anchor": "middle", fill: t.k === "propia" ? "#fff" : "var(--ink)", "font-size": 13, "font-weight": 700 });
+        x0 += w;
+      });
+    });
+    box.replaceChildren(svg);
+  }
+  document.getElementById("ten-prose").innerHTML = `
+    <p>En 1994, ${pct(A.ten_propia[0] + A.ten_pagando[0])} de cada 100 hogares jóvenes vivían en casa propia; en 2024, ${pct(B.ten_propia[0] + B.ten_pagando[0])}. Los que rentan casi se duplicaron, de ${pct(A.ten_renta[0])} a ${pct(B.ten_renta[0])}. Y eso cuenta solo a quienes ya formaron su propio hogar, que hoy son menos.</p>
+    <p>Rentar, en cambio, cuesta menos trabajo que antes. La renta de en medio entre los hogares jóvenes que rentan pasó de ${r0(A.renta_horas[0])} horas de trabajo al mes en 1994 (± ${mg(A.renta_horas[1], 0)}) a ${r0(B.renta_horas[0])} en 2024 (± ${mg(B.renta_horas[1], 0)}), y por una vivienda más grande, de ${r0(B.renta_cuartos_med[0])} cuartos contra ${r0(A.renta_cuartos_med[0])}. Eso no dice nada del precio de comprar, que ninguna de las dos encuestas pregunta.</p>`;
+  const vp22 = S.find((s) => s.a === 2018);
+  document.getElementById("vp-prose").innerHTML = `
+    <p>Subió en casi todas las ediciones, en años de crisis y en años buenos, de ${r0(s94.vp)} de cada 100 en 1994 a ${r0(vp22.vp)} en 2018 y ${r0(S.at(-1).vp)} en 2024. Quedarse con los papás puede ser falta de dinero, una decisión o las dos cosas; la encuesta no pregunta por qué.</p>`;
+
+  // ---------- tu sueldo ----------
+  const presets = [8000, 12000, 18000, 30000];
+  document.getElementById("presets").innerHTML = presets.map((p) => `<button class="chip" data-p="${p}" aria-pressed="false">${pesos(p)}</button>`).join("");
+  const inp = document.getElementById("ing"), hin = document.getElementById("hrs");
+  const leer = (el) => Number(String(el.value).replace(/[^\d]/g, "")) || 0;
+  const AJ = M.inpc24 / M.inpc_hoy; // de pesos de hoy a pesos de agosto de 2024
+  function panel() {
+    const v = leer(inp), h = Math.min(98, leer(hin));
+    document.querySelectorAll("[data-p]").forEach((b) => b.setAttribute("aria-pressed", Number(b.dataset.p) === v));
+    const P = document.getElementById("panel");
+    if (!v || !h) { P.innerHTML = `<p class="lugar">Escribe tu sueldo al mes y tus horas a la semana.</p>`; return; }
+    const hora = v * AJ / (h * 52 / 12);
+    const necesita = I.tortilla.p24 / (t94 / 60) * (h * 52 / 12) / AJ;
+    const max = Math.max(...M.items.map((x) => Math.max(60 * x.p24 / hora, x.m94[0])));
+    P.innerHTML = `
+      <p class="resumen">Tu hora vale unos <b>${pesos2(v / (h * 52 / 12))}</b>. Un kilo de tortilla te cuesta <b>${r0(60 * I.tortilla.p24 / hora)} minutos</b>; a la persona típica de tu edad en 1994 le costaba ${r0(t94)}.
+      ${60 * I.tortilla.p24 / hora > t94 ? `Para que te costara lo mismo que a ella tendrías que ganar unos ${pesos(Math.round(necesita / 100) * 100)} al mes con las mismas horas.` : "Te cuesta menos que a ella."}</p>
+      <div class="tscroll"><table class="t tabla-min"><thead><tr><th>Alimento</th><th>Tus minutos</th><th>1994 <small>típico de tu edad</small></th></tr></thead><tbody>${
+        orden.map((x) => { const tu = 60 * x.p24 / hora; return `<tr><td>${x.nombre} <small>(${x.u === "l" ? "litro" : "kilo"})</small></td><td><span class="barra" style="width:${Math.round(70 * tu / max)}px;background:var(--enf)"></span>${r0(tu)}</td><td><span class="barra" style="width:${Math.round(70 * x.m94[0] / max)}px;background:var(--gris)"></span>${r0(x.m94[0])}</td></tr>`; }).join("")
+      }</tbody></table></div>`;
+  }
+  [inp, hin].forEach((el) => el.addEventListener("input", () => { const v = leer(el); el.value = v ? nf.format(v) : ""; panel(); }));
+  document.getElementById("presets").addEventListener("click", (e) => { const b = e.target.closest("[data-p]"); if (!b) return; inp.value = nf.format(Number(b.dataset.p)); panel(); });
+  document.getElementById("ing-nota").textContent = `Los precios son los que pagaron los hogares de agosto a noviembre de 2024. Para comparar, la página lleva tu sueldo de pesos de ${M.inpc_hoy_mes} a pesos de agosto de 2024 con el INPC (−${f1((1 - AJ) * 100)}%); la hora que te muestra arriba es la de hoy, sin ajustar. Si en tu ciudad la tortilla cuesta distinto, tus minutos también. El número que escribes no sale de tu navegador.`;
+  panel();
+
+  // ---------- mito ----------
+  document.getElementById("mito").innerHTML = `
+    <div class="card"><div class="tag">Lo que se oye</div><div class="big">Antes un sueldo alcanzaba para todo</div><p>A los 30 ya tenías casa, familia y coche; hoy no te alcanza ni para la renta.</p></div>
+    <div class="card"><div class="tag">Lo que dicen las encuestas</div><div class="big">Depende de qué compres</div>
+      <p>La hora de trabajo de un joven rinde ${Math.round(cambioH)}% más que en 1994. La tortilla, la leche y el huevo cuestan más minutos; el pollo y el refresco, menos; la renta, menos horas. Donde sí hay un cambio grande es en dónde viven. ${pct(B.pct_hijo[0])} de cada 100 siguen en casa de sus papás, contra ${pct(A.pct_hijo[0])} en 1994, y menos hogares jóvenes son dueños de su casa.</p></div>`;
+
+  // ---------- dibujo ----------
+  function dibuja() {
+    canasta();
+    linea(document.getElementById("serie-h"), { key: "h", band: ["p25", "p75"], maxY: 90, pasoY: 15, fmtY: (v) => "$" + r0(v), etiqueta: "Ingreso por hora, mediana, pesos de 2024",
+      notas: [{ a: 1996, t: "crisis de 1995", dx: 6, dy: 18 }] });
+    linea(document.getElementById("serie-t"), { key: "t", maxY: 40, pasoY: 10, fmtY: (v) => r0(v) + " min", etiqueta: "Minutos de trabajo por kilo de tortilla" });
+    linea(document.getElementById("serie-vp"), { key: "vp", maxY: 40, pasoY: 10, fmtY: (v) => r0(v), col: "var(--cat1)", refAbajo: true, etiqueta: "De cada 100 personas de 25 a 35 años, cuántas viven con sus papás" });
+    tenencia(document.getElementById("ten"));
+  }
+  let ultimoAncho = innerWidth, espera;
+  addEventListener("resize", () => { if (innerWidth === ultimoAncho) return; ultimoAncho = innerWidth; clearTimeout(espera); espera = setTimeout(dibuja, 150); });
+  dibuja();
+
+  // ---------- método y fuentes ----------
+  document.getElementById("notas").innerHTML = [
+    `Fuente: microdatos de la ENIGH del INEGI. Para la comparación principal, la edición tradicional de 1994 (${nf.format(A.n_trab)} personas de 25 a 35 años con trabajo e ingreso) y la Nueva serie de 2024 (${nf.format(B.n_trab)}). Para la serie, además, las ediciones tradicionales de 1996 a 2014 y la Nueva serie de 2016 a 2022.`,
+    `Ingreso por hora: ingreso monetario por trabajo (sueldos, comisiones, aguinaldo, negocio propio y otros trabajos) del último trimestre entre 3, dividido entre las horas trabajadas a la semana por 52/12. Solo personas de 25 a 35 años con ingreso mayor a cero y entre 1 y 98 horas. Las claves de ingreso de cada edición se eligieron para que la suma por hogar coincida con el ingreso por trabajo del concentrado del INEGI; coincide en más del 99% de los hogares en todas las ediciones.`,
+    `Precio de cada alimento: gasto entre cantidad de cada compra anotada en la libreta de gastos diarios, mediana ponderada con el factor de expansión. Claves de 1994 (catálogo tradicional) y de 2024 (clasificación internacional de consumo): tortilla de maíz A004 y 011131; huevo A078 y 011481; frijol A116 y 011761; arroz A017 y 011111; leche pasteurizada A060 y leche entera fresca 011411; aceite vegetal A080 y 011512; azúcar A146 y 011810; jitomate A088 y 011727; papa A085 y 011751; pollo en piezas A033 y 01122F; bistec A022 y 011221; refresco A188 y 012601 más 012602.`,
+    `Minutos = 60 × precio del kilo o litro ÷ ingreso por hora mediano, los dos del mismo año. Así no hace falta deflactar. Para la serie en pesos de 2024 uso el INPC de agosto de cada año (base 2a quincena de julio de 2018).`,
+    `Márgenes de error al 90% con ${M.reps} réplicas bootstrap de las unidades primarias de muestreo dentro de cada estrato del diseño de la encuesta. Muchos precios se anotan en números redondos ($23, $50), así que las medianas brincan de escalón en escalón y el margen de error puede quedarse corto. «Sin cambio claro»: la diferencia cabe en el margen de error.`,
+    `Vivir en casa de los papás: personas de 25 a 35 años anotadas como hija o hijo de la jefa o jefe del hogar. Tenencia y renta: hogares cuya jefa o jefe tiene de 25 a 35 años; la renta es la que pagan quienes rentan.`,
+    `Corte de 2016: el INEGI cambió en 2016 la forma de captar el ingreso (Nueva serie) y desde entonces capta más. La serie usa la versión tradicional hasta 2014 y la Nueva serie desde 2016, sin empalmarlas. La comparación 1994 contra 2024 cruza ese corte, y si algo exagera la mejora de la hora.`,
+    `El código está en el repositorio de Cifra Pública, en scripts/poder/.`,
+  ].map((s) => `<li>${s}</li>`).join("");
+  document.getElementById("fuentes").textContent =
+    "Fuentes: INEGI, Encuesta Nacional de Ingresos y Gastos de los Hogares (ENIGH) 1994 a 2014, tradicional, y 2016 a 2024, Nueva serie, microdatos | INEGI, Índice Nacional de Precios al Consumidor. Consultadas el __CONSULTA__.";
+})();
+</script>
+</body>
+</html>
